@@ -1,30 +1,54 @@
 import { useEffect, useState } from "react";
-import { store, useAppDispatch } from "../../../redux/store";
+import { setUpdateEquipment } from "../../../redux/equipmentSlice";
+import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
+  EquipmentDetail,
   UpdateEquipmentType,
 } from "../../../types/equipmentTypes";
+import DentalLabModal from "../../DentalLabModal";
 import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
   CustomRadioField,
+  CustomShowModalField,
 } from "../../custom/CustomFormField";
 import style from "../Form.module.css";
-import { setUpdateEquipment } from "../../../redux/equipmentSlice";
 
-function EquipmentUpdateForm() {
+function EquipmentUpdateForm({ data }: { data: EquipmentDetail }) {
   const [updateData, setUpdateData] = useState<UpdateEquipmentType>(
     store.getState().equipment.updateData
   );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const _updateData = store.getState().equipment.updateData;
+    const _updateData: UpdateEquipmentType = {
+      id: data.id,
+      amount: data.amount ?? 0,
+      currency: data.currency ?? "",
+      equipmentStatus: data.equipmentStatus ?? "Available",
+      equipmentType: data.equipmentType ?? "ART",
+      ownerId: data.ownerId,
+      ownerType: data.ownerType ?? "DentalLab",
+      ownerName: data.ownerName ?? "",
+      receivedDate: data.receivedDate ?? "",
+      warrantyDate: data.warrantyDate ?? "",
+      remark: data.remark ?? "",
+      serialNumber: data.serialNumber ?? "",
+      serviceLife: data.serviceLife ?? 0,
+    };
+
     setUpdateData(_updateData);
-  }, []);
+    dispatch(setUpdateEquipment(_updateData));
+  }, [data, dispatch]);
+
+  const ownerId = useAppSelector((state) => state.equipment.updateData.ownerId);
+  const ownerName = useAppSelector(
+    (state) => state.equipment.updateData.ownerName
+  );
 
   return (
     <div className={style.form}>
@@ -32,14 +56,30 @@ function EquipmentUpdateForm() {
       <div className={style["form-body"]}>
         <div className={style["left-form"]}>
           <CustomInputText
-            labelname="設備擁有者ID"
-            initialValue={updateData.ownerId}
-            handleChange={(value) =>
-              dispatch(setUpdateEquipment({ ownerId: value }))
-            }
+            labelname="設備擁有者名稱"
+            initialValue={ownerName ?? ""}
+            placeholder="請選擇"
+            handleChange={(_) => {}}
+            editable={false}
             required
-            disabled={true}
           />
+          <CustomShowModalField text="選擇設備擁有者">
+            {({ modalRef, closeModal }) => (
+              <DentalLabModal
+                closeModal={closeModal}
+                ref={modalRef}
+                dentalLabId={ownerId}
+                onChange={(value) =>
+                  dispatch(
+                    setUpdateEquipment({
+                      ownerId: value.id,
+                      ownerName: value.name ?? undefined,
+                    })
+                  )
+                }
+              />
+            )}
+          </CustomShowModalField>
           <CustomRadioField
             labelname="設備擁有者類型"
             initialValue={updateData.ownerType}

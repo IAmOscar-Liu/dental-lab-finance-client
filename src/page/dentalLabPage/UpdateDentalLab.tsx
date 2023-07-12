@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { MdBrowserUpdated } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
@@ -6,21 +6,24 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import DentalUpdateForm from "../../components/form/dentalLabForm/DentalUpdateForm";
 import DentalUpdateSummarizeForm from "../../components/form/dentalLabForm/DentalUpdateSummarizeForm";
+import usePageController from "../../hooks/usePageController";
 import {
   useGetDentalLabQuery,
   useUpdateDentalLabMutation,
 } from "../../redux/dentalLabApi";
-import {
-  resetUpdateDentalLab,
-  setUpdateDentalLab,
-} from "../../redux/dentalLabSlice";
+import { resetUpdateDentalLab } from "../../redux/dentalLabSlice";
 import { store, useAppDispatch } from "../../redux/store";
+import { DentalLab } from "../../types/dentalLabTypes";
 import { hasDentalLabDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 
-const FORM_STEPS = [<DentalUpdateForm />, <DentalUpdateSummarizeForm />];
-
-function UpdateDentalLab() {
+function UpdateDentalLabComp({
+  texts,
+  children,
+}: {
+  texts: string[];
+  children: (currentStepIndex: number, data: DentalLab) => ReactNode;
+}) {
   const { dentalId } = useParams();
   const { data, isLoading, error } = useGetDentalLabQuery(
     { dentalId: dentalId ?? "" },
@@ -28,64 +31,14 @@ function UpdateDentalLab() {
       skip: !dentalId,
     }
   );
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [maxStepIndex, setMaxStepIndex] = useState(currentStepIndex);
   const [updateDentalLab, { isLoading: isUpdating }] =
     useUpdateDentalLabMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const isFirstStep = currentStepIndex === 0;
-  const isLastStep = currentStepIndex === FORM_STEPS.length - 1;
-
-  useEffect(() => {
-    if (!data) return;
-
-    dispatch(
-      setUpdateDentalLab({
-        id: data.id,
-        name: data.name ?? "",
-        status: data.status ?? "CONTACT",
-        region: data.region ?? "EastAsia",
-        country: data.country ?? "",
-        state: data.state ?? "",
-        city: data.city ?? "",
-        address: data.address ?? "",
-        phoneCode: data.phoneCode ?? "",
-        phoneNumber: data.phoneNumber ?? "",
-        contactPerson: data.contactPerson ?? "",
-        email: data.email ?? "",
-        uniformNo: data.uniformNo ?? "",
-        remark: data.remark ?? "",
-      })
-    );
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    setMaxStepIndex(Math.max(currentStepIndex, maxStepIndex));
-    // eslint-disable-next-line
-  }, [currentStepIndex]);
+  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
+    usePageController(texts.length);
 
   if (!dentalId) return <Navigate to="/dental-lab-management" />;
-
-  const next = () => {
-    setCurrentStepIndex((prev) => {
-      if (prev >= FORM_STEPS.length - 1) return prev;
-      return prev + 1;
-    });
-  };
-
-  const back = () => {
-    setCurrentStepIndex((prev) => {
-      if (prev <= 0) return prev;
-      return prev - 1;
-    });
-  };
-
-  const goTo = (target: number) => {
-    if (target <= currentStepIndex || maxStepIndex >= target)
-      setCurrentStepIndex(target);
-  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -137,21 +90,18 @@ function UpdateDentalLab() {
         <>
           <div className={style["control-btns"]}>
             <div className={style["step-controller"]}>
-              <button
-                className={currentStepIndex === 0 ? style.active : ""}
-                onClick={() => goTo(0)}
-              >
-                <b>1</b>
-                牙技所資料設定
-              </button>
-              <div className={style["underline-spacer"]}></div>
-              <button
-                className={currentStepIndex === 1 ? style.active : ""}
-                onClick={() => goTo(1)}
-              >
-                <b>2</b>
-                牙技所內容確認
-              </button>
+              {texts.map((text, idx) => (
+                <Fragment key={text}>
+                  {idx > 0 && <div className={style["underline-spacer"]}></div>}
+                  <button
+                    className={currentStepIndex === idx ? style.active : ""}
+                    onClick={() => goTo(idx)}
+                  >
+                    <b>{idx + 1}</b>
+                    {text}
+                  </button>
+                </Fragment>
+              ))}
             </div>
             <button
               disabled={isUpdating || !isLastStep}
@@ -178,12 +128,25 @@ function UpdateDentalLab() {
                   下一步
                 </button>
               </div>
-              {FORM_STEPS[currentStepIndex]}
+
+              {children(currentStepIndex, data!)}
             </form>
           </div>
         </>
       )}
     </div>
+  );
+}
+
+function UpdateDentalLab() {
+  return (
+    <UpdateDentalLabComp texts={["牙技所資料設定", "牙技所內容確認"]}>
+      {(index, data) => {
+        if (index === 0) return <DentalUpdateForm data={data} />;
+        else if (index === 1) return <DentalUpdateSummarizeForm />;
+        return null;
+      }}
+    </UpdateDentalLabComp>
   );
 }
 

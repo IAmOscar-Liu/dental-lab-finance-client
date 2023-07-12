@@ -1,21 +1,27 @@
 import { setCreateEquipment } from "../../../redux/equipmentSlice";
-import { store, useAppDispatch } from "../../../redux/store";
+import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
 } from "../../../types/equipmentTypes";
+import DentalLabModal from "../../DentalLabModal";
 import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
   CustomRadioField,
+  CustomShowModalField,
 } from "../../custom/CustomFormField";
 import style from "../Form.module.css";
 
 function EquipmentForm() {
   const createData = store.getState().equipment.createData;
   const dispatch = useAppDispatch();
+  const ownerId = useAppSelector((state) => state.equipment.createData.ownerId);
+  const ownerName = useAppSelector(
+    (state) => state.equipment.createData.ownerName
+  );
 
   return (
     <div className={style.form}>
@@ -23,14 +29,30 @@ function EquipmentForm() {
       <div className={style["form-body"]}>
         <div className={style["left-form"]}>
           <CustomInputText
-            labelname="設備擁有者ID"
-            initialValue={createData.ownerId}
-            handleChange={(value) =>
-              dispatch(setCreateEquipment({ ownerId: value }))
-            }
+            labelname="設備擁有者名稱"
+            initialValue={ownerName ?? ""}
+            placeholder="請選擇"
+            handleChange={(_) => {}}
+            editable={false}
             required
-            disabled={true}
           />
+          <CustomShowModalField text="選擇設備擁有者">
+            {({ modalRef, closeModal }) => (
+              <DentalLabModal
+                closeModal={closeModal}
+                ref={modalRef}
+                dentalLabId={ownerId}
+                onChange={(value) =>
+                  dispatch(
+                    setCreateEquipment({
+                      ownerId: value.id,
+                      ownerName: value.name ?? undefined,
+                    })
+                  )
+                }
+              />
+            )}
+          </CustomShowModalField>
           <CustomRadioField
             labelname="設備擁有者類型"
             initialValue={createData.ownerType}
@@ -114,7 +136,7 @@ function EquipmentForm() {
             labelname="保固期限"
             type="date"
             placeholder="yyyy/mm/dd"
-            initialValue={createData.warrantyDate}
+            initialValue={createData.warrantyDate.slice(0, 10)}
             handleChange={(value) =>
               dispatch(setCreateEquipment({ warrantyDate: value }))
             }
@@ -124,7 +146,7 @@ function EquipmentForm() {
             labelname="到貨日"
             type="date"
             placeholder="yyyy/mm/dd"
-            initialValue={createData.receivedDate}
+            initialValue={createData.receivedDate.slice(0, 10)}
             handleChange={(value) =>
               dispatch(setCreateEquipment({ receivedDate: value }))
             }

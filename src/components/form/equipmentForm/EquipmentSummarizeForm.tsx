@@ -5,12 +5,13 @@ function EquipmentSummarizeForm() {
   const createData = useAppSelector((state) => state.equipment.createData);
 
   const keyNameTable: Record<keyof typeof createData, string> = {
-    equipmentType: "設備類型",
     serialNumber: "設備序號",
+    equipmentType: "設備類型",
+    equipmentStatus: "設備狀態",
     ownerId: "設備擁有者ID",
+    ownerName: "設備擁有者名稱",
     ownerType: "設備擁有者類型",
     currency: "幣別",
-    equipmentStatus: "設備狀態",
     amount: "設備單價",
     warrantyDate: "設備保固期",
     receivedDate: "設備到貨日",
@@ -25,10 +26,10 @@ function EquipmentSummarizeForm() {
       <div className={style.detail}>
         <h2>設備資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(createData).map(([key, value]) => (
+          {Object.entries(keyNameTable).map(([key, value]) => (
             <p key={key}>
-              <span>{keyNameTable[key as keyof typeof createData]}</span>
-              <span>{value || "無"}</span>
+              <span>{value}</span>
+              <span>{createData[key as keyof typeof createData]}</span>
             </p>
           ))}
         </div>

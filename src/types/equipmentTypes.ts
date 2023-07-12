@@ -48,6 +48,7 @@ export type EquipmentDetail = {
   receivedDate: string;
   serviceLife: number;
   equipmentStatus: EquipmentStatus;
+  ownerName?: string;
   ownerType: EquipmentOwnerType;
   createdTime: string;
   modifiedTime: string;

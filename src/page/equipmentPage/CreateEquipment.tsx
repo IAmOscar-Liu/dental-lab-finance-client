@@ -1,52 +1,30 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import EquipmentForm from "../../components/form/equipmentForm/EquipmentForm";
-import EquipmentSummarizeForm from "../../components/form/equipmentForm/EquipmentSummarizeForm";
-import { store, useAppDispatch } from "../../redux/store";
-import style from "../UtilityForm.module.css";
-import { useCreateEquipmentMutation } from "../../redux/equipmentApi";
-import { resetCreateEquipment } from "../../redux/equipmentSlice";
-import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import EquipmentForm from "../../components/form/equipmentForm/EquipmentForm";
+import EquipmentSummarizeForm from "../../components/form/equipmentForm/EquipmentSummarizeForm";
+import usePageController from "../../hooks/usePageController";
+import { useCreateEquipmentMutation } from "../../redux/equipmentApi";
+import { resetCreateEquipment } from "../../redux/equipmentSlice";
+import { store, useAppDispatch } from "../../redux/store";
+import style from "../UtilityForm.module.css";
 
-const FORM_STEPS = [<EquipmentForm />, <EquipmentSummarizeForm />];
-
-function CreateEquipment() {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [maxStepIndex, setMaxStepIndex] = useState(currentStepIndex);
+function CreateEquipmentComp({
+  texts,
+  children,
+}: {
+  texts: string[];
+  children: (currentStepIndex: number) => ReactNode;
+}) {
   const [createEquipment, { isLoading: isCreating }] =
     useCreateEquipmentMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const isFirstStep = currentStepIndex === 0;
-  const isLastStep = currentStepIndex === FORM_STEPS.length - 1;
-
-  useEffect(() => {
-    setMaxStepIndex(Math.max(currentStepIndex, maxStepIndex));
-    // eslint-disable-next-line
-  }, [currentStepIndex]);
-
-  const next = () => {
-    setCurrentStepIndex((prev) => {
-      if (prev >= FORM_STEPS.length - 1) return prev;
-      return prev + 1;
-    });
-  };
-
-  const back = () => {
-    setCurrentStepIndex((prev) => {
-      if (prev <= 0) return prev;
-      return prev - 1;
-    });
-  };
-
-  const goTo = (target: number) => {
-    if (target <= currentStepIndex || maxStepIndex >= target)
-      setCurrentStepIndex(target);
-  };
+  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
+    usePageController(texts.length);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,21 +66,18 @@ function CreateEquipment() {
 
       <div className={style["control-btns"]}>
         <div className={style["step-controller"]}>
-          <button
-            className={currentStepIndex === 0 ? style.active : ""}
-            onClick={() => goTo(0)}
-          >
-            <b>1</b>
-            設備資料設定
-          </button>
-          <div className={style["underline-spacer"]}></div>
-          <button
-            className={currentStepIndex === 1 ? style.active : ""}
-            onClick={() => goTo(1)}
-          >
-            <b>2</b>
-            設備內容確認
-          </button>
+          {texts.map((text, idx) => (
+            <Fragment key={text}>
+              {idx > 0 && <div className={style["underline-spacer"]}></div>}
+              <button
+                className={currentStepIndex === idx ? style.active : ""}
+                onClick={() => goTo(idx)}
+              >
+                <b>{idx + 1}</b>
+                {text}
+              </button>
+            </Fragment>
+          ))}
         </div>
         <button
           disabled={isCreating || !isLastStep}
@@ -130,10 +105,22 @@ function CreateEquipment() {
             </button>
           </div>
 
-          {FORM_STEPS[currentStepIndex]}
+          {children(currentStepIndex)}
         </form>
       </div>
     </div>
+  );
+}
+
+function CreateEquipment() {
+  return (
+    <CreateEquipmentComp texts={["設備資料設定", "設備內容確認"]}>
+      {(index) => {
+        if (index === 0) return <EquipmentForm />;
+        else if (index === 1) return <EquipmentSummarizeForm />;
+        return null;
+      }}
+    </CreateEquipmentComp>
   );
 }
 

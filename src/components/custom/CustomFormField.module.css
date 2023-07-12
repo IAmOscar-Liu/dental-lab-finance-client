@@ -1,6 +1,7 @@
 .text-field,
 .radio,
-.select {
+.select,
+.show-modal {
   display: grid;
   grid-template-columns: max(140px, 30%) auto;
   gap: 16px;
@@ -36,6 +37,18 @@
   border-width: 2px;
 }
 
+.text-field > .input-wrapper:has(> input.disable)::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: 100;
+}
+
+.text-field > .input-wrapper > input.disable {
+  border: none;
+  outline: none;
+}
+
 .radio .radio-group {
   display: flex;
   gap: 12px;
@@ -50,4 +63,9 @@
   width: max(200px, 70%);
   font-size: 1em;
   padding: 3px 0.4em;
+}
+
+.show-modal > p:last-of-type {
+  color: #4747ff;
+  cursor: pointer;
 }

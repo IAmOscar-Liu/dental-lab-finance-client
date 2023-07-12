@@ -28,12 +28,10 @@ function DentalUpdateSummarizeForm() {
       <div className={style.detail}>
         <h2>牙技所資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(updateData).map(([key, value]) => (
+          {Object.entries(keyNameTable).map(([key, value]) => (
             <p key={key}>
-              <span>
-                {keyNameTable[key as keyof Omit<typeof updateData, "id">]}
-              </span>
-              <span>{value || "無"}</span>
+              <span>{value}</span>
+              <span>{updateData[key as keyof typeof updateData]}</span>
             </p>
           ))}
         </div>

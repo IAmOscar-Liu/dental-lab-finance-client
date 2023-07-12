@@ -4,6 +4,7 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import { AiOutlineLeft, AiFillEye } from "react-icons/ai";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { useGetEquipmentQuery } from "../../redux/equipmentApi";
+import { useGetDentalLabQuery } from "../../redux/dentalLabApi";
 
 function SingleEquipment() {
   const { equipmentId } = useParams();
@@ -12,6 +13,14 @@ function SingleEquipment() {
     { equipmentId: equipmentId ?? "" },
     {
       skip: !equipmentId,
+    }
+  );
+  const { data: dentalLabData } = useGetDentalLabQuery(
+    {
+      dentalId: data?.ownerId ?? "",
+    },
+    {
+      skip: !data,
     }
   );
 
@@ -54,12 +63,28 @@ function SingleEquipment() {
               <span>{data?.id}</span>
             </p>
             <p>
+              <span>設備序號</span>
+              <span>{data?.serialNumber}</span>
+            </p>
+            <p>
               <span>設備種類</span>
               <span>{data?.equipmentType}</span>
             </p>
             <p>
-              <span>設備序號</span>
-              <span>{data?.serialNumber}</span>
+              <span>設備狀態</span>
+              <span>{data?.equipmentStatus}</span>
+            </p>
+            <p>
+              <span>設備所有者ID</span>
+              <span>{data?.ownerId}</span>
+            </p>
+            <p>
+              <span>設備所有者名稱</span>
+              <span>{dentalLabData?.name}</span>
+            </p>
+            <p>
+              <span>設備所有者類型</span>
+              <span>{data?.ownerType}</span>
             </p>
             <p>
               <span>幣別</span>
@@ -84,18 +109,6 @@ function SingleEquipment() {
             <p>
               <span>服務長度</span>
               <span>{(data?.serviceLife ?? 0) + "個月"}</span>
-            </p>
-            <p>
-              <span>設備狀態</span>
-              <span>{data?.equipmentStatus}</span>
-            </p>
-            <p>
-              <span>設備所有者ID</span>
-              <span>{data?.ownerId}</span>
-            </p>
-            <p>
-              <span>設備所有者類型</span>
-              <span>{data?.ownerType}</span>
             </p>
             <p>
               <span>createdTime</span>

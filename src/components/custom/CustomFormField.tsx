@@ -1,4 +1,11 @@
-import { InputHTMLAttributes, TextareaHTMLAttributes, useState } from "react";
+import {
+  InputHTMLAttributes,
+  ReactNode,
+  TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
 
@@ -6,6 +13,7 @@ interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelname: string;
   initialValue: string;
   handleChange: (value: string) => void;
+  editable?: boolean;
 }
 
 interface CustomTextAreaFieldProps
@@ -36,6 +44,7 @@ export function CustomInputText({
   type,
   initialValue,
   handleChange,
+  editable = true,
   ...rest
 }: CustomTextFieldProps) {
   const [invalidMessage, setInvalidMessage] = useState("");
@@ -66,6 +75,7 @@ export function CustomInputText({
           }
           required={!!required}
           type={type}
+          className={editable ? "" : style.disable}
           {...rest}
         />
         {invalidMessage.length > 0 && (
@@ -174,5 +184,59 @@ export function CustomInputSelect({
         </select>
       </div>
     </div>
+  );
+}
+
+export function CustomShowModalField({
+  text,
+  children,
+}: {
+  text: string;
+  children: (value: {
+    modalRef: React.RefObject<HTMLDivElement>;
+    closeModal: () => void;
+  }) => ReactNode;
+}) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        modalRef.current === null ||
+        modalRef.current.contains(e.target as HTMLElement)
+      ) {
+        return;
+      }
+
+      if (isOpen) setIsOpen(false);
+    };
+
+    document.addEventListener("click", handler);
+
+    return () => document.removeEventListener("click", handler);
+  }, [isOpen]);
+
+  return (
+    <>
+      <div className={style["show-modal"]}>
+        <p></p>
+        <p
+          onClick={() =>
+            setTimeout(() => {
+              setIsOpen(true);
+            }, 100)
+          }
+        >
+          {text}
+        </p>
+        {isOpen &&
+          children({
+            modalRef,
+            closeModal,
+          })}
+      </div>
+    </>
   );
 }

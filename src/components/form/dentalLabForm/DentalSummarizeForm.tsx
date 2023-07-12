@@ -7,8 +7,8 @@ function DentalSummarizeForm() {
   const keyNameTable: Record<keyof typeof createData, string> = {
     name: "牙技所名稱",
     uniformNo: "牙技所統一編號",
-    region: "牙技所區域",
     status: "牙技所狀態",
+    region: "牙技所區域",
     country: "牙技所所在國家",
     state: "State",
     city: "City",
@@ -27,10 +27,10 @@ function DentalSummarizeForm() {
       <div className={style.detail}>
         <h2>牙技所資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(createData).map(([key, value]) => (
+          {Object.entries(keyNameTable).map(([key, value]) => (
             <p key={key}>
-              <span>{keyNameTable[key as keyof typeof createData]}</span>
-              <span>{value || "無"}</span>
+              <span>{value}</span>
+              <span>{createData[key as keyof typeof createData]}</span>
             </p>
           ))}
         </div>

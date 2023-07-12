@@ -72,4 +72,5 @@ export const {
   useGetDentalLabQuery,
   useCreateDentalLabMutation,
   useUpdateDentalLabMutation,
+  useLazyGetDentalLabQuery,
 } = dentalLabApi;

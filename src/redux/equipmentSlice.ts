@@ -10,7 +10,7 @@ const DATA: CreateEquipmentType = {
   serialNumber: "",
   currency: "",
   equipmentStatus: "Available",
-  ownerId: "2f1f478e-cd71-4299-a0d2-ea32b565b404",
+  ownerId: "",
   ownerType: "DentalLab",
   amount: 10000,
   warrantyDate: "",
