@@ -1,0 +1,37 @@
+.title-wrapper {
+  background-color: white;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  color: #393939;
+  box-shadow: 3px 5px 9px rgba(0, 0, 0, 0.3);
+}
+
+.title-wrapper svg {
+  width: 20px;
+  height: 20px;
+  cursor: default;
+}
+
+.title-wrapper h3 {
+  margin-left: 12px;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.tailing {
+  color: rgb(171, 75, 6);
+}
+
+.tailing a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.tailing a > svg {
+  width: 25px;
+  height: 25px;
+}

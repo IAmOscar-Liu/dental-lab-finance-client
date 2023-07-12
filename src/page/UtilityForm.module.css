@@ -1,0 +1,106 @@
+.utility-form {
+  width: min(90%, 1000px);
+  margin: 24px auto;
+}
+
+.underline-spacer {
+  height: 2px;
+  width: 15vw;
+  background-color: #a5a5a5;
+}
+
+.control-btns {
+  margin-block: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.control-btns .step-controller {
+  display: flex;
+  margin-inline: auto;
+  align-items: center;
+}
+
+.control-btns .step-controller button {
+  outline: none;
+  border: none;
+  padding: 5px 0.5em;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  color: #a5a5a5;
+  font-size: 1.1em;
+}
+
+.control-btns .step-controller button.active {
+  color: #555;
+  pointer-events: none;
+}
+
+.control-btns .step-controller button b {
+  font-size: 0.88em;
+  font-weight: 500;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid;
+  border-color: inherit;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.control-btns button.submit {
+  border: none;
+  outline: none;
+  font-size: 1.1em;
+  padding: 3px 1em;
+  border-radius: 10000px;
+  color: white;
+  background-color: chocolate;
+  position: relative;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.control-btns button.submit .spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.45);
+}
+
+.control-btns button.submit:disabled {
+  background-color: rgb(197, 197, 197);
+  pointer-events: none;
+}
+
+.form-wrapper {
+  padding: 12px 3vw 24px 3vw;
+  background-color: white;
+  box-shadow: 5px 5px 9px rgba(0, 0, 0, 0.3);
+}
+
+.form-wrapper form .multi-step-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.form-wrapper form .multi-step-btns button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: chocolate;
+  font-size: 1em;
+  padding: 3px 1em;
+  border-radius: 10000px;
+}
+
+.form-wrapper form .multi-step-btns button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.form-wrapper form .multi-step-btns button:disabled {
+  pointer-events: none;
+  color: #b6b6b6;
+}

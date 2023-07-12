@@ -1,0 +1,45 @@
+.summarize > h1 {
+  text-align: center;
+  font-size: 1.4em;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.detail {
+  margin-bottom: 12px;
+  box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.detail > h2 {
+  background-color: chocolate;
+  color: white;
+  font-size: 1.1em;
+  text-align: center;
+  padding-block: 3px;
+}
+
+.detail-body {
+  padding: 12px max(16px, 3vw);
+  background-color: var(--primary-bg-color);
+  color: #474747;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px 24px;
+}
+
+.detail-body p {
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.detail-body p span:first-of-type {
+  white-space: nowrap;
+}
+
+.detail-body p span:last-of-type {
+  color: brown;
+  text-align: end;
+}

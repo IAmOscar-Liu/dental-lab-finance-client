@@ -1,0 +1,55 @@
+.single {
+  width: min(90%, 1000px);
+  margin: 24px auto;
+}
+
+.contract-detail > h1 {
+  margin-block: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.contract-detail > h1 > span {
+  font-size: 0.9em;
+  color: #363636;
+  flex-grow: 1;
+}
+
+.contract-detail > h1 > button {
+  border: none;
+  outline: none;
+  font-size: 0.6em;
+  padding: 3px 1em;
+  border-radius: 10000px;
+  color: white;
+  background-color: chocolate;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.contract-detail-body {
+  background-color: white;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.contract-detail-body p {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 1.1em;
+}
+
+.contract-detail-body p span:first-of-type {
+  white-space: nowrap;
+}
+
+.contract-detail-body p span:last-of-type {
+  color: #aa4801;
+}
+
+.contract-detail-body .equipment-table {
+  grid-column: 1 / -1;
+}

@@ -1,0 +1,48 @@
+.management {
+  width: min(90%, 1200px);
+  margin: 24px auto;
+}
+
+.title-and-search {
+  display: flex;
+  align-items: center;
+  margin-block: 16px 12px;
+}
+
+.title-and-search h5 {
+  color: #555;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.title-and-search h5 + * {
+  margin-left: auto;
+}
+
+.filter-btns {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+}
+
+.filter-btns button {
+  margin-right: 8px;
+  padding: 3px 1.2em;
+  outline: none;
+  border: none;
+  border-radius: 0.5em;
+  background-color: #a93d20;
+  color: white;
+  font-size: 1.1em;
+}
+
+.filter-btns button:disabled {
+  pointer-events: none;
+  background-color: #d3a296;
+}
+
+.filter-btns button:last-of-type {
+  margin-left: auto;
+  border-radius: 10000px;
+}

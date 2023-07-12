@@ -1,0 +1,70 @@
+.table-group {
+  margin-top: 12px;
+}
+
+.table-group-title {
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.table-group table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+  box-shadow: 2px 2px 8px rgba(77, 77, 77, 0.7);
+}
+
+.table-group table.column-width tr {
+  display: grid;
+  grid-template-columns: var(--column-widths);
+}
+
+.table-group table tr:has(th) {
+  background-color: #ed4c21;
+  color: white;
+}
+
+.table-group table tr:has(td):nth-of-type(2n + 1) {
+  background-color: rgb(247 139 110 / 50%);
+}
+
+.table-group table :is(th, td) {
+  border: 1px solid rgb(179, 179, 179);
+  text-align: left;
+  padding: 8px;
+}
+
+.table-group table td > a {
+  text-decoration: none;
+  color: #a93d20;
+  font-weight: 600;
+  position: relative;
+  isolation: isolate;
+}
+
+.table-group table td > a::before {
+  content: "";
+  background-color: rgba(229, 105, 105, 0.3);
+  position: absolute;
+  inset: 0;
+  border-radius: 10000px;
+  transform: scale(1.3, 1.5);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.table-group table td > a:hover::before {
+  opacity: 1;
+}
+
+.table-group table.column-width :is(th, td) {
+  border: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.table-group table.column-width td {
+  border-bottom: 1px solid rgb(179, 179, 179);
+}

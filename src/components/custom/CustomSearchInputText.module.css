@@ -1,0 +1,31 @@
+.search-container {
+  width: 250px;
+  border: 2px solid #555;
+  border-radius: 4px;
+  background-color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.search-container > svg {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #555;
+}
+
+.search-container:focus-within {
+  border-color: rgb(167, 71, 3);
+}
+
+.search-container input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 3px 5px 3px 28px;
+  font-size: 1.1em;
+  background-color: transparent;
+}

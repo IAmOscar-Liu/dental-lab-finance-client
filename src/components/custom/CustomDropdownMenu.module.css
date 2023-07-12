@@ -1,0 +1,67 @@
+.custom-select {
+  width: var(--custom-select-width);
+  height: 50px;
+  position: relative;
+}
+
+.custom-select > * {
+  position: absolute;
+  inset: 2px;
+  cursor: pointer;
+}
+
+.custom-select input[type="checkbox"] {
+  outline: none;
+  opacity: 0;
+}
+
+.custom-select-title {
+  font-size: 1.2em;
+  padding: 0.1em 0.5em;
+  align-items: center;
+  color: white;
+  background: var(--custom-select-primary-bg-color);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px 0 rgb(87, 87, 87);
+}
+
+.custom-select:has(input[type="checkbox"]:focus) .custom-select-title {
+  outline: 3px solid var(--custom-select-primary-bg-color-hover);
+  outline-offset: -1px;
+}
+
+.custom-select:has(input[type="checkbox"]:hover) .custom-select-title {
+  background-color: var(--custom-select-primary-bg-color-hover);
+}
+
+.custom-select-list {
+  display: none;
+  inset: calc(100% + 3px) 0 auto 0;
+  background-color: #fff;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0 2px 2px 0 gray;
+}
+
+.custom-select:has(input[type="checkbox"]:checked) .custom-select-list {
+  display: block;
+}
+
+.custom-select-list ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-select-list ul li {
+  padding: 3px 6px;
+  color: var(--custom-select-primary-bg-color);
+}
+
+.custom-select-list ul:not(:has(li[data-active="true"])) li:hover,
+.custom-select-list ul li[data-active="true"] {
+  background: var(--custom-select-primary-bg-color);
+  color: white;
+}

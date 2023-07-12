@@ -1,0 +1,47 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button,
+svg {
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
+.flex {
+  flex-grow: 1;
+}
+
+body {
+  --primary-bg-color: #f5ded8;
+  --primary-sidebar-bg-color: #f1d3cc;
+  --primary-icon-color: rgb(83 67 63);
+  --primary-icon-color-active: rgb(44, 21, 15);
+  --primary-sidebar-text-color: rgb(93 88 87);
+  --primary-current-word-color: #b02f00;
+  --primary-box-shadow: 0 2px 4px 0 rgba(86, 86, 86, 0.7);
+  --primary-header-height: 66px;
+}
+
+.App {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
+
+.App > main {
+  display: flex;
+  flex-direction: column;
+}
+
+.App > main > .page {
+  background-color: var(--primary-bg-color);
+  flex-grow: 1;
+}

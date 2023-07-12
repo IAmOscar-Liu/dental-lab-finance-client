@@ -1,0 +1,20 @@
+.finance {
+  width: min(90%, 1000px);
+  margin: 24px auto 36px auto;
+}
+
+.finance > h2 {
+  font-weight: 600;
+  color: #555;
+  margin-block: 12px;
+}
+
+.dropmenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dropmenu > * {
+  margin-left: 12px;
+}
+

@@ -1,0 +1,53 @@
+.text-field,
+.radio,
+.select {
+  display: grid;
+  grid-template-columns: max(140px, 30%) auto;
+  gap: 16px;
+  font-size: 1.02em;
+}
+
+.text-field > *:first-child,
+.radio > *:first-child,
+.select > *:first-child {
+  text-align: end;
+}
+
+.text-field > *:first-child small {
+  color: red;
+  padding-right: 3px;
+}
+
+.text-field > .input-wrapper {
+  position: relative;
+}
+
+.text-field > .input-wrapper > .invalid-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: red;
+  font-size: 0.85em;
+}
+
+.text-field > .input-wrapper:has(> .invalid-message) :is(input, textarea) {
+  outline: none;
+  border-color: red;
+  border-width: 2px;
+}
+
+.radio .radio-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.radio .radio-group label input[type="radio"] {
+  margin-right: 4px;
+}
+
+.select .select-wrapper select {
+  width: max(200px, 70%);
+  font-size: 1em;
+  padding: 3px 0.4em;
+}

@@ -1,0 +1,34 @@
+.form > h1 {
+  text-align: center;
+  font-size: 1.4em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.form-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-body input:not([type="radio"]),
+.form-body textarea {
+  padding: 3px 0.4em;
+  font-size: 1.02em;
+  width: 100%;
+}
+
+.form-body .left-form,
+.form-body .right-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (width < 1200px) {
+  .form-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-right: 10%;
+  }
+}
