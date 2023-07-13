@@ -55,3 +55,30 @@ export type CreateDentalLabType = NonNullableFields<
 >;
 
 export type UpdateDentalLabType = { id: string } & CreateDentalLabType;
+
+export const createDentalLabkeyNameTable: Record<
+  keyof CreateDentalLabType,
+  string
+> = {
+  name: "牙技所名稱",
+  uniformNo: "牙技所統一編號",
+  status: "牙技所狀態",
+  region: "牙技所區域",
+  country: "牙技所所在國家",
+  state: "State",
+  city: "City",
+  address: "牙技所地址",
+  phoneCode: "牙技所電話國碼",
+  phoneNumber: "牙技所電話",
+  contactPerson: "牙技所聯絡人",
+  email: "牙技所email",
+  remark: "備註",
+};
+
+export const updateDentalLabkeyNameTable: Record<
+  keyof UpdateDentalLabType,
+  string
+> = {
+  id: "牙技所ID",
+  ...createDentalLabkeyNameTable,
+};

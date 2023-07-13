@@ -8,7 +8,7 @@ import { useGetContractsBriefQuery } from "../../redux/contractApi";
 
 import style from "../Management.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { ContractBrief, ContractDisplayType } from "../../types/contractTypes";
+import { ContractDetail, ContractDisplayType } from "../../types/contractTypes";
 
 const CONTRACT_DISPLAY_TYPES = [
   { type: ContractDisplayType.ALL, text: "全部" },
@@ -22,7 +22,7 @@ function ContractManagement() {
   const [filter, setFilter] = useState<ContractDisplayType>(
     ContractDisplayType.ALL
   );
-  const filterHistory = useRef<Map<any, ContractBrief[]>>();
+  const filterHistory = useRef<Map<any, ContractDetail[]>>();
   const navigate = useNavigate();
 
   const getFilteredData = (_filter: ContractDisplayType) => {
@@ -31,7 +31,7 @@ function ContractManagement() {
     if (filterHistory.current?.has(_filter))
       return filterHistory.current.get(_filter)!;
 
-    let results: ContractBrief[] = [];
+    let results: ContractDetail[] = [];
     if (_filter === ContractDisplayType.ALL) results = data;
     if (_filter === ContractDisplayType.PLATFORM)
       results = data.filter((e) => e.type === "SERVICE");
@@ -88,9 +88,9 @@ function ContractManagement() {
                 "合約編號",
                 "合約名稱",
                 "合約種類",
-                "簽約日",
-                "收費日",
-                "牙技所名稱",
+                "合約狀態",
+                "合約收費日",
+                "客戶名稱",
                 "合約細節",
               ],
               data: getFilteredData(filter).map((contract) => [
@@ -101,8 +101,14 @@ function ContractManagement() {
                   : contract.type === "LEASE"
                   ? "設備租賃合約"
                   : "設備買賣合約",
-                (contract.createdTime ?? "").slice(0, 10),
-                (contract.chargeDate ?? "").slice(0, 10),
+                contract.status === "CONFIRMING"
+                  ? "確認中"
+                  : contract.status === "EXECUTING"
+                  ? "履行中"
+                  : contract.status === "END"
+                  ? "已解約"
+                  : "已終止",
+                (contract.signingDate ?? "").slice(0, 10),
                 contract.customerName ?? "",
                 <Link
                   to={`/contract-management/overview/${contract.type}/${contract.id}`}

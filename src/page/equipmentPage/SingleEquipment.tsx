@@ -1,28 +1,16 @@
+import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import style from "./SingleEquipment.module.css";
-import CustomPageTitle from "../../components/custom/CustomPageTitle";
-import { AiOutlineLeft, AiFillEye } from "react-icons/ai";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { useGetEquipmentQuery } from "../../redux/equipmentApi";
-import { useGetDentalLabQuery } from "../../redux/dentalLabApi";
+import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
+import style from "../Single.module.css";
 
 function SingleEquipment() {
   const { equipmentId } = useParams();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetEquipmentQuery(
-    { equipmentId: equipmentId ?? "" },
-    {
-      skip: !equipmentId,
-    }
-  );
-  const { data: dentalLabData } = useGetDentalLabQuery(
-    {
-      dentalId: data?.ownerId ?? "",
-    },
-    {
-      skip: !data,
-    }
-  );
+  const { data, isLoading, error } = useGetCustomEquipmentQuery({
+    equipmentId,
+  });
 
   if (!equipmentId) return <Navigate to="/equipment-management" />;
 
@@ -44,7 +32,7 @@ function SingleEquipment() {
       ) : error ? (
         <div>{JSON.stringify(error)}</div>
       ) : (
-        <div className={style["equipment-detail"]}>
+        <div className={style["single-detail"]}>
           <h1>
             <span>
               <q>{data?.equipmentType}</q> 設備資料
@@ -57,7 +45,7 @@ function SingleEquipment() {
               更新設備
             </button>
           </h1>
-          <div className={style["equipment-detail-body"]}>
+          <div className={style["single-detail-body"]}>
             <p>
               <span>設備ID</span>
               <span>{data?.id}</span>
@@ -80,7 +68,7 @@ function SingleEquipment() {
             </p>
             <p>
               <span>設備所有者名稱</span>
-              <span>{dentalLabData?.name}</span>
+              <span>{data?.ownerName}</span>
             </p>
             <p>
               <span>設備所有者類型</span>
@@ -97,13 +85,17 @@ function SingleEquipment() {
             <p>
               <span>保固期限</span>
               <span>
-                {new Date(data?.warrantyDate as any).toLocaleString()}
+                {data?.warrantyDate
+                  ? new Date(data.warrantyDate).toLocaleString()
+                  : ""}
               </span>
             </p>
             <p>
               <span>到貨日</span>
               <span>
-                {new Date(data?.receivedDate as any).toLocaleString()}
+                {data?.receivedDate
+                  ? new Date(data.receivedDate).toLocaleString()
+                  : ""}
               </span>
             </p>
             <p>
@@ -111,17 +103,23 @@ function SingleEquipment() {
               <span>{(data?.serviceLife ?? 0) + "個月"}</span>
             </p>
             <p>
-              <span>createdTime</span>
-              <span>{new Date(data?.createdTime as any).toLocaleString()}</span>
-            </p>
-            <p>
-              <span>modifiedTime</span>
+              <span>Created Time</span>
               <span>
-                {new Date(data?.modifiedTime as any).toLocaleString()}
+                {data?.createdTime
+                  ? new Date(data.createdTime).toLocaleString()
+                  : ""}
               </span>
             </p>
             <p>
-              <span>備註</span>
+              <span>Modified Time</span>
+              <span>
+                {data?.modifiedTime
+                  ? new Date(data.modifiedTime).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p>
+              <span style={{ gridColumn: "1/-1" }}>備註</span>
               <span>{data?.remark}</span>
             </p>
           </div>

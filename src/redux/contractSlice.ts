@@ -1,64 +1,63 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CreateContractType, UpdateContractType } from "../types/contractTypes";
 
-const DATA: CreateContractType = {
+const CREATE_DATA: CreateContractType = {
   contractNo: "",
   name: "",
   customerId: "",
   customerName: "",
-  status: "PROCESS",
-  attachment: "",
-  chargeDate: "",
-  remark: "",
+  status: "CONFIRMING",
   type: "SERVICE",
+  attachment: "",
+  signingDate: "",
+  remark: "",
   serviceContractDetail: {
+    contractPeriod: 24,
     billing: {
-      id: "",
       plan: "",
       periodUnit: "QUARTERLY",
       currency: "",
-      basePrice: 10000,
-      contractType: "",
+      basePrice: 2000,
       billingUnit: "OrderAmount",
-      freeQuota: 1,
-      unitCharge: 1,
+      freeQuota: 500000,
+      unitCharge: 0.01,
     },
   },
   sellContractDetail: {
-    amount: 0,
+    equipmentType: "ART",
     currency: "",
-    equipments: [],
+    quantity: 1,
+    amount: 10000,
+    totalAmount: 10000,
   },
   leaseContractDetail: {
-    equipmentType: "LEASE",
+    equipmentType: "ART",
+    contractPeriod: 24,
+    currency: "",
     quantity: 1,
-    startTime: "",
-    endTime: "",
-    billing: {
-      id: "",
-      plan: "",
-      periodUnit: "QUARTERLY",
-      currency: "",
-      amount: 1,
-      freeQuota: 1000,
-      billingUnit: "OrderAmount",
-      unitCharge: 1,
-    },
-    equipments: [],
+    amount: 10000,
+    totalAmount: 10000,
   },
 };
 
-const initialState: {
-  createData: CreateContractType;
-  updateData: UpdateContractType;
-} = {
-  createData: { ...DATA },
-  updateData: { id: "", ...DATA },
+const UPDATE_DATA: UpdateContractType = {
+  ...CREATE_DATA,
+  id: "",
+  serviceContractDetail: {
+    ...CREATE_DATA.serviceContractDetail,
+    billing: {
+      ...CREATE_DATA.serviceContractDetail.billing,
+      id: "",
+    },
+  },
 };
 
 const contractSlice = createSlice({
   name: "contract",
-  initialState,
+  initialState: {
+    createData: CREATE_DATA,
+    updateData: UPDATE_DATA,
+  },
   reducers: {
     setCreateContract: (
       state,
@@ -67,7 +66,7 @@ const contractSlice = createSlice({
       state.createData = { ...state.createData, ...action.payload };
     },
     resetCreateContract: (state) => {
-      state.createData = { ...DATA };
+      state.createData = { ...CREATE_DATA };
     },
     setUpdateContract: (
       state,
@@ -76,7 +75,7 @@ const contractSlice = createSlice({
       state.updateData = { ...state.updateData, ...action.payload };
     },
     resetUpdateContract: (state) => {
-      state.updateData = { id: "", ...DATA };
+      state.updateData = { ...UPDATE_DATA };
     },
   },
 });

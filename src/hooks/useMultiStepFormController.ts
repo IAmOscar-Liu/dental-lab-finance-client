@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function usePageController(numOfSteps: number) {
+function useMultiStepFormController(numOfSteps: number) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [maxStepIndex, setMaxStepIndex] = useState(currentStepIndex);
 
@@ -41,4 +41,4 @@ function usePageController(numOfSteps: number) {
   };
 }
 
-export default usePageController;
+export default useMultiStepFormController;

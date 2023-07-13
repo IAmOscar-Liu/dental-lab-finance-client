@@ -65,6 +65,19 @@ function DentalUpdateForm({ data }: { data: DentalLab }) {
             }
             required
           />
+          <CustomRadioField
+            labelname="牙技所狀態"
+            initialValue={updateData.status}
+            handleChange={(value) =>
+              dispatch(
+                setUpdateDentalLab({
+                  status: value as (typeof DENTAL_STATUS_SELECTIONS)[number],
+                })
+              )
+            }
+            radioGroupSelections={DENTAL_STATUS_SELECTIONS}
+            radioGroupTexts={["聯繫中", "合約中", "已解約"]}
+          />
           <CustomInputSelect
             labelname="牙技所區域"
             initialValue={updateData.region}
@@ -87,14 +100,14 @@ function DentalUpdateForm({ data }: { data: DentalLab }) {
             required
           />
           <CustomInputText
-            labelname="state"
+            labelname="State"
             initialValue={updateData.state}
             handleChange={(value) =>
               dispatch(setUpdateDentalLab({ state: value }))
             }
           />
           <CustomInputText
-            labelname="city"
+            labelname="City"
             initialValue={updateData.city}
             handleChange={(value) =>
               dispatch(setUpdateDentalLab({ city: value }))
@@ -111,19 +124,6 @@ function DentalUpdateForm({ data }: { data: DentalLab }) {
           />
         </div>
         <div className={style["right-form"]}>
-          <CustomRadioField
-            labelname="牙技所狀態"
-            initialValue={updateData.status}
-            handleChange={(value) =>
-              dispatch(
-                setUpdateDentalLab({
-                  status: value as (typeof DENTAL_STATUS_SELECTIONS)[number],
-                })
-              )
-            }
-            radioGroupSelections={DENTAL_STATUS_SELECTIONS}
-            radioGroupTexts={["聯繫中", "合約中", "已解約"]}
-          />
           <CustomInputText
             labelname="牙技所聯絡人"
             initialValue={updateData.contactPerson}
@@ -166,7 +166,7 @@ function DentalUpdateForm({ data }: { data: DentalLab }) {
             handleChange={(value) =>
               dispatch(setUpdateDentalLab({ remark: value }))
             }
-            rows={5}
+            rows={8}
           />
         </div>
       </div>

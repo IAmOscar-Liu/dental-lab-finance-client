@@ -3,7 +3,7 @@
 .select,
 .show-modal {
   display: grid;
-  grid-template-columns: max(140px, 30%) auto;
+  grid-template-columns: max(140px, 25%) auto;
   gap: 16px;
   font-size: 1.02em;
 }
@@ -12,6 +12,7 @@
 .radio > *:first-child,
 .select > *:first-child {
   text-align: end;
+  white-space: nowrap;
 }
 
 .text-field > *:first-child small {

@@ -6,6 +6,7 @@ import {
   UpdateEquipmentType,
 } from "../types/equipmentTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
+import { removeNonEquipmentFields } from "../utils/removeNonSchemaFields";
 
 export const equipmentApi = createApi({
   reducerPath: "equipmentApi",
@@ -47,7 +48,7 @@ export const equipmentApi = createApi({
       query: (data) => ({
         url: `/equipments`,
         method: "POST",
-        body: data,
+        body: removeNonEquipmentFields(data, ["ownerName"]),
         validateStatus: allowStatusCode304,
       }),
       invalidatesTags: [{ type: "Equipment", id: "LIST" }],
@@ -56,7 +57,7 @@ export const equipmentApi = createApi({
       query: ({ id, ...rest }) => ({
         url: `/equipments/${id}`,
         method: "PUT",
-        body: rest,
+        body: removeNonEquipmentFields(rest, ["ownerName"]),
         validateStatus: allowStatusCode304,
       }),
       invalidatesTags: (_, __, { id }) => [

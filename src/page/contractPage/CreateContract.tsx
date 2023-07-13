@@ -1,26 +1,29 @@
 import { FormEvent, Fragment, ReactNode } from "react";
+import { useCreateContractMutation } from "../../redux/contractApi";
+import { Link, useNavigate } from "react-router-dom";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
+import { store, useAppDispatch } from "../../redux/store";
+import { resetCreateContract } from "../../redux/contractSlice";
+import style from "../UtilityForm.module.css";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
-import DentalForm from "../../components/form/dentalLabForm/DentalForm";
-import DentalFormSummary from "../../components/form/dentalLabForm/DentalFormSummary";
-import useMultiStepFormController from "../../hooks/useMultiStepFormController";
-import { useCreateDentalLabMutation } from "../../redux/dentalLabApi";
-import { resetCreateDentalLab } from "../../redux/dentalLabSlice";
-import { store, useAppDispatch } from "../../redux/store";
-import style from "../UtilityForm.module.css";
+import ContractForm from "../../components/form/contractForm/ContractForm";
+import SellContractForm from "../../components/form/contractForm/SellContractForm";
+import LeaseContractForm from "../../components/form/contractForm/LeaseContractForm";
+import ServiceContractForm from "../../components/form/contractForm/ServiceContractForm";
+import ContractFormSummary from "../../components/form/contractForm/ContractFormSummary";
 
-function CreateDentalLabComp({
+function CreateContractComp({
   texts,
   children,
 }: {
   texts: string[];
   children: (currentStepIndex: number) => ReactNode;
 }) {
-  const [createDentalLab, { isLoading: isCreating }] =
-    useCreateDentalLabMutation();
+  const [createContract, { isLoading: isCreating }] =
+    useCreateContractMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
   const dispatch = useAppDispatch();
@@ -32,18 +35,18 @@ function CreateDentalLabComp({
     next();
   };
 
-  const handleCreateDantalLab = () => {
+  const handleCreateContract = () => {
     if (!isLastStep) return;
 
     // handle API calls
-    const submitData = store.getState().dentalLab.createData;
+    const submitData = store.getState().contract.createData;
     // console.log(submitData);
-    createDentalLab(submitData)
+    createContract(submitData)
       .unwrap()
       .then(() => {
-        window.alert("Dental lab has been created successfully!");
-        dispatch(resetCreateDentalLab());
-        navigate("/dental-lab-management", { replace: true });
+        window.alert("Contract has been created successfully!");
+        dispatch(resetCreateContract());
+        navigate("/contract-management", { replace: true });
       })
       .catch((error) => {
         console.error(error);
@@ -55,11 +58,11 @@ function CreateDentalLabComp({
     <div className={style["utility-form"]}>
       <CustomPageTitle
         icon={<IoIosAddCircle />}
-        title="牙技所管理/新增牙技所"
+        title="合約管理/新增合約"
         tailing={
-          <Link to="/dental-lab-management">
+          <Link to="/Contract-management">
             <AiOutlineLeft />
-            回牙技所管理
+            回合約管理
           </Link>
         }
       />
@@ -68,7 +71,12 @@ function CreateDentalLabComp({
         <div className={style["step-controller"]}>
           {texts.map((text, idx) => (
             <Fragment key={text}>
-              {idx > 0 && <div className={style["underline-spacer"]}></div>}
+              {idx > 0 && (
+                <div
+                  style={{ width: "6vw" }}
+                  className={style["underline-spacer"]}
+                ></div>
+              )}
               <button
                 className={currentStepIndex === idx ? style.active : ""}
                 onClick={() => goTo(idx)}
@@ -82,9 +90,9 @@ function CreateDentalLabComp({
         <button
           disabled={isCreating || !isLastStep}
           className={style.submit}
-          onClick={handleCreateDantalLab}
+          onClick={handleCreateContract}
         >
-          <span style={{ opacity: isCreating ? 0 : 1 }}>新增牙技所</span>
+          <span style={{ opacity: isCreating ? 0 : 1 }}>新增合約</span>
           {isCreating && (
             <div className={style["spinner-wrapper"]}>
               <LoadingSpinner />
@@ -112,16 +120,27 @@ function CreateDentalLabComp({
   );
 }
 
-function CreateDentalLab() {
+function ContractFormSelector() {
+  const type = store.getState().contract.createData.type;
+
+  if (type === "SERVICE") return <ServiceContractForm />;
+  else if (type === "LEASE") return <LeaseContractForm />;
+  else return <SellContractForm />;
+}
+
+function CreateContract() {
   return (
-    <CreateDentalLabComp texts={["牙技所資料設定", "牙技所內容確認"]}>
+    <CreateContractComp
+      texts={["合約基本資料設定", "合約細節設定", "合約內容確認"]}
+    >
       {(formStep) => {
-        if (formStep === 0) return <DentalForm />;
-        else if (formStep === 1) return <DentalFormSummary />;
+        if (formStep === 0) return <ContractForm />;
+        else if (formStep === 1) return <ContractFormSelector />;
+        else if (formStep === 2) return <ContractFormSummary />;
         return null;
       }}
-    </CreateDentalLabComp>
+    </CreateContractComp>
   );
 }
 
-export default CreateDentalLab;
+export default CreateContract;

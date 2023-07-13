@@ -60,3 +60,29 @@ export type CreateEquipmentType = NonNullableFields<
 >;
 
 export type UpdateEquipmentType = { id: string } & CreateEquipmentType;
+
+export const createEquipmentkeyNameTable: Record<
+  keyof CreateEquipmentType,
+  string
+> = {
+  serialNumber: "設備序號",
+  equipmentType: "設備類型",
+  equipmentStatus: "設備狀態",
+  ownerId: "設備擁有者ID",
+  ownerName: "設備擁有者名稱",
+  ownerType: "設備擁有者類型",
+  currency: "幣別",
+  amount: "設備單價",
+  warrantyDate: "設備保固期",
+  receivedDate: "設備到貨日",
+  serviceLife: "使用長度(月)",
+  remark: "備註",
+};
+
+export const updateEquipmentkeyNameTable: Record<
+  keyof UpdateEquipmentType,
+  string
+> = {
+  id: "設備ID",
+  ...createEquipmentkeyNameTable,
+};

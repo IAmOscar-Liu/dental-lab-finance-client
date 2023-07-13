@@ -38,6 +38,19 @@ function DentalForm() {
             }
             required
           />
+          <CustomRadioField
+            labelname="牙技所狀態"
+            initialValue={createData.status}
+            handleChange={(value) =>
+              dispatch(
+                setCreateDentalLab({
+                  status: value as (typeof DENTAL_STATUS_SELECTIONS)[number],
+                })
+              )
+            }
+            radioGroupSelections={DENTAL_STATUS_SELECTIONS}
+            radioGroupTexts={["聯繫中", "合約中", "已解約"]}
+          />
           <CustomInputSelect
             labelname="牙技所區域"
             initialValue={createData.region}
@@ -60,14 +73,14 @@ function DentalForm() {
             required
           />
           <CustomInputText
-            labelname="state"
+            labelname="State"
             initialValue={createData.state}
             handleChange={(value) =>
               dispatch(setCreateDentalLab({ state: value }))
             }
           />
           <CustomInputText
-            labelname="city"
+            labelname="City"
             initialValue={createData.city}
             handleChange={(value) =>
               dispatch(setCreateDentalLab({ city: value }))
@@ -84,19 +97,6 @@ function DentalForm() {
           />
         </div>
         <div className={style["right-form"]}>
-          <CustomRadioField
-            labelname="牙技所狀態"
-            initialValue={createData.status}
-            handleChange={(value) =>
-              dispatch(
-                setCreateDentalLab({
-                  status: value as (typeof DENTAL_STATUS_SELECTIONS)[number],
-                })
-              )
-            }
-            radioGroupSelections={DENTAL_STATUS_SELECTIONS}
-            radioGroupTexts={["聯繫中", "合約中", "已解約"]}
-          />
           <CustomInputText
             labelname="牙技所聯絡人"
             initialValue={createData.contactPerson}
@@ -139,7 +139,7 @@ function DentalForm() {
             handleChange={(value) =>
               dispatch(setCreateDentalLab({ remark: value }))
             }
-            rows={5}
+            rows={8}
           />
         </div>
       </div>

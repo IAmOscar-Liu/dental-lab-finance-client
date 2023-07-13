@@ -3,12 +3,11 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import { useGetContractQuery } from "../../redux/contractApi";
-import style from "./SingleContract.module.css";
-import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import {
   CONTRACT_TYPE_SELECTIONS,
   ContractType,
 } from "../../types/contractTypes";
+import style from "../Single.module.css";
 
 function getContractType(contractType: string | undefined) {
   if (CONTRACT_TYPE_SELECTIONS.find((e) => e === contractType))
@@ -40,7 +39,7 @@ function SingleContract() {
         tailing={
           <Link to="/contract-management">
             <AiOutlineLeft />
-            回牙技所管理
+            回合約管理
           </Link>
         }
       />
@@ -50,7 +49,7 @@ function SingleContract() {
       ) : error ? (
         <div>{JSON.stringify(error)}</div>
       ) : (
-        <div className={style["contract-detail"]}>
+        <div className={style["single-detail"]}>
           <h1>
             <span>
               <q>{data?.name}</q> 合約資料
@@ -63,7 +62,8 @@ function SingleContract() {
               更新合約
             </button>
           </h1>
-          <div className={style["contract-detail-body"]}>
+          <div className={style["single-detail-body"]}>
+            <p className={style.title}>基本資料</p>
             <p>
               <span>合約ID</span>
               <span>{data?.id}</span>
@@ -77,6 +77,14 @@ function SingleContract() {
               <span>{data?.name}</span>
             </p>
             <p>
+              <span>客戶ID</span>
+              <span>{data?.customerId}</span>
+            </p>
+            <p>
+              <span>客戶名稱</span>
+              <span>{data?.customerName}</span>
+            </p>
+            <p>
               <span>合約種類</span>
               <span>
                 {data?.type === "SERVICE"
@@ -87,41 +95,65 @@ function SingleContract() {
               </span>
             </p>
             <p>
-              <span>牙技所ID</span>
-              <span>{data?.customerId}</span>
-            </p>
-            <p>
-              <span>牙技所名稱</span>
-              <span>{data?.customerName}</span>
-            </p>
-            <p>
               <span>合約狀態</span>
-              <span>{data?.status === "PROCESS" ? "進行中" : "已終止"}</span>
-            </p>
-            <p>
-              <span>合約收費日</span>
-              <span>{new Date(data?.chargeDate as any).toLocaleString()}</span>
-            </p>
-            <p>
-              <span>createdTime</span>
-              <span>{new Date(data?.createdTime as any).toLocaleString()}</span>
-            </p>
-            <p>
-              <span>modifiedTime</span>
               <span>
-                {new Date(data?.modifiedTime as any).toLocaleString()}
+                {data?.status === "CONFIRMING"
+                  ? "確認中"
+                  : data?.status === "EXECUTING"
+                  ? "履行中"
+                  : data?.status === "END"
+                  ? "已解約"
+                  : "已終止"}
               </span>
             </p>
             <p>
               <span>合約附件</span>
               <span>{data?.attachment}</span>
             </p>
+
             <p>
+              <span>合約簽約日</span>
+              <span>
+                {data?.signingDate
+                  ? new Date(data.signingDate).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p>
+              <span>合約收費日</span>
+              <span>
+                {data?.chargeDate
+                  ? new Date(data.chargeDate).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p>
+              <span>Created Time</span>
+              <span>
+                {data?.createdTime
+                  ? new Date(data.createdTime).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p>
+              <span>Modified Time</span>
+              <span>
+                {data?.modifiedTime
+                  ? new Date(data.modifiedTime).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p style={{ gridColumn: "1/-1" }}>
               <span>備註</span>
               <span>{data?.remark}</span>
             </p>
             {data?.type === "SERVICE" && (
               <>
+                <p className={style.title}>服務平台合約細節</p>
+                <p>
+                  <span>Contract Period</span>
+                  <span>{data.contractPeriod}</span>
+                </p>
                 <p>
                   <span>Billing ID</span>
                   <span>{data.billing?.id}</span>
@@ -140,7 +172,9 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Billing Base Price</span>
-                  <span>{data.billing?.basePrice}</span>
+                  <span>
+                    $ {(data.billing?.basePrice || "").toLocaleString()}
+                  </span>
                 </p>
                 <p>
                   <span>Billing Unit</span>
@@ -148,138 +182,90 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Billing Free Quota</span>
-                  <span>{data.billing?.freeQuota}</span>
+                  <span>
+                    $ {(data.billing?.freeQuota || "").toLocaleString()}
+                  </span>
                 </p>
                 <p>
                   <span>Billing Unit Charge</span>
-                  <span>{data.billing?.unitCharge}</span>
+                  <span>
+                    $ {(data.billing?.unitCharge || "").toLocaleString()}
+                  </span>
                 </p>
                 <p>
                   <span>Billing Created Time</span>
                   <span>
-                    {new Date(
-                      data.billing?.createdTime as any
-                    ).toLocaleString()}
+                    {data.billing?.createdTime
+                      ? new Date(data.billing.createdTime).toLocaleString()
+                      : ""}
                   </span>
                 </p>
                 <p>
                   <span>Billing Modified Time</span>
                   <span>
-                    {new Date(
-                      data?.billing?.modifiedTime as any
-                    ).toLocaleString()}
+                    {data.billing?.modifiedTime
+                      ? new Date(data.billing.modifiedTime).toLocaleString()
+                      : ""}
                   </span>
                 </p>
               </>
             )}
             {data?.type === "SELL" && (
               <>
-                <p>
-                  <span>Currency</span>
-                  <span>{data.currency}</span>
-                </p>
-                <p>
-                  <span>Amount</span>
-                  <span>{data.amount}</span>
-                </p>
-                <div className={style["equipment-table"]}>
-                  {data.equipments && data.equipments.length > 0 && (
-                    <CustomTableGroup
-                      tableGroupData={{
-                        title: "Equipments",
-                        heads: Object.keys(data.equipments[0]),
-                        data: data.equipments.map((eq) =>
-                          Object.entries(eq).map(([key, value]) =>
-                            key === "createdTime" || key === "modifiedTime"
-                              ? new Date(value as any).toLocaleString()
-                              : value + ""
-                          )
-                        ),
-                      }}
-                    />
-                  )}
-                </div>
-              </>
-            )}
-            {data?.type === "LEASE" && (
-              <>
+                <p className={style.title}>設備買賣合約細節</p>
                 <p>
                   <span>Equipment Type</span>
                   <span>{data.equipmentType}</span>
+                </p>
+                <p>
+                  <span>Currency</span>
+                  <span>{data.currency}</span>
                 </p>
                 <p>
                   <span>Quantity</span>
                   <span>{data.quantity}</span>
                 </p>
                 <p>
-                  <span>Start Time</span>
-                  <span>{data.startTime}</span>
+                  <span>Amount</span>
+                  <span>$ {(data.amount || "").toLocaleString()}</span>
+                </p>
+                {data.totalAmount && (
+                  <p>
+                    <span>Total Amount</span>
+                    <span>$ {(data.totalAmount || "").toLocaleString()}</span>
+                  </p>
+                )}
+              </>
+            )}
+            {data?.type === "LEASE" && (
+              <>
+                <p className={style.title}>設備租賃合約細節</p>
+                <p>
+                  <span>Equipment Type</span>
+                  <span>{data.equipmentType}</span>
                 </p>
                 <p>
-                  <span>End Time</span>
-                  <span>{data.endTime}</span>
+                  <span>Contract Period</span>
+                  <span>{data.contractPeriod}</span>
                 </p>
                 <p>
-                  <span>Billing ID</span>
-                  <span>{data.billing?.id}</span>
+                  <span>Currency</span>
+                  <span>{data.currency}</span>
                 </p>
                 <p>
-                  <span>Billing Plan</span>
-                  <span>{data.billing?.plan}</span>
+                  <span>Quantity</span>
+                  <span>{data.quantity}</span>
                 </p>
                 <p>
-                  <span>Billing Period Unit</span>
-                  <span>{data.billing?.periodUnit}</span>
+                  <span>Amount</span>
+                  <span>$ {(data.amount || "").toLocaleString()}</span>
                 </p>
-                <p>
-                  <span>Billing Currency</span>
-                  <span>{data.billing?.currency}</span>
-                </p>
-                <p>
-                  <span>Billing Amount</span>
-                  <span>{data.billing?.amount}</span>
-                </p>
-                <p>
-                  <span>Billing FreeQuota</span>
-                  <span>{data.billing?.freeQuota}</span>
-                </p>
-                <p>
-                  <span>Billing Unit Charge</span>
-                  <span>{data.billing?.unitCharge}</span>
-                </p>
-                <p>
-                  <span>Billing Created Time</span>
-                  <span>
-                    {new Date(
-                      data.billing?.createdTime as any
-                    ).toLocaleString()}
-                  </span>
-                </p>
-                <p>
-                  <span>Billing Modified Time</span>
-                  <span>
-                    {new Date(
-                      data.billing?.modifiedTime as any
-                    ).toLocaleString()}
-                  </span>
-                </p>
-                <div className={style["equipment-table"]}>
-                  {data.equipments && data.equipments.length > 0 && (
-                    <CustomTableGroup
-                      tableGroupData={{
-                        title: "Equipments",
-                        heads: Object.keys(data.equipments[0]),
-                        data: data.equipments.map((eq) =>
-                          Object.entries(eq).map(([key, value]) =>
-                            key === "createdTime" || key === "modifiedTime"
-                              ? new Date(value as any).toLocaleString()
-                              : value + ""
-                          )
-                        ),
-                      }}
-                    />
-                  )}
-                </div>
+                {data.totalAmount && (
+                  <p>
+                    <span>Total Amount</span>
+                    <span>$ {data.totalAmount.toLocaleString()}</span>
+                  </p>
+                )}
               </>
             )}
           </div>

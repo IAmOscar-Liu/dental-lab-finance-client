@@ -88,6 +88,12 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
+    icon: <MdBrowserUpdated />,
+    title: "更新合約",
+    pathname: "/contract-management/update",
+    hasChildren: false,
+  },
+  {
     icon: <FaFileContract />,
     title: "財務報表",
     pathname: "/finance",

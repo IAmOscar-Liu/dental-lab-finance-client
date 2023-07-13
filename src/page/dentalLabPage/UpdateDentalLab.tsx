@@ -5,8 +5,8 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import DentalUpdateForm from "../../components/form/dentalLabForm/DentalUpdateForm";
-import DentalUpdateSummarizeForm from "../../components/form/dentalLabForm/DentalUpdateSummarizeForm";
-import usePageController from "../../hooks/usePageController";
+import DentalUpdateFormSummary from "../../components/form/dentalLabForm/DentalUpdateFormSummary";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import {
   useGetDentalLabQuery,
   useUpdateDentalLabMutation,
@@ -33,10 +33,10 @@ function UpdateDentalLabComp({
   );
   const [updateDentalLab, { isLoading: isUpdating }] =
     useUpdateDentalLabMutation();
+  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
+    useMultiStepFormController(texts.length);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
-    usePageController(texts.length);
 
   if (!dentalId) return <Navigate to="/dental-lab-management" />;
 
@@ -141,9 +141,9 @@ function UpdateDentalLabComp({
 function UpdateDentalLab() {
   return (
     <UpdateDentalLabComp texts={["牙技所資料設定", "牙技所內容確認"]}>
-      {(index, data) => {
-        if (index === 0) return <DentalUpdateForm data={data} />;
-        else if (index === 1) return <DentalUpdateSummarizeForm />;
+      {(formStep, data) => {
+        if (formStep === 0) return <DentalUpdateForm data={data} />;
+        else if (formStep === 1) return <DentalUpdateFormSummary />;
         return null;
       }}
     </UpdateDentalLabComp>

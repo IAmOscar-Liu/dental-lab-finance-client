@@ -1,13 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  ContractBrief,
-  ContractBriefQueryResult,
+  ContractDetail,
+  ContractQueryResult,
   ContractType,
+  CreateContractType,
   LeaseContractDetail,
   SellContractDetail,
   ServiceContractDetail,
+  UpdateContractType,
 } from "../types/contractTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
+import { removeNonContractFields } from "../utils/removeNonSchemaFields";
 
 export const contractApi = createApi({
   reducerPath: "contractApi",
@@ -17,13 +20,12 @@ export const contractApi = createApi({
   tagTypes: ["Contract"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getContractsBrief: build.query<ContractBrief[], void>({
+    getContractsBrief: build.query<ContractDetail[], void>({
       query: () => ({
-        url: `/contracts?page=0&pageSize=100&sortField=createdTime&sortOrder=asc`,
+        url: `/contracts?page=0&pageSize=100&sort=createdTime%2Cdesc`,
         validateStatus: allowStatusCode304,
       }),
-      transformResponse: (response: ContractBriefQueryResult) =>
-        response.result,
+      transformResponse: (response: ContractQueryResult) => response.result,
       providesTags: (result) =>
         result
           ? [...result.map(({ id }) => ({ type: "Contract" as const, id }))]
@@ -46,7 +48,33 @@ export const contractApi = createApi({
         { type: "Contract", id: contractId },
       ],
     }),
+    createContract: build.mutation<any, CreateContractType>({
+      query: (data) => ({
+        url: `/contracts/${data.type.toLowerCase()}`,
+        method: "POST",
+        body: removeNonContractFields(data),
+        validateStatus: allowStatusCode304,
+      }),
+      invalidatesTags: [{ type: "Contract", id: "LIST" }],
+    }),
+    updateDentalLab: build.mutation<any, UpdateContractType>({
+      query: ({ id, ...rest }) => ({
+        url: `/contracts/${rest.type.toLowerCase()}/${id}`,
+        method: "PUT",
+        body: removeNonContractFields(rest),
+        validateStatus: allowStatusCode304,
+      }),
+      invalidatesTags: (_, __, { id }) => [
+        { type: "Contract", id },
+        { type: "Contract", id: "LIST" },
+      ],
+    }),
   }),
 });
 
-export const { useGetContractsBriefQuery, useGetContractQuery } = contractApi;
+export const {
+  useGetContractsBriefQuery,
+  useGetContractQuery,
+  useCreateContractMutation,
+  useUpdateDentalLabMutation,
+} = contractApi;

@@ -23,6 +23,10 @@ function EquipmentUpdateForm({ data }: { data: EquipmentDetail }) {
     store.getState().equipment.updateData
   );
   const dispatch = useAppDispatch();
+  const ownerId = useAppSelector((state) => state.equipment.updateData.ownerId);
+  const ownerName = useAppSelector(
+    (state) => state.equipment.updateData.ownerName
+  );
 
   useEffect(() => {
     const _updateData: UpdateEquipmentType = {
@@ -44,11 +48,6 @@ function EquipmentUpdateForm({ data }: { data: EquipmentDetail }) {
     setUpdateData(_updateData);
     dispatch(setUpdateEquipment(_updateData));
   }, [data, dispatch]);
-
-  const ownerId = useAppSelector((state) => state.equipment.updateData.ownerId);
-  const ownerName = useAppSelector(
-    (state) => state.equipment.updateData.ownerName
-  );
 
   return (
     <div className={style.form}>

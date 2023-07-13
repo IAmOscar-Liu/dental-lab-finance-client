@@ -6,7 +6,7 @@
 }
 
 .detail {
-  margin-bottom: 12px;
+  margin-bottom: 24px;
   box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -42,4 +42,8 @@
 .detail-body p span:last-of-type {
   color: brown;
   text-align: end;
+}
+
+.detail-body .contract-detail {
+  grid-column: 1 / -1;
 }

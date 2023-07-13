@@ -5,17 +5,14 @@ import { EquipmentDetail } from "../types/equipmentTypes";
 
 function useGetCustomEquipmentQuery({ equipmentId }: { equipmentId?: string }) {
   const [data, setData] = useState<EquipmentDetail | undefined>();
-  const {
-    data: equipmentData,
-    isLoading,
-    error,
-    ...rest
-  } = useGetEquipmentQuery(
+
+  const { data: equipmentData, ...rest } = useGetEquipmentQuery(
     { equipmentId: equipmentId ?? "" },
     {
       skip: !equipmentId,
     }
   );
+
   const { data: dentalLabData } = useGetDentalLabQuery(
     { dentalId: equipmentData?.ownerId ?? "" },
     { skip: !equipmentData }
@@ -29,8 +26,6 @@ function useGetCustomEquipmentQuery({ equipmentId }: { equipmentId?: string }) {
 
   return {
     data: data || equipmentData,
-    isLoading,
-    error,
     ...rest,
   };
 }

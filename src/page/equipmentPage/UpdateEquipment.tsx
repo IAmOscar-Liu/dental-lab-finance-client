@@ -5,15 +5,15 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import EquipmentUpdateForm from "../../components/form/equipmentForm/EquipmentUpdateForm";
-import EquipmentUpdateSummarizeForm from "../../components/form/equipmentForm/EquipmentUpdateSummarizeForm";
-import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
-import usePageController from "../../hooks/usePageController";
+import EquipmentUpdateFormSummary from "../../components/form/equipmentForm/EquipmentUpdateFormSummary";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useUpdateEquipmentMutation } from "../../redux/equipmentApi";
 import { resetUpdateEquipment } from "../../redux/equipmentSlice";
 import { store, useAppDispatch } from "../../redux/store";
 import { EquipmentDetail } from "../../types/equipmentTypes";
 import { hasEquipmentDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
+import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
 
 function UpdateEquipmentComp({
   texts,
@@ -28,10 +28,10 @@ function UpdateEquipmentComp({
   });
   const [updateEquipment, { isLoading: isUpdating }] =
     useUpdateEquipmentMutation();
+  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
+    useMultiStepFormController(texts.length);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
-    usePageController(texts.length);
 
   if (!equipmentId) return <Navigate to="/equipment-management" />;
 
@@ -136,9 +136,9 @@ function UpdateEquipmentComp({
 function UpdateEquipment() {
   return (
     <UpdateEquipmentComp texts={["牙技所資料設定", "牙技所內容確認"]}>
-      {(index, data) => {
-        if (index === 0) return <EquipmentUpdateForm data={data} />;
-        else if (index === 1) return <EquipmentUpdateSummarizeForm />;
+      {(formStep, data) => {
+        if (formStep === 0) return <EquipmentUpdateForm data={data} />;
+        else if (formStep === 1) return <EquipmentUpdateFormSummary />;
         return null;
       }}
     </UpdateEquipmentComp>

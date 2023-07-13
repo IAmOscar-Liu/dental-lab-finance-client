@@ -19,6 +19,7 @@ import EquipmentManagement from "./page/equipmentPage/EquipmentManagement";
 import SingleEquipment from "./page/equipmentPage/SingleEquipment";
 import CreateEquipment from "./page/equipmentPage/CreateEquipment";
 import UpdateEquipment from "./page/equipmentPage/UpdateEquipment";
+import CreateContract from "./page/contractPage/CreateContract";
 
 const router = createBrowserRouter([
   {
@@ -34,35 +35,35 @@ const router = createBrowserRouter([
         element: <Favorites />,
       },
       {
-        path: "/equipment-management",
+        path: "equipment-management",
         element: <EquipmentManagement />,
       },
       {
-        path: "/equipment-management/new",
+        path: "equipment-management/new",
         element: <CreateEquipment />,
       },
       {
-        path: "/equipment-management/overview",
+        path: "equipment-management/overview",
         element: <SingleEquipment />,
       },
       {
-        path: "/equipment-management/overview/:equipmentId",
+        path: "equipment-management/overview/:equipmentId",
         element: <SingleEquipment />,
       },
       {
-        path: "/equipment-management/update",
+        path: "equipment-management/update",
         element: <UpdateEquipment />,
       },
       {
-        path: "/equipment-management/update/:equipmentId",
+        path: "equipment-management/update/:equipmentId",
         element: <UpdateEquipment />,
       },
       {
-        path: "/dental-lab-management",
+        path: "dental-lab-management",
         element: <DentalManagement />,
       },
       {
-        path: "/dental-lab-management/new",
+        path: "dental-lab-management/new",
         element: <CreateDentalLab />,
       },
       {
@@ -74,16 +75,20 @@ const router = createBrowserRouter([
         element: <SingleDentalLab />,
       },
       {
-        path: "/dental-lab-management/update",
+        path: "dental-lab-management/update",
         element: <UpdateDentalLab />,
       },
       {
-        path: "/dental-lab-management/update/:dentalId",
+        path: "dental-lab-management/update/:dentalId",
         element: <UpdateDentalLab />,
       },
       {
-        path: "/contract-management",
+        path: "contract-management",
         element: <ContractManagement />,
+      },
+      {
+        path: "contract-management/new",
+        element: <CreateContract />,
       },
       {
         path: "contract-management/overview",

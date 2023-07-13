@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import EquipmentForm from "../../components/form/equipmentForm/EquipmentForm";
-import EquipmentSummarizeForm from "../../components/form/equipmentForm/EquipmentSummarizeForm";
-import usePageController from "../../hooks/usePageController";
+import EquipmentFormSummary from "../../components/form/equipmentForm/EquipmentFormSummary";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useCreateEquipmentMutation } from "../../redux/equipmentApi";
 import { resetCreateEquipment } from "../../redux/equipmentSlice";
 import { store, useAppDispatch } from "../../redux/store";
@@ -21,10 +21,10 @@ function CreateEquipmentComp({
 }) {
   const [createEquipment, { isLoading: isCreating }] =
     useCreateEquipmentMutation();
+  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
+    useMultiStepFormController(texts.length);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
-    usePageController(texts.length);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -115,9 +115,9 @@ function CreateEquipmentComp({
 function CreateEquipment() {
   return (
     <CreateEquipmentComp texts={["設備資料設定", "設備內容確認"]}>
-      {(index) => {
-        if (index === 0) return <EquipmentForm />;
-        else if (index === 1) return <EquipmentSummarizeForm />;
+      {(formStep) => {
+        if (formStep === 0) return <EquipmentForm />;
+        else if (formStep === 1) return <EquipmentFormSummary />;
         return null;
       }}
     </CreateEquipmentComp>

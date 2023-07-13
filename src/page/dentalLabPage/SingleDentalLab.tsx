@@ -1,5 +1,5 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import style from "./SingleDentalLab.module.css";
+import style from "../Single.module.css";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import { AiOutlineLeft, AiFillEye } from "react-icons/ai";
 import { useGetDentalLabQuery } from "../../redux/dentalLabApi";
@@ -35,7 +35,7 @@ function SingleDentalLab() {
       ) : error ? (
         <div>{JSON.stringify(error)}</div>
       ) : (
-        <div className={style["dental-detail"]}>
+        <div className={style["single-detail"]}>
           <h1>
             <span>
               <q>{data?.name}</q> 資料
@@ -48,7 +48,7 @@ function SingleDentalLab() {
               更新牙技所
             </button>
           </h1>
-          <div className={style["dental-detail-body"]}>
+          <div className={style["single-detail-body"]}>
             <p>
               <span>牙技所ID</span>
               <span>{data?.id}</span>
@@ -108,16 +108,22 @@ function SingleDentalLab() {
               <span>{data?.email}</span>
             </p>
             <p>
-              <span>createdTime</span>
-              <span>{new Date(data?.createdTime as any).toLocaleString()}</span>
-            </p>
-            <p>
-              <span>modifiedTime</span>
+              <span>Created Time</span>
               <span>
-                {new Date(data?.modifiedTime as any).toLocaleString()}
+                {data?.createdTime
+                  ? new Date(data.createdTime).toLocaleString()
+                  : ""}
               </span>
             </p>
             <p>
+              <span>Modified Time</span>
+              <span>
+                {data?.modifiedTime
+                  ? new Date(data.modifiedTime).toLocaleString()
+                  : ""}
+              </span>
+            </p>
+            <p style={{ gridColumn: "1/-1" }}>
               <span>備註</span>
               <span>{data?.remark}</span>
             </p>
