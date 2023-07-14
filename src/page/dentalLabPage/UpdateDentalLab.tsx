@@ -6,6 +6,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import DentalUpdateForm from "../../components/form/dentalLabForm/DentalUpdateForm";
 import DentalUpdateFormSummary from "../../components/form/dentalLabForm/DentalUpdateFormSummary";
+import { useInitialUpdateDentalLabData } from "../../hooks/useInitialUpdateData";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import {
   useGetDentalLabQuery,
@@ -13,7 +14,7 @@ import {
 } from "../../redux/dentalLabApi";
 import { resetUpdateDentalLab } from "../../redux/dentalLabSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { DentalLab } from "../../types/dentalLabTypes";
+import { UpdateDentalLabType } from "../../types/dentalLabTypes";
 import { hasDentalLabDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 
@@ -22,7 +23,7 @@ function UpdateDentalLabComp({
   children,
 }: {
   texts: string[];
-  children: (currentStepIndex: number, data: DentalLab) => ReactNode;
+  children: (currentStepIndex: number, data: UpdateDentalLabType) => ReactNode;
 }) {
   const { dentalId } = useParams();
   const { data, isLoading, error } = useGetDentalLabQuery(
@@ -35,6 +36,10 @@ function UpdateDentalLabComp({
     useUpdateDentalLabMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
+  const initialUpdateData = useInitialUpdateDentalLabData(
+    data,
+    currentStepIndex
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -129,7 +134,7 @@ function UpdateDentalLabComp({
                 </button>
               </div>
 
-              {children(currentStepIndex, data!)}
+              {children(currentStepIndex, initialUpdateData)}
             </form>
           </div>
         </>
@@ -141,8 +146,8 @@ function UpdateDentalLabComp({
 function UpdateDentalLab() {
   return (
     <UpdateDentalLabComp texts={["牙技所資料設定", "牙技所內容確認"]}>
-      {(formStep, data) => {
-        if (formStep === 0) return <DentalUpdateForm data={data} />;
+      {(formStep, updateData) => {
+        if (formStep === 0) return <DentalUpdateForm updateData={updateData} />;
         else if (formStep === 1) return <DentalUpdateFormSummary />;
         return null;
       }}

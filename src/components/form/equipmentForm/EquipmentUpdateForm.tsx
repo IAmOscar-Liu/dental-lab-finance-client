@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
 import { setUpdateEquipment } from "../../../redux/equipmentSlice";
-import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
-  EquipmentDetail,
   UpdateEquipmentType,
 } from "../../../types/equipmentTypes";
 import DentalLabModal from "../../DentalLabModal";
@@ -18,36 +16,16 @@ import {
 } from "../../custom/CustomFormField";
 import style from "../Form.module.css";
 
-function EquipmentUpdateForm({ data }: { data: EquipmentDetail }) {
-  const [updateData, setUpdateData] = useState<UpdateEquipmentType>(
-    store.getState().equipment.updateData
-  );
+function EquipmentUpdateForm({
+  updateData,
+}: {
+  updateData: UpdateEquipmentType;
+}) {
   const dispatch = useAppDispatch();
   const ownerId = useAppSelector((state) => state.equipment.updateData.ownerId);
   const ownerName = useAppSelector(
     (state) => state.equipment.updateData.ownerName
   );
-
-  useEffect(() => {
-    const _updateData: UpdateEquipmentType = {
-      id: data.id,
-      amount: data.amount ?? 0,
-      currency: data.currency ?? "",
-      equipmentStatus: data.equipmentStatus ?? "Available",
-      equipmentType: data.equipmentType ?? "ART",
-      ownerId: data.ownerId,
-      ownerType: data.ownerType ?? "DentalLab",
-      ownerName: data.ownerName ?? "",
-      receivedDate: data.receivedDate ?? "",
-      warrantyDate: data.warrantyDate ?? "",
-      remark: data.remark ?? "",
-      serialNumber: data.serialNumber ?? "",
-      serviceLife: data.serviceLife ?? 0,
-    };
-
-    setUpdateData(_updateData);
-    dispatch(setUpdateEquipment(_updateData));
-  }, [data, dispatch]);
 
   return (
     <div className={style.form}>

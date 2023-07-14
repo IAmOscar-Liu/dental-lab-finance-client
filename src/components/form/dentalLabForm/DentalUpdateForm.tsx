@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { setUpdateDentalLab } from "../../../redux/dentalLabSlice";
-import { store, useAppDispatch } from "../../../redux/store";
+import { useAppDispatch } from "../../../redux/store";
 import {
   DENTAL_REGION_SELECTIONS,
   DENTAL_STATUS_SELECTIONS,
-  DentalLab,
   UpdateDentalLabType,
 } from "../../../types/dentalLabTypes";
 import {
@@ -15,33 +13,8 @@ import {
 } from "../../custom/CustomFormField";
 import style from "../Form.module.css";
 
-function DentalUpdateForm({ data }: { data: DentalLab }) {
-  const [updateData, setUpdateData] = useState<UpdateDentalLabType>(
-    store.getState().dentalLab.updateData
-  );
+function DentalUpdateForm({ updateData }: { updateData: UpdateDentalLabType }) {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const _updateData: UpdateDentalLabType = {
-      id: data.id,
-      name: data.name ?? "",
-      status: data.status ?? "CONTACT",
-      region: data.region ?? "EastAsia",
-      country: data.country ?? "",
-      state: data.state ?? "",
-      city: data.city ?? "",
-      address: data.address ?? "",
-      phoneCode: data.phoneCode ?? "",
-      phoneNumber: data.phoneNumber ?? "",
-      contactPerson: data.contactPerson ?? "",
-      email: data.email ?? "",
-      uniformNo: data.uniformNo ?? "",
-      remark: data.remark ?? "",
-    };
-
-    setUpdateData(_updateData);
-    dispatch(setUpdateDentalLab(_updateData));
-  }, [data, dispatch]);
 
   return (
     <div className={style.form}>

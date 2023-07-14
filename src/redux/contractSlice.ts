@@ -23,16 +23,16 @@ const CREATE_DATA: CreateContractType = {
       unitCharge: 0.01,
     },
   },
-  sellContractDetail: {
+  leaseContractDetail: {
     equipmentType: "ART",
+    contractPeriod: 24,
     currency: "",
     quantity: 1,
     amount: 10000,
     totalAmount: 10000,
   },
-  leaseContractDetail: {
+  sellContractDetail: {
     equipmentType: "ART",
-    contractPeriod: 24,
     currency: "",
     quantity: 1,
     amount: 10000,

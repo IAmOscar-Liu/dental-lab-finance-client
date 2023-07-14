@@ -189,9 +189,11 @@ export function CustomInputSelect({
 
 export function CustomShowModalField({
   text,
+  disabled = false,
   children,
 }: {
   text: string;
+  disabled?: boolean;
   children: (value: {
     modalRef: React.RefObject<HTMLDivElement>;
     closeModal: () => void;
@@ -202,6 +204,8 @@ export function CustomShowModalField({
   const closeModal = () => setIsOpen(false);
 
   useEffect(() => {
+    if (disabled) return;
+
     const handler = (e: MouseEvent) => {
       if (
         modalRef.current === null ||
@@ -216,22 +220,29 @@ export function CustomShowModalField({
     document.addEventListener("click", handler);
 
     return () => document.removeEventListener("click", handler);
-  }, [isOpen]);
+  }, [isOpen, disabled]);
 
   return (
     <>
       <div className={style["show-modal"]}>
         <p></p>
         <p
-          onClick={() =>
+          style={
+            disabled
+              ? { color: "rgb(125, 125, 125)", pointerEvents: "none" }
+              : {}
+          }
+          onClick={() => {
+            if (disabled) return;
             setTimeout(() => {
               setIsOpen(true);
-            }, 100)
-          }
+            }, 100);
+          }}
         >
           {text}
         </p>
         {isOpen &&
+          !disabled &&
           children({
             modalRef,
             closeModal,

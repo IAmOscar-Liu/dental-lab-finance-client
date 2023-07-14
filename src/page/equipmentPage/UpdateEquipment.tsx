@@ -6,21 +6,22 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import EquipmentUpdateForm from "../../components/form/equipmentForm/EquipmentUpdateForm";
 import EquipmentUpdateFormSummary from "../../components/form/equipmentForm/EquipmentUpdateFormSummary";
+import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
+import { useInitialUpdateEqupmentData } from "../../hooks/useInitialUpdateData";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useUpdateEquipmentMutation } from "../../redux/equipmentApi";
 import { resetUpdateEquipment } from "../../redux/equipmentSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { EquipmentDetail } from "../../types/equipmentTypes";
+import { UpdateEquipmentType } from "../../types/equipmentTypes";
 import { hasEquipmentDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
-import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
 
 function UpdateEquipmentComp({
   texts,
   children,
 }: {
   texts: string[];
-  children: (currentStepIndex: number, data: EquipmentDetail) => ReactNode;
+  children: (currentStepIndex: number, data: UpdateEquipmentType) => ReactNode;
 }) {
   const { equipmentId } = useParams();
   const { data, isLoading, error } = useGetCustomEquipmentQuery({
@@ -30,6 +31,10 @@ function UpdateEquipmentComp({
     useUpdateEquipmentMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
+  const initialUpdateData = useInitialUpdateEqupmentData(
+    data,
+    currentStepIndex
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -124,7 +129,7 @@ function UpdateEquipmentComp({
                 </button>
               </div>
 
-              {children(currentStepIndex, data!)}
+              {children(currentStepIndex, initialUpdateData)}
             </form>
           </div>
         </>
@@ -136,8 +141,9 @@ function UpdateEquipmentComp({
 function UpdateEquipment() {
   return (
     <UpdateEquipmentComp texts={["牙技所資料設定", "牙技所內容確認"]}>
-      {(formStep, data) => {
-        if (formStep === 0) return <EquipmentUpdateForm data={data} />;
+      {(formStep, updateData) => {
+        if (formStep === 0)
+          return <EquipmentUpdateForm updateData={updateData} />;
         else if (formStep === 1) return <EquipmentUpdateFormSummary />;
         return null;
       }}

@@ -1,26 +1,31 @@
-import { hasContractDataChanged } from "../../utils/compareData";
+import { FormEvent, Fragment, ReactNode } from "react";
+import { AiOutlineLeft } from "react-icons/ai";
+import { MdBrowserUpdated } from "react-icons/md";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import ContractUpdateForm from "../../components/form/contractForm/ContractUpdateForm";
+import ContractUpdateFormSummary from "../../components/form/contractForm/ContractUpdateFormSummary";
+import LeaseContractUpdateForm from "../../components/form/contractForm/LeaseContractUpdateForm";
+import SellContractUpdateForm from "../../components/form/contractForm/SellContractUpdateForm";
+import ServiceContractUpdateForm from "../../components/form/contractForm/ServiceContractUpdateForm";
+import { useInitialUpdateContractData } from "../../hooks/useInitialUpdateData";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import {
   useGetContractQuery,
   useUpdateContractLabMutation,
 } from "../../redux/contractApi";
-import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
-import useMultiStepFormController from "../../hooks/useMultiStepFormController";
-import { store, useAppDispatch } from "../../redux/store";
-import { ReactNode, FormEvent, Fragment } from "react";
 import { resetUpdateContract } from "../../redux/contractSlice";
+import { store, useAppDispatch } from "../../redux/store";
+import { UpdateContractType, getContractType } from "../../types/contractTypes";
 import style from "../UtilityForm.module.css";
-import { AiOutlineLeft } from "react-icons/ai";
-import { MdBrowserUpdated } from "react-icons/md";
-import LoadingSpinner from "../../components/LoadingSpinner";
-import CustomPageTitle from "../../components/custom/CustomPageTitle";
-import { ContractDetail, getContractType } from "../../types/contractTypes";
 
 function UpdateContractComp({
   texts,
   children,
 }: {
   texts: string[];
-  children: (currentStepIndex: number, data: ContractDetail) => ReactNode;
+  children: (currentStepIndex: number, data: UpdateContractType) => ReactNode;
 }) {
   const { contractType, contractId } = useParams();
   const { data, isLoading, error } = useGetContractQuery({
@@ -31,6 +36,10 @@ function UpdateContractComp({
     useUpdateContractLabMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
+  const initialUpdateData = useInitialUpdateContractData(
+    data,
+    currentStepIndex
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -40,8 +49,11 @@ function UpdateContractComp({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isUpdating || isLastStep) return;
-    if (!hasContractDataChanged(data, store.getState().contract.updateData))
-      return window.alert("Nothing changes");
+    // if (
+    //   currentStepIndex === 1 &&
+    //   !hasContractDataChanged(data, store.getState().contract.updateData)
+    // )
+    //   return window.alert("Nothing changes");
     next();
   };
 
@@ -54,7 +66,7 @@ function UpdateContractComp({
     updateContract(submitData)
       .unwrap()
       .then(() => {
-        window.alert("Dental lab has been updated successfully!");
+        window.alert("Contract has been updated successfully!");
         dispatch(resetUpdateContract());
         navigate(
           `/contract-management/overview/${contractType}/${contractId}`,
@@ -92,7 +104,12 @@ function UpdateContractComp({
             <div className={style["step-controller"]}>
               {texts.map((text, idx) => (
                 <Fragment key={text}>
-                  {idx > 0 && <div className={style["underline-spacer"]}></div>}
+                  {idx > 0 && (
+                    <div
+                      style={{ width: "6vw" }}
+                      className={style["underline-spacer"]}
+                    ></div>
+                  )}
                   <button
                     className={currentStepIndex === idx ? style.active : ""}
                     onClick={() => goTo(idx)}
@@ -129,7 +146,7 @@ function UpdateContractComp({
                 </button>
               </div>
 
-              {children(currentStepIndex, data!)}
+              {children(currentStepIndex, initialUpdateData)}
             </form>
           </div>
         </>
@@ -138,23 +155,21 @@ function UpdateContractComp({
   );
 }
 
-function ContractFormSelector() {
-  const type = store.getState().contract.updateData.type;
-
-  if (type === "SERVICE") return null;
-  else if (type === "LEASE") return null;
-  return null;
-}
-
 function UpdateContract() {
   return (
     <UpdateContractComp
       texts={["合約基本資料設定", "合約細節設定", "合約內容確認"]}
     >
-      {(formStep, data) => {
-        if (formStep === 0) return null;
-        else if (formStep === 1) return <ContractFormSelector />;
-        else if (formStep === 2) return null;
+      {(formStep, updateData) => {
+        if (formStep === 0)
+          return <ContractUpdateForm updateData={updateData} />;
+        else if (formStep === 1 && updateData.type === "SERVICE")
+          return <ServiceContractUpdateForm updateData={updateData} />;
+        else if (formStep === 1 && updateData.type === "LEASE")
+          return <LeaseContractUpdateForm updateData={updateData} />;
+        else if (formStep === 1 && updateData.type === "SELL")
+          return <SellContractUpdateForm updateData={updateData} />;
+        else if (formStep === 2) return <ContractUpdateFormSummary />;
         return null;
       }}
     </UpdateContractComp>
