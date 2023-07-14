@@ -4,21 +4,20 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetContractsBriefQuery } from "../../redux/contractApi";
+import { useGetContractsQuery } from "../../redux/contractApi";
 
-import style from "../Management.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { ContractDetail, ContractDisplayType } from "../../types/contractTypes";
-
-const CONTRACT_DISPLAY_TYPES = [
-  { type: ContractDisplayType.ALL, text: "全部" },
-  { type: ContractDisplayType.PLATFORM, text: "服務平台" },
-  { type: ContractDisplayType.LEASE, text: "設備租賃" },
-  { type: ContractDisplayType.SELLING, text: "設備買賣" },
-];
+import {
+  CONTRACT_DISPLAY_TYPES,
+  ContractDetail,
+  ContractDisplayType,
+  getContractStatusText,
+  getContractTypeText,
+} from "../../types/contractTypes";
+import style from "../Management.module.css";
 
 function ContractManagement() {
-  const { data, isLoading, error } = useGetContractsBriefQuery();
+  const { data, isLoading, error } = useGetContractsQuery();
   const [filter, setFilter] = useState<ContractDisplayType>(
     ContractDisplayType.ALL
   );
@@ -96,18 +95,8 @@ function ContractManagement() {
               data: getFilteredData(filter).map((contract) => [
                 contract.contractNo ?? "",
                 contract.name ?? "",
-                contract.type === "SERVICE"
-                  ? "服務平台合約"
-                  : contract.type === "LEASE"
-                  ? "設備租賃合約"
-                  : "設備買賣合約",
-                contract.status === "CONFIRMING"
-                  ? "確認中"
-                  : contract.status === "EXECUTING"
-                  ? "履行中"
-                  : contract.status === "END"
-                  ? "已解約"
-                  : "已終止",
+                getContractTypeText(contract.type),
+                getContractStatusText(contract.status),
                 (contract.signingDate ?? "").slice(0, 10),
                 contract.customerName ?? "",
                 <Link

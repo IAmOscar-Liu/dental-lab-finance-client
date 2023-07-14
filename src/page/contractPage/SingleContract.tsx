@@ -4,16 +4,14 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import { useGetContractQuery } from "../../redux/contractApi";
 import {
-  CONTRACT_TYPE_SELECTIONS,
-  ContractType,
+  contractDetailKeyNameTable,
+  getContractType,
 } from "../../types/contractTypes";
+import {
+  formatDollarString,
+  formatISOTimeString,
+} from "../../utils/formatString";
 import style from "../Single.module.css";
-
-function getContractType(contractType: string | undefined) {
-  if (CONTRACT_TYPE_SELECTIONS.find((e) => e === contractType))
-    return contractType as ContractType;
-  return "SERVICE" as ContractType;
-}
 
 function SingleContract() {
   const { contractType, contractId } = useParams();
@@ -56,7 +54,9 @@ function SingleContract() {
             </span>
             <button
               onClick={() =>
-                navigate(`/contract-management/update/${data?.id}`)
+                navigate(
+                  `/contract-management/update/${data?.type}/${data?.id}`
+                )
               }
             >
               更新合約
@@ -64,89 +64,22 @@ function SingleContract() {
           </h1>
           <div className={style["single-detail-body"]}>
             <p className={style.title}>基本資料</p>
-            <p>
-              <span>合約ID</span>
-              <span>{data?.id}</span>
-            </p>
-            <p>
-              <span>合約編號</span>
-              <span>{data?.contractNo}</span>
-            </p>
-            <p>
-              <span>合約名稱</span>
-              <span>{data?.name}</span>
-            </p>
-            <p>
-              <span>客戶ID</span>
-              <span>{data?.customerId}</span>
-            </p>
-            <p>
-              <span>客戶名稱</span>
-              <span>{data?.customerName}</span>
-            </p>
-            <p>
-              <span>合約種類</span>
-              <span>
-                {data?.type === "SERVICE"
-                  ? "服務平台合約"
-                  : data?.type === "LEASE"
-                  ? "設備租賃合約"
-                  : "設備買賣合約"}
-              </span>
-            </p>
-            <p>
-              <span>合約狀態</span>
-              <span>
-                {data?.status === "CONFIRMING"
-                  ? "確認中"
-                  : data?.status === "EXECUTING"
-                  ? "履行中"
-                  : data?.status === "END"
-                  ? "已解約"
-                  : "已終止"}
-              </span>
-            </p>
-            <p>
-              <span>合約附件</span>
-              <span>{data?.attachment}</span>
+
+            {Object.entries(contractDetailKeyNameTable)
+              .filter(([_, value]) => value.text !== "備註")
+              .map(([key, value]) => (
+                <p key={key}>
+                  <span>{value.text}</span>
+                  <span>
+                    {value.formatter(data![key as keyof typeof data])}
+                  </span>
+                </p>
+              ))}
+            <p style={{ gridColumn: "1/-1" }}>
+              <span>{"備註"}</span>
+              <span>{data?.remark ?? ""}</span>
             </p>
 
-            <p>
-              <span>合約簽約日</span>
-              <span>
-                {data?.signingDate
-                  ? new Date(data.signingDate).toLocaleString()
-                  : ""}
-              </span>
-            </p>
-            <p>
-              <span>合約收費日</span>
-              <span>
-                {data?.chargeDate
-                  ? new Date(data.chargeDate).toLocaleString()
-                  : ""}
-              </span>
-            </p>
-            <p>
-              <span>Created Time</span>
-              <span>
-                {data?.createdTime
-                  ? new Date(data.createdTime).toLocaleString()
-                  : ""}
-              </span>
-            </p>
-            <p>
-              <span>Modified Time</span>
-              <span>
-                {data?.modifiedTime
-                  ? new Date(data.modifiedTime).toLocaleString()
-                  : ""}
-              </span>
-            </p>
-            <p style={{ gridColumn: "1/-1" }}>
-              <span>備註</span>
-              <span>{data?.remark}</span>
-            </p>
             {data?.type === "SERVICE" && (
               <>
                 <p className={style.title}>服務平台合約細節</p>
@@ -172,9 +105,7 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Billing Base Price</span>
-                  <span>
-                    $ {(data.billing?.basePrice || "").toLocaleString()}
-                  </span>
+                  <span>{formatDollarString(data.billing?.basePrice)}</span>
                 </p>
                 <p>
                   <span>Billing Unit</span>
@@ -182,31 +113,19 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Billing Free Quota</span>
-                  <span>
-                    $ {(data.billing?.freeQuota || "").toLocaleString()}
-                  </span>
+                  <span>{formatDollarString(data.billing?.freeQuota)}</span>
                 </p>
                 <p>
                   <span>Billing Unit Charge</span>
-                  <span>
-                    $ {(data.billing?.unitCharge || "").toLocaleString()}
-                  </span>
+                  <span>{formatDollarString(data.billing?.unitCharge)}</span>
                 </p>
                 <p>
                   <span>Billing Created Time</span>
-                  <span>
-                    {data.billing?.createdTime
-                      ? new Date(data.billing.createdTime).toLocaleString()
-                      : ""}
-                  </span>
+                  <span>{formatISOTimeString(data.billing?.createdTime)}</span>
                 </p>
                 <p>
                   <span>Billing Modified Time</span>
-                  <span>
-                    {data.billing?.modifiedTime
-                      ? new Date(data.billing.modifiedTime).toLocaleString()
-                      : ""}
-                  </span>
+                  <span>{formatISOTimeString(data.billing?.modifiedTime)}</span>
                 </p>
               </>
             )}
@@ -227,12 +146,12 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Amount</span>
-                  <span>$ {(data.amount || "").toLocaleString()}</span>
+                  <span>{formatDollarString(data.amount)}</span>
                 </p>
                 {data.totalAmount && (
                   <p>
                     <span>Total Amount</span>
-                    <span>$ {(data.totalAmount || "").toLocaleString()}</span>
+                    <span>{formatDollarString(data.totalAmount)}</span>
                   </p>
                 )}
               </>
@@ -258,12 +177,12 @@ function SingleContract() {
                 </p>
                 <p>
                   <span>Amount</span>
-                  <span>$ {(data.amount || "").toLocaleString()}</span>
+                  <span>{formatDollarString(data.amount)}</span>
                 </p>
                 {data.totalAmount && (
                   <p>
                     <span>Total Amount</span>
-                    <span>$ {data.totalAmount.toLocaleString()}</span>
+                    <span>{formatDollarString(data.totalAmount)}</span>
                   </p>
                 )}
               </>

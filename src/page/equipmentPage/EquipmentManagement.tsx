@@ -1,34 +1,18 @@
 import { useRef, useState } from "react";
-import { useGetEquipmentsQuery } from "../../redux/equipmentApi";
-import {
-  EquipmentDetail,
-  EquipmentDisplayType,
-  EquipmentStatus,
-} from "../../types/equipmentTypes";
-import { Link, useNavigate } from "react-router-dom";
-import style from "../Management.module.css";
 import { MdOutlineStickyNote2 } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-
-const EQUIPMENT_DISPLAY_TYPES = [
-  { type: EquipmentDisplayType.ALL, text: "全部" },
-  { type: EquipmentDisplayType.UNKNOWN, text: "未知" },
-  { type: EquipmentDisplayType.AVAILABLE, text: "可用" },
-  { type: EquipmentDisplayType.SOLD, text: "已售出" },
-  { type: EquipmentDisplayType.LEASING, text: "出租中" },
-  { type: EquipmentDisplayType.UNAVAILABLE, text: "無法使用" },
-];
-
-const equipmentDisplayStatus: Record<EquipmentStatus, string> = {
-  Unknown: "未知",
-  Available: "可用",
-  Sold: "已售出",
-  Leasing: "出租中",
-  UnAvailable: "無法使用",
-};
+import { useGetEquipmentsQuery } from "../../redux/equipmentApi";
+import {
+  EQUIPMENT_DISPLAY_TYPES,
+  EquipmentDetail,
+  EquipmentDisplayType,
+  getEquipmentStatusText,
+} from "../../types/equipmentTypes";
+import style from "../Management.module.css";
 
 function EquipmentManagement() {
   const { data, isLoading, error } = useGetEquipmentsQuery();
@@ -117,9 +101,7 @@ function EquipmentManagement() {
               data: getFilteredData(filter).map((equipment) => [
                 equipment.serialNumber ?? "",
                 equipment.equipmentType ?? "",
-                equipment.equipmentStatus
-                  ? equipmentDisplayStatus[equipment.equipmentStatus]
-                  : "未知",
+                getEquipmentStatusText(equipment.equipmentStatus),
                 equipment.currency ?? "",
                 (equipment.amount ?? 0) + "",
                 (equipment.warrantyDate ?? "").slice(0, 10),

@@ -125,7 +125,7 @@ function ContractFormSelector() {
 
   if (type === "SERVICE") return <ServiceContractForm />;
   else if (type === "LEASE") return <LeaseContractForm />;
-  else return <SellContractForm />;
+  return <SellContractForm />;
 }
 
 function CreateContract() {

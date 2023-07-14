@@ -13,9 +13,14 @@ function EquipmentUpdateFormSummary() {
         <h2>設備資料</h2>
         <div className={style["detail-body"]}>
           {Object.entries(updateEquipmentkeyNameTable).map(([key, value]) => (
-            <p key={key}>
-              <span>{value}</span>
-              <span>{updateData[key as keyof typeof updateData]}</span>
+            <p
+              key={key}
+              style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
+            >
+              <span>{value.text}</span>
+              <span>
+                {value.formatter(updateData[key as keyof typeof updateData])}
+              </span>
             </p>
           ))}
         </div>

@@ -18,7 +18,8 @@
 
 .control-btns .step-controller {
   display: flex;
-  margin-inline: auto;
+  flex-grow: 1;
+  justify-content: center;
   align-items: center;
 }
 

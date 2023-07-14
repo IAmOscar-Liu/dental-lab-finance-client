@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../../redux/store";
 import { createContractKeyNameTable } from "../../../types/contractTypes";
+import { formatDollarString } from "../../../utils/formatString";
 import style from "../SummarizeForm.module.css";
 
 function ContractFormSummary() {
@@ -13,9 +14,12 @@ function ContractFormSummary() {
         <h2>合約基本資料</h2>
         <div className={style["detail-body"]}>
           {Object.entries(createContractKeyNameTable).map(([key, value]) => (
-            <p key={key} style={value === "備註" ? { gridColumn: "1/-1" } : {}}>
-              <span>{value}</span>
-              <span>{(createData as any)[key]}</span>
+            <p
+              key={key}
+              style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
+            >
+              <span>{value.text}</span>
+              <span>{value.formatter((createData as any)[key])}</span>
             </p>
           ))}
         </div>
@@ -44,10 +48,9 @@ function ContractFormSummary() {
             <p>
               <span>Billing Base Price</span>
               <span>
-                ${" "}
-                {(
-                  createData.serviceContractDetail.billing.basePrice || ""
-                ).toLocaleString()}
+                {formatDollarString(
+                  createData.serviceContractDetail.billing.basePrice
+                )}
               </span>
             </p>
             <p>
@@ -59,19 +62,17 @@ function ContractFormSummary() {
             <p>
               <span>Billing Free Quota</span>
               <span>
-                ${" "}
-                {(
-                  createData.serviceContractDetail.billing.freeQuota || ""
-                ).toLocaleString()}
+                {formatDollarString(
+                  createData.serviceContractDetail.billing.freeQuota
+                )}
               </span>
             </p>
             <p>
               <span>Billing Unit Charge</span>
               <span>
-                ${" "}
-                {(
-                  createData.serviceContractDetail.billing.unitCharge || ""
-                ).toLocaleString()}
+                {formatDollarString(
+                  createData.serviceContractDetail.billing.unitCharge
+                )}
               </span>
             </p>
           </div>
@@ -101,16 +102,16 @@ function ContractFormSummary() {
             <p>
               <span>Amount</span>
               <span>
-                ${" "}
-                {(createData.leaseContractDetail.amount || "").toLocaleString()}
+                {formatDollarString(createData.leaseContractDetail.amount)}
               </span>
             </p>
             {createData.leaseContractDetail.totalAmount && (
               <p>
                 <span>Total Amount</span>
                 <span>
-                  ${" "}
-                  {createData.leaseContractDetail.totalAmount.toLocaleString()}
+                  {formatDollarString(
+                    createData.leaseContractDetail.totalAmount
+                  )}
                 </span>
               </p>
             )}
@@ -137,18 +138,16 @@ function ContractFormSummary() {
             <p>
               <span>Amount</span>
               <span>
-                ${" "}
-                {(createData.sellContractDetail.amount || "").toLocaleString()}
+                {formatDollarString(createData.sellContractDetail.amount)}
               </span>
             </p>
             {createData.sellContractDetail.totalAmount && (
               <p>
                 <span>Total Amount</span>
                 <span>
-                  ${" "}
-                  {(
-                    createData.sellContractDetail.totalAmount || ""
-                  ).toLocaleString()}
+                  {formatDollarString(
+                    createData.sellContractDetail.totalAmount
+                  )}
                 </span>
               </p>
             )}

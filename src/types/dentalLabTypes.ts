@@ -1,4 +1,5 @@
 import { NonNullableFields, NullableFields } from ".";
+import { formatISOTimeString } from "../utils/formatString";
 
 export enum DentalDisplayType {
   ALL,
@@ -6,6 +7,26 @@ export enum DentalDisplayType {
   UNDER_CONTRACT,
   TERMINATED,
 }
+
+export const DENTAL_DISPLAY_TYPES = [
+  { type: DentalDisplayType.ALL, text: "全部" },
+  { type: DentalDisplayType.CONTACT, text: "聯繫中" },
+  { type: DentalDisplayType.UNDER_CONTRACT, text: "合約中" },
+  { type: DentalDisplayType.TERMINATED, text: "已解約" },
+];
+
+export const getDentalStatusText = (status?: DentalStatus | null) => {
+  switch (status) {
+    case "CONTACT":
+      return "聯繫中";
+    case "UNDER_CONTRACT":
+      return "合約中";
+    case "TERMINATED":
+      return "已解約";
+    default:
+      return "";
+  }
+};
 
 export const DENTAL_STATUS_SELECTIONS = [
   "CONTACT",
@@ -58,27 +79,45 @@ export type UpdateDentalLabType = { id: string } & CreateDentalLabType;
 
 export const createDentalLabkeyNameTable: Record<
   keyof CreateDentalLabType,
-  string
+  { text: string; formatter: (value: any) => any }
 > = {
-  name: "牙技所名稱",
-  uniformNo: "牙技所統一編號",
-  status: "牙技所狀態",
-  region: "牙技所區域",
-  country: "牙技所所在國家",
-  state: "State",
-  city: "City",
-  address: "牙技所地址",
-  phoneCode: "牙技所電話國碼",
-  phoneNumber: "牙技所電話",
-  contactPerson: "牙技所聯絡人",
-  email: "牙技所email",
-  remark: "備註",
+  name: { text: "牙技所名稱", formatter: (value: any) => value },
+  uniformNo: { text: "牙技所統一編號", formatter: (value: any) => value },
+  status: {
+    text: "牙技所狀態",
+    formatter: (value: any) => getDentalStatusText(value),
+  },
+  region: { text: "牙技所區域", formatter: (value: any) => value },
+  country: { text: "牙技所所在國家", formatter: (value: any) => value },
+  state: { text: "State", formatter: (value: any) => value },
+  city: { text: "City", formatter: (value: any) => value },
+  address: { text: "牙技所地址", formatter: (value: any) => value },
+  phoneCode: { text: "牙技所電話國碼", formatter: (value: any) => value },
+  phoneNumber: { text: "牙技所電話", formatter: (value: any) => value },
+  contactPerson: { text: "牙技所聯絡人", formatter: (value: any) => value },
+  email: { text: "牙技所email", formatter: (value: any) => value },
+  remark: { text: "備註", formatter: (value: any) => value },
 };
 
 export const updateDentalLabkeyNameTable: Record<
   keyof UpdateDentalLabType,
-  string
+  { text: string; formatter: (value: any) => any }
 > = {
-  id: "牙技所ID",
+  id: { text: "牙技所ID", formatter: (value: any) => value },
   ...createDentalLabkeyNameTable,
+};
+
+export const dentalDetailLabkeyNameTable: Record<
+  keyof DentalLab,
+  { text: string; formatter: (value: any) => any }
+> = {
+  ...updateDentalLabkeyNameTable,
+  createdTime: {
+    text: "Created Time",
+    formatter: (value: any) => formatISOTimeString(value),
+  },
+  modifiedTime: {
+    text: "Modified Time",
+    formatter: (value: any) => formatISOTimeString(value),
+  },
 };

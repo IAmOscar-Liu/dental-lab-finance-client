@@ -1,20 +1,18 @@
 import { useRef, useState } from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
-import { DentalDisplayType, DentalLab } from "../../types/dentalLabTypes";
+import {
+  DENTAL_DISPLAY_TYPES,
+  DentalDisplayType,
+  DentalLab,
+  getDentalStatusText,
+} from "../../types/dentalLabTypes";
 import style from "../Management.module.css";
-import { Link, useNavigate } from "react-router-dom";
-
-const DENTAL_DISPLAY_TYPES = [
-  { type: DentalDisplayType.ALL, text: "全部" },
-  { type: DentalDisplayType.CONTACT, text: "聯繫中" },
-  { type: DentalDisplayType.UNDER_CONTRACT, text: "合約中" },
-  { type: DentalDisplayType.TERMINATED, text: "已解約" },
-];
 
 function DentalManagement() {
   const { data, isLoading, error } = useGetDentalLabsQuery();
@@ -97,11 +95,7 @@ function DentalManagement() {
               data: getFilteredData(filter).map((dental) => [
                 dental.uniformNo ?? "",
                 dental.name ?? "",
-                dental.status === "CONTACT"
-                  ? "聯繫中"
-                  : dental.status === "UNDER_CONTRACT"
-                  ? "合約中"
-                  : "已解約",
+                getDentalStatusText(dental.status),
                 dental.country ?? "",
                 [dental.city, dental.state].filter((e) => !!e).join(", "),
                 dental.phoneNumber ?? "",

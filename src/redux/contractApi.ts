@@ -20,7 +20,7 @@ export const contractApi = createApi({
   tagTypes: ["Contract"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getContractsBrief: build.query<ContractDetail[], void>({
+    getContracts: build.query<ContractDetail[], void>({
       query: () => ({
         url: `/contracts?page=0&pageSize=100&sort=createdTime%2Cdesc`,
         validateStatus: allowStatusCode304,
@@ -28,7 +28,10 @@ export const contractApi = createApi({
       transformResponse: (response: ContractQueryResult) => response.result,
       providesTags: (result) =>
         result
-          ? [...result.map(({ id }) => ({ type: "Contract" as const, id }))]
+          ? [
+              ...result.map(({ id }) => ({ type: "Contract" as const, id })),
+              { type: "Contract", id: "LIST" },
+            ]
           : [{ type: "Contract", id: "LIST" }],
     }),
     getContract: build.query<
@@ -57,7 +60,7 @@ export const contractApi = createApi({
       }),
       invalidatesTags: [{ type: "Contract", id: "LIST" }],
     }),
-    updateDentalLab: build.mutation<any, UpdateContractType>({
+    updateContractLab: build.mutation<any, UpdateContractType>({
       query: ({ id, ...rest }) => ({
         url: `/contracts/${rest.type.toLowerCase()}/${id}`,
         method: "PUT",
@@ -73,8 +76,8 @@ export const contractApi = createApi({
 });
 
 export const {
-  useGetContractsBriefQuery,
+  useGetContractsQuery,
   useGetContractQuery,
   useCreateContractMutation,
-  useUpdateDentalLabMutation,
+  useUpdateContractLabMutation,
 } = contractApi;

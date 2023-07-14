@@ -14,8 +14,10 @@ function DentalUpdateFormSummary() {
         <div className={style["detail-body"]}>
           {Object.entries(updateDentalLabkeyNameTable).map(([key, value]) => (
             <p key={key}>
-              <span>{value}</span>
-              <span>{updateData[key as keyof typeof updateData]}</span>
+              <span>{value.text}</span>
+              <span>
+                {value.formatter(updateData[key as keyof typeof updateData])}
+              </span>
             </p>
           ))}
         </div>

@@ -14,8 +14,10 @@ function DentalFormSummary() {
         <div className={style["detail-body"]}>
           {Object.entries(createDentalLabkeyNameTable).map(([key, value]) => (
             <p key={key}>
-              <span>{value}</span>
-              <span>{createData[key as keyof typeof createData]}</span>
+              <span>{value.text}</span>
+              <span>
+                {value.formatter(createData[key as keyof typeof createData])}
+              </span>
             </p>
           ))}
         </div>
