@@ -12,23 +12,37 @@
   position: fixed;
   top: 50vh;
   left: 50vw;
-  width: max(800px, 80vw);
-  height: 70vh;
+  width: clamp(800px, 80vw, 1000px);
+  height: min(66.67vh, 800px);
   border-radius: 1em;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 24px 30px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
-.modal-body > h1 {
-  text-align: center;
+header.header {
+  padding-inline: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #555;
+}
+
+header.header > *:has(input[type="text"]) {
+  margin-top: 18px;
+  border-width: 1px !important;
+}
+
+header.header > h1 {
+  font-size: 1.6em;
   color: #555;
+  padding-block: 18px 6px;
 }
 
 .modal-body-result {
+  margin-inline: 30px;
   flex-grow: 999;
   overflow-y: auto;
 }
@@ -37,7 +51,7 @@
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   font-size: 1.1em;
   color: #333;
 }
@@ -46,7 +60,7 @@
   padding: 3px 0.5em;
   border-radius: 0.5em;
   display: grid;
-  grid-template-columns: 5fr 1fr 2fr 3fr;
+  grid-template-columns: 5fr 1fr 2.2fr 2.8fr;
   cursor: pointer;
 }
 
@@ -56,6 +70,7 @@
   background-color: #868686;
   color: white;
   pointer-events: none;
+  box-shadow: 0 -10px 0 0 white;
 }
 
 .modal-body-result ul li:hover {
@@ -73,7 +88,14 @@
   overflow: hidden;
 }
 
-.modal-body > button {
+footer.footer {
+  border-top: 1px solid #555;
+  display: flex;
+  justify-content: center;
+}
+
+footer.footer > button {
+  margin-block: 12px 18px;
   align-self: center;
   font-size: 1.1em;
   letter-spacing: 1px;

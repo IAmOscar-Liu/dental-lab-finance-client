@@ -25,7 +25,7 @@
 .search-container input[type="text"] {
   border: none;
   outline: none;
-  padding: 3px 5px 3px 28px;
-  font-size: 1.1em;
+  padding: 3px 5px 3px 28px !important;
+  font-size: 1.1em !important;
   background-color: transparent;
 }

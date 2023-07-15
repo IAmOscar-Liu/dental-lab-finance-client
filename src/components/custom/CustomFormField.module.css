@@ -13,6 +13,7 @@
 .select > *:first-child {
   text-align: end;
   white-space: nowrap;
+  padding-top: 3px;
 }
 
 .text-field > *:first-child small {
@@ -52,12 +53,14 @@
 
 .radio .radio-group {
   display: flex;
-  gap: 12px;
+  gap: 12px 18px;
   flex-wrap: wrap;
+  padding-top: 3px;
 }
 
 .radio .radio-group label input[type="radio"] {
-  margin-right: 4px;
+  margin-right: 7px;
+  transform: scale(1.4) translateY(1px);
 }
 
 .select .select-wrapper select {

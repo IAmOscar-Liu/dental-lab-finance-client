@@ -1,4 +1,4 @@
-import { AiOutlineLeft, AiOutlineSearch } from "react-icons/ai";
+import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
@@ -32,7 +32,7 @@ function SingleContract() {
   return (
     <div className={style.single}>
       <CustomPageTitle
-        icon={<AiOutlineSearch />}
+        icon={<AiFillEye />}
         title="合約管理/瀏覽合約"
         tailing={
           <Link to="/contract-management">

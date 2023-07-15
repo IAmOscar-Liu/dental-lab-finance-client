@@ -1,26 +1,13 @@
 import { setUpdateContract } from "../../../redux/contractSlice";
-import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
+import { store, useAppDispatch } from "../../../redux/store";
 import { UpdateContractType } from "../../../types/contractTypes";
 import { EQUIPMENT_TYPE_SELECTIONS } from "../../../types/equipmentTypes";
 import {
   CustomInputSelect,
   CustomInputText,
+  CustomInputTextByValue,
 } from "../../custom/CustomFormField";
 import style from "../Form.module.css";
-
-function ShowTotalAmount() {
-  const totalAmount = useAppSelector(
-    (state) => state.contract.updateData.sellContractDetail.totalAmount
-  );
-  return (
-    <CustomInputText
-      labelname="設備總價"
-      initialValue={(totalAmount ?? 0) + ""}
-      handleChange={(_) => {}}
-      editable={false}
-    />
-  );
-}
 
 function SellContractUpdateForm({
   updateData,
@@ -108,7 +95,14 @@ function SellContractUpdateForm({
             }}
             required
           />
-          <ShowTotalAmount />
+          <CustomInputTextByValue
+            labelname="設備總價"
+            valueSelector={(state) =>
+              (state.contract.updateData.sellContractDetail.totalAmount ?? 0) +
+              ""
+            }
+            editable={false}
+          />
         </div>
         <div></div>
       </div>

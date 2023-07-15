@@ -97,7 +97,7 @@ function DentalManagement() {
                 dental.name ?? "",
                 getDentalStatusText(dental.status),
                 dental.country ?? "",
-                [dental.city, dental.state].filter((e) => !!e).join(", "),
+                [dental.city, dental.state].filter((e) => !!e).join(" / "),
                 dental.phoneNumber ?? "",
                 dental.email ?? "",
                 <Link to={`/dental-lab-management/overview/${dental.id}`}>

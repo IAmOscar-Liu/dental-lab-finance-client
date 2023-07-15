@@ -4,6 +4,7 @@ import { DentalLab } from "../types/dentalLabTypes";
 import style from "./DentalLabModal.module.css";
 import LoadingSpinner from "./LoadingSpinner";
 import { RootState, useAppSelector } from "../redux/store";
+import CustomSearchInputText from "./custom/CustomSearchInputText";
 
 const DentalLabModal = forwardRef<
   HTMLDivElement,
@@ -19,7 +20,10 @@ const DentalLabModal = forwardRef<
   return (
     <div className={style.modal}>
       <div ref={ref} className={style["modal-body"]}>
-        <h1>選擇牙技所</h1>
+        <header className={style.header}>
+          <h1>選擇牙技所</h1>
+          <CustomSearchInputText placeholder="查詢牙技所" />
+        </header>
         {isLoading ? (
           <LoadingSpinner totalHeight={250} />
         ) : error ? (
@@ -55,7 +59,9 @@ const DentalLabModal = forwardRef<
           </div>
         )}
         <div className="flex"></div>
-        <button onClick={closeModal}>OK</button>
+        <footer className={style.footer}>
+          <button onClick={closeModal}>OK</button>
+        </footer>
       </div>
     </div>
   );
