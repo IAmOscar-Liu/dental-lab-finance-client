@@ -1,6 +1,6 @@
 import { CreateContractType, UpdateContractType } from "../types/contractTypes";
 
-export const removeNonEquipmentFields = <T extends {}, K extends keyof T>(
+export const removeUnWantedFields = <T extends {}, K extends keyof T>(
   data: T,
   omitFields: K[]
 ) => {
@@ -18,36 +18,54 @@ export const removeNonEquipmentFields = <T extends {}, K extends keyof T>(
 export const removeNonContractFields = (
   data: CreateContractType | Omit<UpdateContractType, "id">
 ) => {
+  const {
+    contractNo,
+    name,
+    customerId,
+    customerName,
+    status,
+    type,
+    attachment,
+    signingDate,
+    remark,
+    serviceContractDetail,
+    leaseContractDetail,
+    sellContractDetail,
+  } = data;
+
   const filteredData: Record<string, any> = {
-    contractNo: data.contractNo,
-    name: data.name,
-    customerId: data.customerId,
-    customerName: data.customerName,
-    type: data.type,
-    status: data.status,
-    attachment: data.attachment,
-    signingDate: data.signingDate,
-    remark: data.remark,
+    contractNo,
+    name,
+    customerId,
+    customerName,
+    type,
+    status,
+    attachment,
+    signingDate,
+    remark,
   };
 
-  if (data.type === "SERVICE") {
-    filteredData.contractPeriod = data.serviceContractDetail.contractPeriod;
-    filteredData.billing = data.serviceContractDetail.billing;
-  } else if (data.type === "SELL") {
-    filteredData.equipmentType = data.sellContractDetail.equipmentType;
-    filteredData.currency = data.sellContractDetail.currency;
-    filteredData.quantity = data.sellContractDetail.quantity;
-    filteredData.amount = data.sellContractDetail.amount;
-    if (typeof data.sellContractDetail.totalAmount === "number")
-      filteredData.totalAmount = data.sellContractDetail.totalAmount;
+  if (type === "SERVICE") {
+    const {
+      contractPeriod,
+      billing: { createdTime, modifiedTime, ...restBilling },
+    } = serviceContractDetail;
+    filteredData.contractPeriod = contractPeriod;
+    filteredData.billing = restBilling;
+  } else if (type === "LEASE") {
+    const { equipmentType, contractPeriod, currency, quantity, amount } =
+      leaseContractDetail;
+    filteredData.equipmentType = equipmentType;
+    filteredData.currency = currency;
+    filteredData.contractPeriod = contractPeriod;
+    filteredData.quantity = quantity;
+    filteredData.amount = amount;
   } else {
-    filteredData.equipmentType = data.leaseContractDetail.equipmentType;
-    filteredData.currency = data.leaseContractDetail.currency;
-    filteredData.contractPeriod = data.leaseContractDetail.contractPeriod;
-    filteredData.quantity = data.leaseContractDetail.quantity;
-    filteredData.amount = data.leaseContractDetail.amount;
-    if (typeof data.leaseContractDetail.totalAmount === "number")
-      filteredData.totalAmount = data.leaseContractDetail.totalAmount;
+    const { equipmentType, currency, quantity, amount } = sellContractDetail;
+    filteredData.equipmentType = equipmentType;
+    filteredData.currency = currency;
+    filteredData.quantity = quantity;
+    filteredData.amount = amount;
   }
 
   // console.log(filteredData);

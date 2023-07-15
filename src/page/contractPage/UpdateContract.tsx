@@ -19,6 +19,7 @@ import { resetUpdateContract } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
 import { UpdateContractType, getContractType } from "../../types/contractTypes";
 import style from "../UtilityForm.module.css";
+import { hasContractDataChanged } from "../../utils/compareData";
 
 function UpdateContractComp({
   texts,
@@ -49,11 +50,11 @@ function UpdateContractComp({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isUpdating || isLastStep) return;
-    // if (
-    //   currentStepIndex === 1 &&
-    //   !hasContractDataChanged(data, store.getState().contract.updateData)
-    // )
-    //   return window.alert("Nothing changes");
+    if (
+      currentStepIndex === 1 &&
+      !hasContractDataChanged(data, store.getState().contract.updateData)
+    )
+      return window.alert("Nothing changes");
     next();
   };
 
