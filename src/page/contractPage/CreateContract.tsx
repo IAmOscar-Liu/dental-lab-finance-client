@@ -120,14 +120,6 @@ function CreateContractComp({
   );
 }
 
-function ContractFormSelector() {
-  const type = store.getState().contract.createData.type;
-
-  if (type === "SERVICE") return <ServiceContractForm />;
-  else if (type === "LEASE") return <LeaseContractForm />;
-  return <SellContractForm />;
-}
-
 function CreateContract() {
   return (
     <CreateContractComp
@@ -135,8 +127,12 @@ function CreateContract() {
     >
       {(formStep) => {
         if (formStep === 0) return <ContractForm />;
-        else if (formStep === 1) return <ContractFormSelector />;
-        else if (formStep === 2) return <ContractFormSummary />;
+        else if (formStep === 1) {
+          const type = store.getState().contract.createData.type;
+          if (type === "SERVICE") return <ServiceContractForm />;
+          else if (type === "LEASE") return <LeaseContractForm />;
+          return <SellContractForm />;
+        } else if (formStep === 2) return <ContractFormSummary />;
         return null;
       }}
     </CreateContractComp>

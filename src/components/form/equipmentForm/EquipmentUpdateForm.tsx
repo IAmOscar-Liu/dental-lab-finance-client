@@ -1,12 +1,11 @@
 import { setUpdateEquipment } from "../../../redux/equipmentSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { useAppDispatch } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
   UpdateEquipmentType,
 } from "../../../types/equipmentTypes";
-import DentalLabModal from "../../DentalLabModal";
 import {
   CustomInputSelect,
   CustomInputText,
@@ -22,10 +21,6 @@ function EquipmentUpdateForm({
   updateData: UpdateEquipmentType;
 }) {
   const dispatch = useAppDispatch();
-  const ownerId = useAppSelector((state) => state.equipment.updateData.ownerId);
-  const ownerName = useAppSelector(
-    (state) => state.equipment.updateData.ownerName
-  );
 
   return (
     <div className={style.form}>
@@ -34,28 +29,14 @@ function EquipmentUpdateForm({
         <div className={style["left-form"]}>
           <CustomInputText
             labelname="設備擁有者名稱"
-            initialValue={ownerName ?? ""}
+            initialValue={updateData.ownerName ?? ""}
             placeholder="請選擇"
             handleChange={(_) => {}}
             editable={false}
             required
           />
-          <CustomShowModalField text="選擇設備擁有者">
-            {({ modalRef, closeModal }) => (
-              <DentalLabModal
-                closeModal={closeModal}
-                ref={modalRef}
-                dentalLabId={ownerId}
-                onChange={(value) =>
-                  dispatch(
-                    setUpdateEquipment({
-                      ownerId: value.id,
-                      ownerName: value.name ?? undefined,
-                    })
-                  )
-                }
-              />
-            )}
+          <CustomShowModalField text="選擇設備擁有者" disabled={true}>
+            {() => null}
           </CustomShowModalField>
           <CustomRadioField
             labelname="設備擁有者類型"

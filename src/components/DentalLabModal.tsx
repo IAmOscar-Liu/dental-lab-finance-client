@@ -3,16 +3,18 @@ import { useGetDentalLabsQuery } from "../redux/dentalLabApi";
 import { DentalLab } from "../types/dentalLabTypes";
 import style from "./DentalLabModal.module.css";
 import LoadingSpinner from "./LoadingSpinner";
+import { RootState, useAppSelector } from "../redux/store";
 
 const DentalLabModal = forwardRef<
   HTMLDivElement,
   {
     closeModal: () => void;
-    dentalLabId: string;
     onChange: (value: DentalLab) => void;
+    dentalLabSelector: (state: RootState) => string;
   }
->(({ closeModal, dentalLabId, onChange }, ref) => {
+>(({ closeModal, onChange, dentalLabSelector }, ref) => {
   const { data, isLoading, error } = useGetDentalLabsQuery();
+  const dentalLabId = useAppSelector(dentalLabSelector);
 
   return (
     <div className={style.modal}>

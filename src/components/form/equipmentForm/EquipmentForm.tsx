@@ -1,5 +1,5 @@
 import { setCreateEquipment } from "../../../redux/equipmentSlice";
-import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
+import { store, useAppDispatch } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
@@ -10,6 +10,7 @@ import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
+  CustomInputTextByValue,
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
@@ -18,21 +19,18 @@ import style from "../Form.module.css";
 function EquipmentForm() {
   const createData = store.getState().equipment.createData;
   const dispatch = useAppDispatch();
-  const ownerId = useAppSelector((state) => state.equipment.createData.ownerId);
-  const ownerName = useAppSelector(
-    (state) => state.equipment.createData.ownerName
-  );
 
   return (
     <div className={style.form}>
       <h1>設備資料設定</h1>
       <div className={style["form-body"]}>
         <div className={style["left-form"]}>
-          <CustomInputText
+          <CustomInputTextByValue
             labelname="設備擁有者名稱"
-            initialValue={ownerName ?? ""}
+            valueSelector={(state) =>
+              state.equipment.createData.ownerName ?? ""
+            }
             placeholder="請選擇"
-            handleChange={(_) => {}}
             editable={false}
             required
           />
@@ -41,7 +39,9 @@ function EquipmentForm() {
               <DentalLabModal
                 closeModal={closeModal}
                 ref={modalRef}
-                dentalLabId={ownerId}
+                dentalLabSelector={(state) =>
+                  state.equipment.createData.ownerId
+                }
                 onChange={(value) =>
                   dispatch(
                     setCreateEquipment({

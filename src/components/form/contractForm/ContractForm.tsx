@@ -1,5 +1,5 @@
 import { setCreateContract } from "../../../redux/contractSlice";
-import { store, useAppDispatch, useAppSelector } from "../../../redux/store";
+import { store, useAppDispatch } from "../../../redux/store";
 import {
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
@@ -9,6 +9,7 @@ import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
+  CustomInputTextByValue,
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
@@ -17,12 +18,6 @@ import style from "../Form.module.css";
 function ContractForm() {
   const createData = store.getState().contract.createData;
   const dispatch = useAppDispatch();
-  const customerId = useAppSelector(
-    (state) => state.contract.createData.customerId
-  );
-  const customerName = useAppSelector(
-    (state) => state.contract.createData.customerName
-  );
 
   return (
     <div className={style.form}>
@@ -47,9 +42,9 @@ function ContractForm() {
             required
             rows={2}
           />
-          <CustomInputText
+          <CustomInputTextByValue
             labelname="客戶名稱"
-            initialValue={customerName}
+            valueSelector={(state) => state.contract.createData.customerName}
             placeholder="請選擇"
             handleChange={(_) => {}}
             editable={false}
@@ -60,7 +55,9 @@ function ContractForm() {
               <DentalLabModal
                 closeModal={closeModal}
                 ref={modalRef}
-                dentalLabId={customerId}
+                dentalLabSelector={(state) =>
+                  state.contract.createData.customerId
+                }
                 onChange={(value) =>
                   dispatch(
                     setCreateContract({

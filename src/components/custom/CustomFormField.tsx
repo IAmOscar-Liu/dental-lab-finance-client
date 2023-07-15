@@ -8,11 +8,20 @@ import {
 } from "react";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
+import { RootState, useAppSelector } from "../../redux/store";
 
 interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelname: string;
   initialValue: string;
   handleChange: (value: string) => void;
+  editable?: boolean;
+}
+
+interface CustomTextFieldByValueProps
+  extends InputHTMLAttributes<HTMLInputElement> {
+  labelname: string;
+  valueSelector: (state: RootState) => string;
+  handleChange?: (value: string) => void;
   editable?: boolean;
 }
 
@@ -63,6 +72,54 @@ export function CustomInputText({
             if (type === "date")
               handleChange(new Date(e.target.valueAsNumber).toISOString());
             else handleChange(e.target.value);
+          }}
+          onInput={(e) => {
+            if (invalidMessage === "") return;
+            const element = e.target as HTMLInputElement;
+            if (element.validity.valid) return setInvalidMessage("");
+            setInvalidMessage(getInvalidMessage(element));
+          }}
+          onInvalid={(e) =>
+            setInvalidMessage(getInvalidMessage(e.target as HTMLInputElement))
+          }
+          required={!!required}
+          type={type}
+          className={editable ? "" : style.disable}
+          {...rest}
+        />
+        {invalidMessage.length > 0 && (
+          <span className={style["invalid-message"]}>{invalidMessage}</span>
+        )}
+      </div>
+    </label>
+  );
+}
+
+export function CustomInputTextByValue({
+  labelname,
+  required,
+  type,
+  valueSelector,
+  handleChange,
+  editable = true,
+  ...rest
+}: CustomTextFieldByValueProps) {
+  const [invalidMessage, setInvalidMessage] = useState("");
+  const value = useAppSelector((state) => valueSelector(state));
+
+  return (
+    <label className={style["text-field"]}>
+      <p>
+        {required && <small>*</small>}
+        {labelname}
+      </p>
+      <div className={style["input-wrapper"]}>
+        <input
+          value={value}
+          onChange={(e) => {
+            if (handleChange && type === "date")
+              handleChange(new Date(e.target.valueAsNumber).toISOString());
+            else if (handleChange) handleChange(e.target.value);
           }}
           onInput={(e) => {
             if (invalidMessage === "") return;
