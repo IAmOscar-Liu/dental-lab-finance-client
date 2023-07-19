@@ -12,50 +12,50 @@ function CustomTableGroup({
   return (
     <div className={style["table-group"]}>
       <p className={style["table-group-title"]}>{tableGroupData.title}</p>
-      <table
-        className={columnWidths ? style["column-width"] : ""}
-        style={
-          {
-            "--column-widths": columnWidths
-              ? columnWidths
-                  .map((e) => (typeof e === "string" ? e : e + "fr"))
-                  .join(" ")
-              : "",
-          } as CSSProperties
-        }
-      >
-        {tableGroupData.heads ? (
-          <tr>
-            {tableGroupData.heads.map((th, thIdx) => (
-              <th key={thIdx}>{th}</th>
-            ))}
-          </tr>
-        ) : (
-          <tr style={{ display: "none" }}>
-            {Array(tableGroupData.data[0].length)
-              .fill(null)
-              .map((_, thIdx) => (
-                <th key={thIdx}></th>
+      <div className={style["table-group-table"]}>
+        <table
+          className={columnWidths ? style["column-width"] : ""}
+          style={
+            {
+              "--column-widths": columnWidths
+                ? columnWidths
+                    .map((e) => (typeof e === "string" ? e : e + "fr"))
+                    .join(" ")
+                : "",
+            } as CSSProperties
+          }
+        >
+          {tableGroupData.heads ? (
+            <tr>
+              {tableGroupData.heads.map((th, thIdx) => (
+                <th key={thIdx}>{th}</th>
               ))}
-          </tr>
-        )}
-
-        {tableGroupData.data.map((tr, trIdx) => (
-          <tr key={trIdx}>
-            {tr.map((td, tdIdx) => (
-              <td key={tdIdx}>{td}</td>
-            ))}
-          </tr>
-        ))}
-
-        {tableGroupData.tails && (
-          <tr>
-            {tableGroupData.tails.map((th, thIdx) => (
-              <th key={thIdx}>{th}</th>
-            ))}
-          </tr>
-        )}
-      </table>
+            </tr>
+          ) : (
+            <tr style={{ display: "none" }}>
+              {Array(tableGroupData.data[0].length)
+                .fill(null)
+                .map((_, thIdx) => (
+                  <th key={thIdx}></th>
+                ))}
+            </tr>
+          )}
+          {tableGroupData.data.map((tr, trIdx) => (
+            <tr key={trIdx}>
+              {tr.map((td, tdIdx) => (
+                <td key={tdIdx}>{td}</td>
+              ))}
+            </tr>
+          ))}
+          {tableGroupData.tails && (
+            <tr>
+              {tableGroupData.tails.map((th, thIdx) => (
+                <th key={thIdx}>{th}</th>
+              ))}
+            </tr>
+          )}
+        </table>
+      </div>
     </div>
   );
 }

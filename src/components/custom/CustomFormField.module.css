@@ -8,6 +8,12 @@
   font-size: 1.02em;
 }
 
+.text-field :is(input, textarea) {
+  padding: 3px 0.4em;
+  font-size: 1.02em;
+  width: 100%;
+}
+
 .text-field > *:first-child,
 .radio > *:first-child,
 .select > *:first-child {
@@ -47,8 +53,10 @@
 }
 
 .text-field > .input-wrapper > input.disable {
-  border: none;
-  outline: none;
+  border-color: transparent;
+  outline-color: transparent;
+  padding-top: 2px;
+  padding-left: 0;
 }
 
 .radio .radio-group {

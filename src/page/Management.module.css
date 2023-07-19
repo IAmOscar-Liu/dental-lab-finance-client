@@ -15,10 +15,6 @@
   font-weight: 600;
 }
 
-.title-and-search h5 + * {
-  margin-left: auto;
-}
-
 .filter-btns {
   display: flex;
   align-items: center;
@@ -32,14 +28,19 @@
   outline: none;
   border: none;
   border-radius: 0.5em;
-  background-color: #a93d20;
+  background-color: hsl(13, var(--saturation, 68%), var(--brightness, 39%));
   color: white;
   font-size: 1.1em;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.filter-btns button:hover {
+  --brightness: 50%;
 }
 
 .filter-btns button:disabled {
   pointer-events: none;
-  background-color: #d3a296;
+  --brightness: 70%;
 }
 
 .filter-btns button:last-of-type {

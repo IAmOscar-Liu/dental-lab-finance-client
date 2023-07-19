@@ -36,6 +36,8 @@ export const getContractStatusText = (status?: ContractStatus | null) => {
   switch (status) {
     case "CONFIRMING":
       return "確認中";
+    case "SUBMIT_FOR_REVIEW":
+      return "審核中";
     case "EXECUTING":
       return "履行中";
     case "TERMINATE":
@@ -60,6 +62,7 @@ export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
 export const CONTRACT_STATUS_SELECTIONS = [
   "CONFIRMING",
   "EXECUTING",
+  "SUBMIT_FOR_REVIEW",
   "TERMINATE",
   "END",
 ] as const;
@@ -223,4 +226,26 @@ export const contractDetailKeyNameTable: Record<
     text: "Modified Time",
     formatter: (value: any) => formatISOTimeString(value),
   },
+};
+
+export type ContractSubmitType = {
+  id: string;
+  applicant: string;
+  reviewer: string;
+};
+
+export const CONTRACT_OPERATE_DECISION_SELECTIONS = [
+  "approve",
+  "reject",
+  "withdraw",
+] as const;
+
+export type ContractOperateDecision =
+  (typeof CONTRACT_OPERATE_DECISION_SELECTIONS)[number];
+
+export type ContractOperateType = {
+  id: string;
+  decision: ContractOperateDecision;
+  operator: string;
+  remark: string;
 };

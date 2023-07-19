@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   ContractDetail,
+  ContractOperateType,
   ContractQueryResult,
+  ContractSubmitType,
   ContractType,
   CreateContractType,
   LeaseContractDetail,
@@ -60,11 +62,35 @@ export const contractApi = createApi({
       }),
       invalidatesTags: [{ type: "Contract", id: "LIST" }],
     }),
-    updateContractLab: build.mutation<any, UpdateContractType>({
+    updateContract: build.mutation<any, UpdateContractType>({
       query: ({ id, ...rest }) => ({
         url: `/contracts/${rest.type.toLowerCase()}/${id}`,
         method: "PUT",
         body: removeNonContractFields(rest),
+        validateStatus: allowStatusCode304,
+      }),
+      invalidatesTags: (_, __, { id }) => [
+        { type: "Contract", id },
+        { type: "Contract", id: "LIST" },
+      ],
+    }),
+    submitContract: build.mutation<any, ContractSubmitType>({
+      query: ({ id, ...rest }) => ({
+        url: `/contracts/${id}/submit`,
+        method: "POST",
+        body: rest,
+        validateStatus: allowStatusCode304,
+      }),
+      invalidatesTags: (_, __, { id }) => [
+        { type: "Contract", id },
+        { type: "Contract", id: "LIST" },
+      ],
+    }),
+    operateContract: build.mutation<any, ContractOperateType>({
+      query: ({ id, decision, ...rest }) => ({
+        url: `/contracts/${id}/${decision}`,
+        method: "POST",
+        body: rest,
         validateStatus: allowStatusCode304,
       }),
       invalidatesTags: (_, __, { id }) => [
@@ -79,5 +105,7 @@ export const {
   useGetContractsQuery,
   useGetContractQuery,
   useCreateContractMutation,
-  useUpdateContractLabMutation,
+  useUpdateContractMutation,
+  useSubmitContractMutation,
+  useOperateContractMutation,
 } = contractApi;

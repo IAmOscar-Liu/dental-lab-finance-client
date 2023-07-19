@@ -13,7 +13,7 @@ import { useInitialUpdateContractData } from "../../hooks/useInitialUpdateData";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import {
   useGetContractQuery,
-  useUpdateContractLabMutation,
+  useUpdateContractMutation,
 } from "../../redux/contractApi";
 import { resetUpdateContract } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
@@ -34,7 +34,7 @@ function UpdateContractComp({
     contractId: contractId ?? "",
   });
   const [updateContract, { isLoading: isUpdating }] =
-    useUpdateContractLabMutation();
+    useUpdateContractMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
   const initialUpdateData = useInitialUpdateContractData(

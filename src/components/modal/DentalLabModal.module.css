@@ -13,7 +13,7 @@
   top: 50vh;
   left: 50vw;
   width: clamp(800px, 80vw, 1000px);
-  height: min(66.67vh, 800px);
+  height: clamp(600px, 66.67vh, 800px);
   border-radius: 1em;
   transform: translate(-50%, -50%);
   background: white;
@@ -32,7 +32,7 @@ header.header {
 
 header.header > *:has(input[type="text"]) {
   margin-top: 18px;
-  border-width: 1px !important;
+  border-width: 1px;
 }
 
 header.header > h1 {
@@ -67,7 +67,7 @@ header.header > h1 {
 .modal-body-result ul li.header {
   position: sticky;
   top: 0;
-  background-color: #868686;
+  background-color: chocolate;
   color: white;
   pointer-events: none;
   box-shadow: 0 -10px 0 0 white;
@@ -79,7 +79,7 @@ header.header > h1 {
 
 .modal-body-result ul li.active {
   pointer-events: none;
-  background-color: #ee9e95;
+  background-color: #ffc9c3;
 }
 
 .modal-body-result ul li p {
@@ -105,4 +105,29 @@ footer.footer > button {
   color: white;
   padding: 3px 2em;
   border-radius: 0.4em;
+}
+
+footer.footer {
+  border-top: 1px solid #555;
+  display: flex;
+  justify-content: center;
+}
+
+footer.footer > button {
+  margin-block: 12px 18px;
+  align-self: center;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  border: none;
+  outline: none;
+  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
+  color: white;
+  padding: 3px 2em;
+  border-radius: 10000px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+footer.footer > button:hover {
+  --saturation: 80%;
+  --brightness: 40%;
 }

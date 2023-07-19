@@ -50,6 +50,7 @@ function EquipmentManagement() {
       <CustomPageTitle icon={<MdOutlineStickyNote2 />} title="設備管理" />
       <div className={style["title-and-search"]}>
         <h5>設備總覽</h5>
+        <div className="flex"></div>
         <CustomSearchInputText placeholder="查詢設備" />
       </div>
 
@@ -58,7 +59,7 @@ function EquipmentManagement() {
       ) : error ? (
         <div>Error: {JSON.stringify(error)}</div>
       ) : (
-        <div>
+        <>
           <div className={style["filter-btns"]}>
             {EQUIPMENT_DISPLAY_TYPES.map((displayType) => (
               <button
@@ -113,7 +114,7 @@ function EquipmentManagement() {
               ]),
             }}
           />
-        </div>
+        </>
       )}
     </div>
   );

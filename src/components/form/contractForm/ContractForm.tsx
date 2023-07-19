@@ -3,8 +3,9 @@ import { store, useAppDispatch } from "../../../redux/store";
 import {
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
+  getContractStatusText,
+  getContractTypeText,
 } from "../../../types/contractTypes";
-import DentalLabModal from "../../DentalLabModal";
 import {
   CustomInputSelect,
   CustomInputText,
@@ -13,6 +14,7 @@ import {
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
+import DentalLabModal from "../../modal/DentalLabModal";
 import style from "../Form.module.css";
 
 function ContractForm() {
@@ -46,7 +48,6 @@ function ContractForm() {
             labelname="客戶名稱"
             valueSelector={(state) => state.contract.createData.customerName}
             placeholder="請選擇"
-            handleChange={(_) => {}}
             editable={false}
             required
           />
@@ -80,20 +81,14 @@ function ContractForm() {
               )
             }
             radioGroupSelections={CONTRACT_TYPE_SELECTIONS}
-            radioGroupTexts={["服務平台合約", "設備租賃合約", "設備買賣合約"]}
+            radioGroupTexts={CONTRACT_TYPE_SELECTIONS.map(getContractTypeText)}
           />
           <CustomInputSelect
             labelname="合約狀態"
             initialValue={createData.status}
-            handleChange={(value) =>
-              dispatch(
-                setCreateContract({
-                  status: value as (typeof CONTRACT_STATUS_SELECTIONS)[number],
-                })
-              )
-            }
-            groupSelections={CONTRACT_STATUS_SELECTIONS}
-            groupTexts={["確認中", "履行中", "已解約", "已終止"]}
+            handleChange={(_) => {}}
+            groupSelections={[CONTRACT_STATUS_SELECTIONS[0]]}
+            groupTexts={[getContractStatusText(CONTRACT_STATUS_SELECTIONS[0])]}
           />
           <CustomInputText
             labelname="合約簽約日"

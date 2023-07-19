@@ -4,6 +4,7 @@ import {
   DENTAL_REGION_SELECTIONS,
   DENTAL_STATUS_SELECTIONS,
   UpdateDentalLabType,
+  getDentalStatusText,
 } from "../../../types/dentalLabTypes";
 import {
   CustomInputSelect,
@@ -49,7 +50,7 @@ function DentalUpdateForm({ updateData }: { updateData: UpdateDentalLabType }) {
               )
             }
             radioGroupSelections={DENTAL_STATUS_SELECTIONS}
-            radioGroupTexts={["聯繫中", "合約中", "已解約"]}
+            radioGroupTexts={DENTAL_STATUS_SELECTIONS.map(getDentalStatusText)}
           />
           <CustomInputSelect
             labelname="牙技所區域"
@@ -62,7 +63,7 @@ function DentalUpdateForm({ updateData }: { updateData: UpdateDentalLabType }) {
               )
             }
             groupSelections={DENTAL_REGION_SELECTIONS}
-            groupTexts={["EastAsia", "WestUS", "EastUS", "WestEurope"]}
+            groupTexts={[...DENTAL_REGION_SELECTIONS]}
           />
           <CustomInputText
             labelname="牙技所所在國家"

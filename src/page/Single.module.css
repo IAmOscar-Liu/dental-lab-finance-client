@@ -22,8 +22,13 @@
   padding: 3px 1em;
   border-radius: 10000px;
   color: white;
-  background-color: chocolate;
+  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.single-detail > h1 > button:hover {
+  --saturation: 90%;
+  --brightness: 60%;
 }
 
 .single-detail-body {
@@ -35,14 +40,15 @@
   box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
 }
 
-.single-detail-body p {
+.single-detail-body > p,
+.single-detail-body > .btn-groups {
   display: flex;
   justify-content: space-between;
   gap: 16px;
   font-size: 1.12em;
 }
 
-.single-detail-body p.title {
+.single-detail-body > p.title {
   grid-column: 1/-1;
   background-color: chocolate;
   color: white;
@@ -52,15 +58,36 @@
   box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.single-detail-body p span:first-of-type {
+.single-detail-body > .btn-groups {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: center;
+}
+
+.single-detail-body > .btn-groups > button {
+  border: none;
+  outline: none;
+  background-color: hsl(25, var(--saturation, 100%), 66%);
+  color: white;
+  border-radius: 10000px;
+  font-size: 0.9em;
+  padding: 4px 1em;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.single-detail-body > .btn-groups > button:hover {
+  --saturation: 75%;
+}
+
+.single-detail-body > p span:first-of-type {
   white-space: nowrap;
 }
 
-.single-detail-body p span:last-of-type {
+.single-detail-body > p span:last-of-type {
   color: #aa4801;
   text-align: end;
 }
 
-.single-detail-body .equipment-table {
+.single-detail-body > .equipment-table {
   grid-column: 1 / -1;
 }

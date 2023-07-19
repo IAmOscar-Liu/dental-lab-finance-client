@@ -24,13 +24,6 @@
   gap: 12px;
 }
 
-.form-body input:not([type="radio"]),
-.form-body textarea {
-  padding: 3px 0.4em;
-  font-size: 1.02em;
-  width: 100%;
-}
-
 .form-body .left-form,
 .form-body .right-form {
   display: flex;

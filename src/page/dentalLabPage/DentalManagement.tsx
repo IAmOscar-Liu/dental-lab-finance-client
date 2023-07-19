@@ -46,6 +46,7 @@ function DentalManagement() {
       <CustomPageTitle icon={<MdOutlineStickyNote2 />} title="牙技所管理" />
       <div className={style["title-and-search"]}>
         <h5>牙技所總覽</h5>
+        <div className="flex"></div>
         <CustomSearchInputText placeholder="查詢牙技所" />
       </div>
 
@@ -54,7 +55,7 @@ function DentalManagement() {
       ) : error ? (
         <div>Error: {JSON.stringify(error)}</div>
       ) : (
-        <div>
+        <>
           <div className={style["filter-btns"]}>
             {DENTAL_DISPLAY_TYPES.map((displayType) => (
               <button
@@ -74,8 +75,8 @@ function DentalManagement() {
               "max(10ch, 10%)",
               "auto",
               "9ch",
-              "max(9ch, 8%)",
-              "max(10ch, 10%)",
+              "max(9ch, 9%)",
+              "max(12ch, 12%)",
               "max(12ch, 12%)",
               "max(18ch, 18%)",
               "10ch",
@@ -106,7 +107,7 @@ function DentalManagement() {
               ]),
             }}
           />
-        </div>
+        </>
       )}
     </div>
   );

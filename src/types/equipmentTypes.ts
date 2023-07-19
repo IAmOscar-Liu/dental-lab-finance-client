@@ -17,7 +17,7 @@ export enum EquipmentDisplayType {
 export const EQUIPMENT_DISPLAY_TYPES = [
   { type: EquipmentDisplayType.ALL, text: "全部" },
   { type: EquipmentDisplayType.UNKNOWN, text: "未知" },
-  { type: EquipmentDisplayType.AVAILABLE, text: "可用" },
+  { type: EquipmentDisplayType.AVAILABLE, text: "可使用" },
   { type: EquipmentDisplayType.SOLD, text: "已售出" },
   { type: EquipmentDisplayType.LEASING, text: "出租中" },
   { type: EquipmentDisplayType.UNAVAILABLE, text: "無法使用" },
@@ -28,7 +28,7 @@ export const getEquipmentStatusText = (status?: EquipmentStatus | null) => {
     case "Unknown":
       return "未知";
     case "Available":
-      return "可用";
+      return "可使用";
     case "Sold":
       return "已售出";
     case "Leasing":

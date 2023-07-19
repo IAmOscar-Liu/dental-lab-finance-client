@@ -5,11 +5,13 @@ import {
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
   UpdateEquipmentType,
+  getEquipmentStatusText,
 } from "../../../types/equipmentTypes";
 import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
+  CustomInputTextByValue,
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
@@ -27,15 +29,14 @@ function EquipmentUpdateForm({
       <h1>設備資料設定</h1>
       <div className={style["form-body"]}>
         <div className={style["left-form"]}>
-          <CustomInputText
+          <CustomInputTextByValue
             labelname="設備擁有者名稱"
-            initialValue={updateData.ownerName ?? ""}
+            valueSelector={() => updateData.ownerName ?? ""}
             placeholder="請選擇"
-            handleChange={(_) => {}}
             editable={false}
             required
           />
-          <CustomShowModalField text="選擇設備擁有者" disabled={true}>
+          <CustomShowModalField text="選擇設備擁有者" disabled>
             {() => null}
           </CustomShowModalField>
           <CustomRadioField
@@ -50,7 +51,7 @@ function EquipmentUpdateForm({
               )
             }
             radioGroupSelections={EQUIPMENT_OWNER_TYPE_SELECTIONS}
-            radioGroupTexts={["Agent", "DentalLab"]}
+            radioGroupTexts={[...EQUIPMENT_OWNER_TYPE_SELECTIONS]}
           />
           <CustomInputText
             labelname="設備序號"
@@ -72,7 +73,7 @@ function EquipmentUpdateForm({
               )
             }
             radioGroupSelections={EQUIPMENT_TYPE_SELECTIONS}
-            radioGroupTexts={["Unknown", "ART"]}
+            radioGroupTexts={[...EQUIPMENT_TYPE_SELECTIONS]}
           />
           <CustomInputText
             labelname="幣別"
@@ -94,7 +95,7 @@ function EquipmentUpdateForm({
               )
             }
             groupSelections={EQUIPMENT_STATUS_SELECTIONS}
-            groupTexts={["未知", "可用", "已售出", "出租中", "無法使用"]}
+            groupTexts={EQUIPMENT_STATUS_SELECTIONS.map(getEquipmentStatusText)}
           />
           <CustomInputText
             labelname="設備單價"

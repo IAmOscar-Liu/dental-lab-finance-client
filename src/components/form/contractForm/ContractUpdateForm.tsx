@@ -1,14 +1,15 @@
 import { setUpdateContract } from "../../../redux/contractSlice";
 import { useAppDispatch } from "../../../redux/store";
 import {
-  CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
   UpdateContractType,
+  getContractStatusText,
+  getContractTypeText,
 } from "../../../types/contractTypes";
 import {
-  CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
+  CustomInputTextByValue,
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
@@ -44,11 +45,10 @@ function ContractUpdateForm({
             required
             rows={2}
           />
-          <CustomInputText
+          <CustomInputTextByValue
             labelname="客戶名稱"
-            initialValue={updateData.customerName}
+            valueSelector={() => updateData.customerName}
             placeholder="請選擇"
-            handleChange={(_) => {}}
             editable={false}
             required
           />
@@ -60,21 +60,14 @@ function ContractUpdateForm({
             initialValue={updateData.type}
             handleChange={(_) => {}}
             radioGroupSelections={CONTRACT_TYPE_SELECTIONS}
-            radioGroupTexts={["服務平台合約", "設備租賃合約", "設備買賣合約"]}
+            radioGroupTexts={CONTRACT_TYPE_SELECTIONS.map(getContractTypeText)}
             disabled={true}
           />
-          <CustomInputSelect
+          <CustomInputText
             labelname="合約狀態"
-            initialValue={updateData.status}
-            handleChange={(value) =>
-              dispatch(
-                setUpdateContract({
-                  status: value as (typeof CONTRACT_STATUS_SELECTIONS)[number],
-                })
-              )
-            }
-            groupSelections={CONTRACT_STATUS_SELECTIONS}
-            groupTexts={["確認中", "履行中", "已解約", "已終止"]}
+            initialValue={getContractStatusText(updateData.status)}
+            handleChange={(_) => {}}
+            editable={false}
           />
           <CustomInputText
             labelname="合約簽約日"

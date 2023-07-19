@@ -61,9 +61,14 @@
   padding: 3px 1em;
   border-radius: 10000px;
   color: white;
-  background-color: chocolate;
+  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
   position: relative;
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.control-btns button.submit:hover {
+  --saturation: 60%;
+  --brightness: 70%;
 }
 
 .control-btns button.submit .spinner-wrapper {
@@ -74,7 +79,8 @@
 }
 
 .control-btns button.submit:disabled {
-  background-color: rgb(197, 197, 197);
+  --saturation: 0%;
+  --brightness: 70%;
   pointer-events: none;
 }
 

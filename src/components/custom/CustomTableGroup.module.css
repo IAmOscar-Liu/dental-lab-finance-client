@@ -7,64 +7,72 @@
   margin-bottom: 8px;
 }
 
-.table-group table {
-  border-collapse: collapse;
-  width: 100%;
+.table-group-table {
   margin-bottom: 1em;
-  box-shadow: 2px 2px 8px rgba(77, 77, 77, 0.7);
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.table-group table.column-width tr {
+.table-group-table table {
+  border-collapse: collapse;
+  width: max(100%, 840px);
+}
+
+.table-group-table table.column-width tr {
   display: grid;
   grid-template-columns: var(--column-widths);
 }
 
-.table-group table tr:has(th) {
-  background-color: #ed4c21;
+.table-group-table table tr:has(th) {
+  background-color: hsl(13, 85%, 53%);
   color: white;
 }
 
-.table-group table tr:has(td):nth-of-type(2n + 1) {
-  background-color: rgb(247 139 110 / 50%);
+.table-group-table table tr:has(td):nth-of-type(2n + 1) {
+  background-color: hsl(13, 90%, 75%);
 }
 
-.table-group table :is(th, td) {
-  border: 1px solid rgb(179, 179, 179);
+.table-group-table table :is(th, td) {
+  border: 1px solid hsl(0, 0%, 70%);
   text-align: left;
   padding: 8px;
 }
 
-.table-group table td > a {
+.table-group-table table td > a {
   text-decoration: none;
-  color: #a93d20;
+  color: hsl(13, 80%, 40%);
   font-weight: 600;
   position: relative;
   isolation: isolate;
+  transition: color 0.5s;
 }
 
-.table-group table td > a::before {
+.table-group-table table td > a::before {
   content: "";
-  background-color: rgba(229, 105, 105, 0.3);
+  background-color: transparent;
   position: absolute;
-  inset: 0;
+  inset: -4px -0.5em;
   border-radius: 10000px;
-  transform: scale(1.3, 1.5);
   z-index: -1;
-  opacity: 0;
-  transition: opacity 0.5s;
+  transition: background-color 0.5s;
 }
 
-.table-group table td > a:hover::before {
-  opacity: 1;
+.table-group-table table td > a:hover {
+  color: white;
 }
 
-.table-group table.column-width :is(th, td) {
+.table-group-table table td > a:hover::before {
+  background-color: hsl(13, 60%, 50%);
+}
+
+.table-group-table table.column-width :is(th, td) {
   border: none;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.table-group table.column-width td {
+.table-group-table table.column-width td {
   border-bottom: 1px solid rgb(179, 179, 179);
 }

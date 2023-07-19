@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   InputHTMLAttributes,
   ReactNode,
   TextareaHTMLAttributes,
@@ -6,9 +7,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { RootState, useAppSelector } from "../../redux/store";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
-import { RootState, useAppSelector } from "../../redux/store";
 
 interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelname: string;
@@ -264,12 +265,15 @@ export function CustomShowModalField({
     if (disabled) return;
 
     const handler = (e: MouseEvent) => {
+      if (modalRef.current === null) return;
+      const { x, right, y, bottom } = modalRef.current.getBoundingClientRect();
       if (
-        modalRef.current === null ||
-        modalRef.current.contains(e.target as HTMLElement)
-      ) {
+        e.clientX >= x &&
+        e.clientX <= right &&
+        e.clientY >= y &&
+        e.clientY <= bottom
+      )
         return;
-      }
 
       if (isOpen) setIsOpen(false);
     };
@@ -305,6 +309,63 @@ export function CustomShowModalField({
             closeModal,
           })}
       </div>
+    </>
+  );
+}
+
+export function CustomShowModalButton({
+  text,
+  style,
+  children,
+}: {
+  text: string;
+  style?: CSSProperties;
+  children: (value: {
+    modalRef: React.RefObject<HTMLDivElement>;
+    closeModal: () => void;
+  }) => ReactNode;
+}) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (modalRef.current === null) return;
+      const { x, right, y, bottom } = modalRef.current.getBoundingClientRect();
+      if (
+        e.clientX >= x &&
+        e.clientX <= right &&
+        e.clientY >= y &&
+        e.clientY <= bottom
+      )
+        return;
+
+      if (isOpen) setIsOpen(false);
+    };
+
+    document.addEventListener("click", handler);
+
+    return () => document.removeEventListener("click", handler);
+  }, [isOpen]);
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          setTimeout(() => {
+            setIsOpen(true);
+          }, 100);
+        }}
+        style={style}
+      >
+        {text}
+      </button>
+      {isOpen &&
+        children({
+          modalRef,
+          closeModal,
+        })}
     </>
   );
 }

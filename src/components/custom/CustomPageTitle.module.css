@@ -20,7 +20,7 @@
 }
 
 .tailing {
-  color: rgb(171, 75, 6);
+  color: hsl(25, 93%, 35%);
 }
 
 .tailing a {
@@ -29,6 +29,22 @@
   display: flex;
   gap: 6px;
   align-items: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.tailing a::before {
+  content: "";
+  position: absolute;
+  inset: -3px -0.5em;
+  background-color: transparent;
+  transition: background-color 0.5s;
+  border-radius: 10000px;
+  z-index: -1;
+}
+
+.tailing a:hover::before {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .tailing a > svg {

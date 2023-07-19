@@ -4,8 +4,8 @@ import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
+  getEquipmentStatusText,
 } from "../../../types/equipmentTypes";
-import DentalLabModal from "../../DentalLabModal";
 import {
   CustomInputSelect,
   CustomInputText,
@@ -14,6 +14,7 @@ import {
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
+import DentalLabModal from "../../modal/DentalLabModal";
 import style from "../Form.module.css";
 
 function EquipmentForm() {
@@ -65,7 +66,7 @@ function EquipmentForm() {
               )
             }
             radioGroupSelections={EQUIPMENT_OWNER_TYPE_SELECTIONS}
-            radioGroupTexts={["Agent", "DentalLab"]}
+            radioGroupTexts={[...EQUIPMENT_OWNER_TYPE_SELECTIONS]}
           />
           <CustomInputText
             labelname="設備序號"
@@ -87,7 +88,7 @@ function EquipmentForm() {
               )
             }
             radioGroupSelections={EQUIPMENT_TYPE_SELECTIONS}
-            radioGroupTexts={["Unknown", "ART"]}
+            radioGroupTexts={[...EQUIPMENT_TYPE_SELECTIONS]}
           />
           <CustomInputText
             labelname="幣別"
@@ -109,7 +110,7 @@ function EquipmentForm() {
               )
             }
             groupSelections={EQUIPMENT_STATUS_SELECTIONS}
-            groupTexts={["未知", "可用", "已售出", "出租中", "無法使用"]}
+            groupTexts={EQUIPMENT_STATUS_SELECTIONS.map(getEquipmentStatusText)}
           />
           <CustomInputText
             labelname="設備單價"

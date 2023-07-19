@@ -48,6 +48,7 @@ function ContractManagement() {
       <CustomPageTitle icon={<MdOutlineStickyNote2 />} title="合約管理" />
       <div className={style["title-and-search"]}>
         <h5>合約總覽</h5>
+        <div className="flex"></div>
         <CustomSearchInputText placeholder="查詢合約" />
       </div>
 
@@ -56,7 +57,7 @@ function ContractManagement() {
       ) : error ? (
         <div>Error: {JSON.stringify(error)}</div>
       ) : (
-        <div>
+        <>
           <div className={style["filter-btns"]}>
             {CONTRACT_DISPLAY_TYPES.map((displayType) => (
               <button
@@ -75,7 +76,7 @@ function ContractManagement() {
             columnWidths={[
               "max(15ch, 15%)",
               "auto",
-              "15ch",
+              "12ch",
               "12ch",
               "12ch",
               "max(12ch, 12%)",
@@ -95,7 +96,7 @@ function ContractManagement() {
               data: getFilteredData(filter).map((contract) => [
                 contract.contractNo ?? "",
                 contract.name ?? "",
-                getContractTypeText(contract.type),
+                getContractTypeText(contract.type).slice(0, -2),
                 getContractStatusText(contract.status),
                 (contract.signingDate ?? "").slice(0, 10),
                 contract.customerName ?? "",
@@ -107,7 +108,7 @@ function ContractManagement() {
               ]),
             }}
           />
-        </div>
+        </>
       )}
     </div>
   );

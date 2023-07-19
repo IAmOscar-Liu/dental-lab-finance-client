@@ -1,7 +1,9 @@
 import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { CustomShowModalButton } from "../../components/custom/CustomFormField";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import ContractSubmitModal from "../../components/modal/ContractSubmitModal";
 import { useGetContractQuery } from "../../redux/contractApi";
 import {
   contractDetailKeyNameTable,
@@ -11,7 +13,9 @@ import {
   formatDollarString,
   formatISOTimeString,
 } from "../../utils/formatString";
+import { handleDownloadPDF } from "../../utils/handleDownloadPDF";
 import style from "../Single.module.css";
+import ContractOperateModal from "../../components/modal/ContractOperateModal";
 
 function SingleContract() {
   const { contractType, contractId } = useParams();
@@ -79,6 +83,39 @@ function SingleContract() {
               <span>{"備註"}</span>
               <span>{data?.remark ?? ""}</span>
             </p>
+            <div className={style["btn-groups"]}>
+              {data?.status === "CONFIRMING" &&
+                data?.contractNo &&
+                data?.name && (
+                  <CustomShowModalButton text="(業務)送出合約審核">
+                    {({ modalRef, closeModal }) => (
+                      <ContractSubmitModal
+                        closeModal={closeModal}
+                        contractId={data.id}
+                        contractNo={data.contractNo!}
+                        contractName={data.name!}
+                        ref={modalRef}
+                      />
+                    )}
+                  </CustomShowModalButton>
+                )}
+              {data?.status === "SUBMIT_FOR_REVIEW" &&
+                data?.contractNo &&
+                data?.name && (
+                  <CustomShowModalButton text="(財務)進行合約審核">
+                    {({ modalRef, closeModal }) => (
+                      <ContractOperateModal
+                        closeModal={closeModal}
+                        contractId={data.id}
+                        contractNo={data.contractNo!}
+                        contractName={data.name!}
+                        ref={modalRef}
+                      />
+                    )}
+                  </CustomShowModalButton>
+                )}
+              <button onClick={() => {}}>下載合約PDF</button>
+            </div>
 
             {data?.type === "SERVICE" && (
               <>
@@ -127,6 +164,19 @@ function SingleContract() {
                   <span>Billing Modified Time</span>
                   <span>{formatISOTimeString(data.billing?.modifiedTime)}</span>
                 </p>
+                <div className={style["btn-groups"]}>
+                  <button
+                    onClick={() =>
+                      data.billing?.id &&
+                      handleDownloadPDF(
+                        `${process.env.REACT_APP_SERVER_URL}/api/billings/download/${data.billing.id}`,
+                        `contract billing ${data.contractNo}`
+                      )
+                    }
+                  >
+                    下載收費方案PDF
+                  </button>
+                </div>
               </>
             )}
             {data?.type === "SELL" && (
