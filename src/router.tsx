@@ -8,6 +8,7 @@ import NotFound from "./page/NotFound";
 import ContractManagement from "./page/contractPage/ContractManagement";
 import CreateContract from "./page/contractPage/CreateContract";
 import SingleContract from "./page/contractPage/SingleContract";
+import UpdateContract from "./page/contractPage/UpdateContract";
 import CreateDentalLab from "./page/dentalLabPage/CreateDentalLab";
 import DentalManagement from "./page/dentalLabPage/DentalManagement";
 import SingleDentalLab from "./page/dentalLabPage/SingleDentalLab";
@@ -16,7 +17,9 @@ import CreateEquipment from "./page/equipmentPage/CreateEquipment";
 import EquipmentManagement from "./page/equipmentPage/EquipmentManagement";
 import SingleEquipment from "./page/equipmentPage/SingleEquipment";
 import UpdateEquipment from "./page/equipmentPage/UpdateEquipment";
-import UpdateContract from "./page/contractPage/UpdateContract";
+import CreateStock from "./page/stockPage/CreateStock";
+import SingleStock from "./page/stockPage/SingleStock";
+import StockManagement from "./page/stockPage/StockManagement";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +57,22 @@ const router = createBrowserRouter([
       {
         path: "equipment-management/update/:equipmentId",
         element: <UpdateEquipment />,
+      },
+      {
+        path: "stock-management",
+        element: <StockManagement />,
+      },
+      {
+        path: "stock-management/new",
+        element: <CreateStock />,
+      },
+      {
+        path: "stock-management/overview",
+        element: <SingleStock />,
+      },
+      {
+        path: "stock-management/overview/:stockId",
+        element: <SingleStock />,
       },
       {
         path: "dental-lab-management",

@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  ContractConfirmChargeDateType,
   ContractOperateType,
   ContractSubmitType,
   CreateContractType,
@@ -68,6 +69,11 @@ const OPERATE_DATA: Omit<ContractOperateType, "id"> = {
   remark: "",
 };
 
+const CONFIRM_CHARGE_DATE_DATA: Omit<ContractConfirmChargeDateType, "id"> = {
+  operator: "",
+  chargeDate: "",
+};
+
 const contractSlice = createSlice({
   name: "contract",
   initialState: {
@@ -75,6 +81,7 @@ const contractSlice = createSlice({
     updateData: UPDATE_DATA,
     submitData: SUBMIT_DATA,
     operateData: OPERATE_DATA,
+    confirmChargeDateData: CONFIRM_CHARGE_DATE_DATA,
   },
   reducers: {
     setCreateContract: (
@@ -113,6 +120,18 @@ const contractSlice = createSlice({
     resetOperateContract: (state) => {
       state.operateData = { ...OPERATE_DATA };
     },
+    setConfirmChargeDate: (
+      state,
+      action: PayloadAction<Partial<ContractConfirmChargeDateType>>
+    ) => {
+      state.confirmChargeDateData = {
+        ...state.confirmChargeDateData,
+        ...action.payload,
+      };
+    },
+    resetConfirmChargeDate: (state) => {
+      state.confirmChargeDateData = { ...CONFIRM_CHARGE_DATE_DATA };
+    },
   },
 });
 
@@ -125,5 +144,7 @@ export const {
   resetSubmitContract,
   setOperateContract,
   resetOperateContract,
+  setConfirmChargeDate,
+  resetConfirmChargeDate,
 } = contractSlice.actions;
 export default contractSlice.reducer;

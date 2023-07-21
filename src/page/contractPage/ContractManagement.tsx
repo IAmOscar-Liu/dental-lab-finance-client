@@ -1,26 +1,25 @@
 import { useRef, useState } from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { useGetContractsQuery } from "../../redux/contractApi";
-
-import { Link, useNavigate } from "react-router-dom";
 import {
-  CONTRACT_DISPLAY_TYPES,
+  CONTRACT_DISPLAY_TYPE_SELECTIONS,
   ContractDetail,
   ContractDisplayType,
+  getContractStatusPriority,
   getContractStatusText,
+  getContractTypePriority,
   getContractTypeText,
 } from "../../types/contractTypes";
 import style from "../Management.module.css";
 
 function ContractManagement() {
   const { data, isLoading, error } = useGetContractsQuery();
-  const [filter, setFilter] = useState<ContractDisplayType>(
-    ContractDisplayType.ALL
-  );
+  const [filter, setFilter] = useState<ContractDisplayType>("ALL");
   const filterHistory = useRef<Map<any, ContractDetail[]>>();
   const navigate = useNavigate();
 
@@ -31,13 +30,8 @@ function ContractManagement() {
       return filterHistory.current.get(_filter)!;
 
     let results: ContractDetail[] = [];
-    if (_filter === ContractDisplayType.ALL) results = data;
-    if (_filter === ContractDisplayType.PLATFORM)
-      results = data.filter((e) => e.type === "SERVICE");
-    if (_filter === ContractDisplayType.LEASE)
-      results = data.filter((e) => e.type === "LEASE");
-    if (_filter === ContractDisplayType.SELLING)
-      results = data.filter((e) => e.type === "SELL");
+    if (_filter === "ALL") results = data;
+    else results = results = data.filter((e) => e.type === _filter);
 
     filterHistory.current?.set(_filter, results);
     return results;
@@ -59,13 +53,16 @@ function ContractManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {CONTRACT_DISPLAY_TYPES.map((displayType) => (
+            {CONTRACT_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
               <button
-                key={displayType.type}
-                disabled={displayType.type === filter}
-                onClick={() => setFilter(displayType.type)}
+                key={displayType}
+                disabled={displayType === filter}
+                onClick={() => setFilter(displayType)}
               >
-                {displayType.text} ({getFilteredData(displayType.type).length})
+                {displayType === "ALL"
+                  ? "全部"
+                  : getContractTypeText(displayType).slice(0, -2)}{" "}
+                ({getFilteredData(displayType).length})
               </button>
             ))}
             <button onClick={() => navigate("/contract-management/new")}>
@@ -85,13 +82,22 @@ function ContractManagement() {
             tableGroupData={{
               title: "",
               heads: [
-                "合約編號",
-                "合約名稱",
-                "合約種類",
-                "合約狀態",
-                "合約收費日",
-                "客戶名稱",
-                "合約細節",
+                { text: "合約編號", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "合約名稱", sortFn: (a, b) => a.localeCompare(b) },
+                {
+                  text: "合約種類",
+                  sortFn: (a, b) =>
+                    getContractTypePriority(a + "合約") -
+                    getContractTypePriority(b + "合約"),
+                },
+                {
+                  text: "合約狀態",
+                  sortFn: (a, b) =>
+                    getContractStatusPriority(a) - getContractStatusPriority(b),
+                },
+                { text: "簽約日", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "客戶名稱", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "合約細節" },
               ],
               data: getFilteredData(filter).map((contract) => [
                 contract.contractNo ?? "",

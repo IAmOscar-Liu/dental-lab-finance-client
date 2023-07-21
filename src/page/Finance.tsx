@@ -8,7 +8,7 @@ import CustomTableGroup from "../components/custom/CustomTableGroup";
 
 const ORDER_TWD: TableGroupData = {
   title: "幣別: TWD",
-  heads: ["訂單編號", "交易金額"],
+  heads: [{ text: "訂單編號" }, { text: "交易金額" }],
   data: [
     ["S202301010001", "10,000"],
     ["S202301010001", "20,000"],
@@ -18,14 +18,19 @@ const ORDER_TWD: TableGroupData = {
 
 const ORDER_USD: TableGroupData = {
   title: "幣別: USD",
-  heads: ["訂單編號", "交易金額"],
+  heads: [{ text: "訂單編號" }, { text: "交易金額" }],
   data: [["S202301010003", "1,000"]],
   tails: ["小計", "1,000"],
 };
 
 const TRANSACTION_AMOUNT_TRANSFER: TableGroupData = {
   title: "交易金額換算",
-  heads: ["交易幣別", "交易金額", "預設匯率(TWD)", "換算金額(TWD)"],
+  heads: [
+    { text: "交易幣別" },
+    { text: "交易金額" },
+    { text: "預設匯率(TWD)" },
+    { text: "換算金額(TWD)" },
+  ],
   data: [
     ["TWD", "30,000", "1", "30,000"],
     ["USD", "1,000", "30", "30,000"],

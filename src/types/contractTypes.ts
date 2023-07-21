@@ -1,73 +1,68 @@
-import { NonNullableFields, NullableFields } from ".";
+import { NonNullableFields, NullableFields, TextWithFormatter } from ".";
 import {
   formatISODateString,
   formatISOTimeString,
 } from "../utils/formatString";
 import { EquipmentType } from "./equipmentTypes";
 
-export enum ContractDisplayType {
-  ALL,
-  PLATFORM,
-  LEASE,
-  SELLING,
-}
-
-export const CONTRACT_DISPLAY_TYPES = [
-  { type: ContractDisplayType.ALL, text: "全部" },
-  { type: ContractDisplayType.PLATFORM, text: "服務平台" },
-  { type: ContractDisplayType.LEASE, text: "設備租賃" },
-  { type: ContractDisplayType.SELLING, text: "設備買賣" },
-];
-
-export const getContractTypeText = (type?: ContractType | null) => {
-  switch (type) {
-    case "SERVICE":
-      return "服務平台合約";
-    case "LEASE":
-      return "設備租賃合約";
-    case "SELL":
-      return "設備買賣合約";
-    default:
-      return "";
-  }
-};
-
-export const getContractStatusText = (status?: ContractStatus | null) => {
-  switch (status) {
-    case "CONFIRMING":
-      return "確認中";
-    case "SUBMIT_FOR_REVIEW":
-      return "審核中";
-    case "EXECUTING":
-      return "履行中";
-    case "TERMINATE":
-      return "已終止";
-    case "END":
-      return "已解約";
-    default:
-      return "";
-  }
-};
-
-export const getContractType = (type: string | undefined) => {
-  if (CONTRACT_TYPE_SELECTIONS.find((e) => e === type))
-    return type as ContractType;
-  return "SERVICE" as ContractType;
-};
-
 export const CONTRACT_TYPE_SELECTIONS = ["SERVICE", "LEASE", "SELL"] as const;
 
-export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
+export const CONTRACT_DISPLAY_TYPE_SELECTIONS = [
+  "ALL",
+  ...CONTRACT_TYPE_SELECTIONS,
+] as const;
 
 export const CONTRACT_STATUS_SELECTIONS = [
   "CONFIRMING",
-  "EXECUTING",
   "SUBMIT_FOR_REVIEW",
+  "COMPLETED",
+  "EXECUTING",
   "TERMINATE",
   "END",
 ] as const;
 
+export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
+
+export type ContractDisplayType =
+  (typeof CONTRACT_DISPLAY_TYPE_SELECTIONS)[number];
+
 export type ContractStatus = (typeof CONTRACT_STATUS_SELECTIONS)[number];
+
+const contractTypeAndText = CONTRACT_TYPE_SELECTIONS.map((type) => {
+  if (type === "SERVICE") return [type, "服務平台合約"];
+  else if (type === "LEASE") return [type, "設備租賃合約"];
+  return [type, "設備買賣合約"];
+});
+
+const contractStatusAndText = CONTRACT_STATUS_SELECTIONS.map((status) => {
+  if (status === "CONFIRMING") return [status, "確認中"];
+  else if (status === "SUBMIT_FOR_REVIEW") return [status, "審核中"];
+  else if (status === "COMPLETED") return [status, "審核通過"];
+  else if (status === "EXECUTING") return [status, "履行中"];
+  else if (status === "TERMINATE") return [status, "已終止"];
+  return [status, "已解約"];
+});
+
+export const getContractStatusText = (status?: ContractStatus | null) => {
+  return contractStatusAndText.find((el) => el[0] === status)?.[1] || "";
+};
+
+export const getContractStatusPriority = (text: string) => {
+  return contractStatusAndText.findIndex((el) => el[1] === text);
+};
+
+export const getContractType = (type?: string) => {
+  return (contractTypeAndText.find((el) => el[0] === type)?.[0] ||
+    "SERVICE") as ContractType;
+};
+
+export const getContractTypeText = (type?: ContractType | null) => {
+  return contractTypeAndText.find((el) => el[0] === type)?.[1] || "";
+};
+
+export const getContractTypePriority = (text: string) => {
+  return contractTypeAndText.findIndex((el) => el[1] === text);
+};
 export interface ContractQueryResult {
   totalCount: number;
   totalPage: number;
@@ -172,26 +167,26 @@ export const createContractKeyNameTable: Record<
     CreateContractType,
     "serviceContractDetail" | "leaseContractDetail" | "sellContractDetail"
   >,
-  { text: string; formatter: (value: any) => any }
+  TextWithFormatter
 > = {
-  contractNo: { text: "合約編號", formatter: (value: any) => value },
-  name: { text: "合約名稱", formatter: (value: any) => value },
-  customerId: { text: "客戶ID", formatter: (value: any) => value },
-  customerName: { text: "客戶名稱", formatter: (value: any) => value },
+  contractNo: { text: "合約編號" },
+  name: { text: "合約名稱" },
+  customerId: { text: "客戶ID" },
+  customerName: { text: "客戶名稱" },
   type: {
     text: "合約種類",
-    formatter: (value: any) => getContractTypeText(value),
+    formatter: getContractTypeText,
   },
   status: {
     text: "合約狀態",
-    formatter: (value: any) => getContractStatusText(value),
+    formatter: getContractStatusText,
   },
-  attachment: { text: "合約附件", formatter: (value: any) => value },
+  attachment: { text: "合約附件" },
   signingDate: {
     text: "合約簽約日",
-    formatter: (value: any) => formatISODateString(value),
+    formatter: formatISODateString,
   },
-  remark: { text: "備註", formatter: (value: any) => value },
+  remark: { text: "備註" },
 };
 
 export const updateContractKeyNameTable: Record<
@@ -199,32 +194,32 @@ export const updateContractKeyNameTable: Record<
     UpdateContractType,
     "serviceContractDetail" | "leaseContractDetail" | "sellContractDetail"
   >,
-  { text: string; formatter: (value: any) => any }
+  TextWithFormatter
 > = {
-  id: { text: "合約ID", formatter: (value: any) => value },
+  id: { text: "合約ID" },
   ...createContractKeyNameTable,
 };
 
 export const contractDetailKeyNameTable: Record<
   keyof ContractDetail,
-  { text: string; formatter: (value: any) => any }
+  TextWithFormatter
 > = {
   ...updateContractKeyNameTable,
   signingDate: {
     text: "合約簽約日",
-    formatter: (value: any) => formatISODateString(value),
+    formatter: formatISODateString,
   },
   chargeDate: {
     text: "合約收費日",
-    formatter: (value: any) => formatISODateString(value),
+    formatter: formatISODateString,
   },
   createdTime: {
     text: "Created Time",
-    formatter: (value: any) => formatISOTimeString(value),
+    formatter: formatISOTimeString,
   },
   modifiedTime: {
     text: "Modified Time",
-    formatter: (value: any) => formatISOTimeString(value),
+    formatter: formatISOTimeString,
   },
 };
 
@@ -248,4 +243,10 @@ export type ContractOperateType = {
   decision: ContractOperateDecision;
   operator: string;
   remark: string;
+};
+
+export type ContractConfirmChargeDateType = {
+  id: string;
+  operator: string;
+  chargeDate: string;
 };

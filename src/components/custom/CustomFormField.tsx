@@ -10,6 +10,7 @@ import {
 import { RootState, useAppSelector } from "../../redux/store";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
+import { AiFillDelete } from "react-icons/ai";
 
 interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelname: string;
@@ -70,7 +71,7 @@ export function CustomInputText({
           key={initialValue}
           defaultValue={initialValue}
           onChange={(e) => {
-            if (type === "date")
+            if (type === "date" || type === "datetime-local")
               handleChange(new Date(e.target.valueAsNumber).toISOString());
             else handleChange(e.target.value);
           }}
@@ -106,7 +107,7 @@ export function CustomInputTextByValue({
   ...rest
 }: CustomTextFieldByValueProps) {
   const [invalidMessage, setInvalidMessage] = useState("");
-  const value = useAppSelector((state) => valueSelector(state));
+  const value = useAppSelector(valueSelector);
 
   return (
     <label className={style["text-field"]}>
@@ -118,7 +119,7 @@ export function CustomInputTextByValue({
         <input
           value={value}
           onChange={(e) => {
-            if (handleChange && type === "date")
+            if (handleChange && (type === "date" || type === "datetime-local"))
               handleChange(new Date(e.target.valueAsNumber).toISOString());
             else if (handleChange) handleChange(e.target.value);
           }}
@@ -367,5 +368,82 @@ export function CustomShowModalButton({
           closeModal,
         })}
     </>
+  );
+}
+
+export function CustomShowList({
+  labelname,
+  noSelectMessage,
+  valueSelector,
+  renderlist,
+  handleDelete,
+}: {
+  labelname: string;
+  noSelectMessage: string;
+  valueSelector: (state: RootState) => any[];
+  renderlist: (value: any) => ReactNode;
+  handleDelete: (id: string) => void;
+}) {
+  const values = useAppSelector(valueSelector);
+  const [invalidMessage, setInvalidMessage] = useState("");
+
+  useEffect(() => {
+    if (values.length > 0 && invalidMessage.length > 0) setInvalidMessage("");
+    // eslint-disable-next-line
+  }, [values]);
+
+  return (
+    <div className={style["show-list"]}>
+      <p>
+        <small>*</small>
+        {labelname}
+      </p>
+      <div className={style["list"]}>
+        {values.length === 0 ? (
+          <ul>
+            <li>{noSelectMessage}</li>
+            <li>
+              <input
+                type="text"
+                value=""
+                onChange={() => {}}
+                style={{ display: "none" }}
+                onInvalid={(e) =>
+                  setInvalidMessage(
+                    getInvalidMessage(e.target as HTMLInputElement)
+                  )
+                }
+                required
+              />
+              {invalidMessage.length > 0 && (
+                <span
+                  style={{
+                    color: "red",
+                    fontSize: "0.9em",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {invalidMessage}
+                </span>
+              )}
+            </li>
+          </ul>
+        ) : (
+          <ul className={style["with-border"]}>
+            {values.map((value, vIdx) => (
+              <li key={vIdx}>
+                <div>
+                  {renderlist(value)}
+                  <div className="flex"></div>
+                  {value.id && (
+                    <AiFillDelete onClick={() => handleDelete(value.id)} />
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }

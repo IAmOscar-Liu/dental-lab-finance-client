@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  ContractConfirmChargeDateType,
   ContractDetail,
   ContractOperateType,
   ContractQueryResult,
@@ -98,6 +99,18 @@ export const contractApi = createApi({
         { type: "Contract", id: "LIST" },
       ],
     }),
+    confirmChargeDate: build.mutation<any, ContractConfirmChargeDateType>({
+      query: ({ id, ...rest }) => ({
+        url: `/contracts/${id}/confirmCharge`,
+        method: "POST",
+        body: rest,
+        validateStatus: allowStatusCode304,
+      }),
+      invalidatesTags: (_, __, { id }) => [
+        { type: "Contract", id },
+        { type: "Contract", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -108,4 +121,5 @@ export const {
   useUpdateContractMutation,
   useSubmitContractMutation,
   useOperateContractMutation,
+  useConfirmChargeDateMutation,
 } = contractApi;

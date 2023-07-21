@@ -9,9 +9,9 @@
 
 .table-group-table {
   margin-bottom: 1em;
-  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
   overflow-x: auto;
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .table-group-table table {
@@ -22,6 +22,32 @@
 .table-group-table table.column-width tr {
   display: grid;
   grid-template-columns: var(--column-widths);
+}
+
+.table-group-table table.column-width tr th.with-sort {
+  cursor: pointer;
+}
+
+.table-group-table table.column-width tr th.with-sort > span {
+  position: relative;
+}
+
+.table-group-table table.column-width tr th.with-sort > span > svg {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: calc(100% + 5px);
+  top: 50%;
+  transform: translateY(-40%);
+  opacity: 0;
+}
+
+.table-group-table table.column-width tr th.with-sort:hover {
+  background-color: hsl(13, 70%, 70%);
+}
+
+.table-group-table table.column-width tr th.with-sort:hover > span > svg {
+  opacity: 1;
 }
 
 .table-group-table table tr:has(th) {

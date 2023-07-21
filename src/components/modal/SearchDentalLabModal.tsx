@@ -1,12 +1,12 @@
 import { forwardRef } from "react";
-import { DentalLab } from "../../types/dentalLabTypes";
-import style from "./DentalLabModal.module.css";
-import LoadingSpinner from "../LoadingSpinner";
-import { RootState, useAppSelector } from "../../redux/store";
-import CustomSearchInputText from "../custom/CustomSearchInputText";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
+import { RootState, useAppSelector } from "../../redux/store";
+import { DentalLab } from "../../types/dentalLabTypes";
+import LoadingSpinner from "../LoadingSpinner";
+import CustomSearchInputText from "../custom/CustomSearchInputText";
+import style from "./SearchModal.module.css";
 
-const DentalLabModal = forwardRef<
+const SearchDentalLabModal = forwardRef<
   HTMLDivElement,
   {
     closeModal: () => void;
@@ -67,4 +67,4 @@ const DentalLabModal = forwardRef<
   );
 });
 
-export default DentalLabModal;
+export default SearchDentalLabModal;

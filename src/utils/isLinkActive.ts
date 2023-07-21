@@ -17,4 +17,8 @@ export const isLinkActive = ({
   (myPathname.startsWith("/equipment-management/overview") &&
     currentPathname.startsWith("/equipment-management/overview")) ||
   (myPathname.startsWith("/equipment-management/update") &&
-    currentPathname.startsWith("/equipment-management/update"));
+    currentPathname.startsWith("/equipment-management/update")) ||
+  (myPathname.startsWith("/stock-management/overview") &&
+    currentPathname.startsWith("/stock-management/overview")) ||
+  (myPathname.startsWith("/stock-management/update") &&
+    currentPathname.startsWith("/stock-management/update"));

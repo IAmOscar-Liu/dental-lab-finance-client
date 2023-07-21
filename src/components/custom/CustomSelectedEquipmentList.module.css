@@ -1,0 +1,10 @@
+.list {
+  display: grid;
+  grid-template-columns: 6ch auto;
+}
+
+.list > span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

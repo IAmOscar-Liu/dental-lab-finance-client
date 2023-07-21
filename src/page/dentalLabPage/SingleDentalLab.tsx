@@ -56,7 +56,9 @@ function SingleDentalLab() {
                 <p key={key}>
                   <span>{value.text}</span>
                   <span>
-                    {value.formatter(data![key as keyof typeof data])}
+                    {value.formatter
+                      ? value.formatter(data![key as keyof typeof data])
+                      : data![key as keyof typeof data]}
                   </span>
                 </p>
               ))}

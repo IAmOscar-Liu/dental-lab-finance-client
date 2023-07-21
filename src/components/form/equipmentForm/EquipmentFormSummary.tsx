@@ -19,7 +19,9 @@ function EquipmentFormSummary() {
             >
               <span>{value.text}</span>
               <span>
-                {value.formatter(createData[key as keyof typeof createData])}
+                {value.formatter
+                  ? value.formatter(createData[key as keyof typeof createData])
+                  : createData[key as keyof typeof createData]}
               </span>
             </p>
           ))}

@@ -14,7 +14,7 @@ import {
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
-import DentalLabModal from "../../modal/DentalLabModal";
+import SearchDentalLabModal from "../../modal/SearchDentalLabModal";
 import style from "../Form.module.css";
 
 function EquipmentForm() {
@@ -37,7 +37,7 @@ function EquipmentForm() {
           />
           <CustomShowModalField text="選擇設備擁有者">
             {({ modalRef, closeModal }) => (
-              <DentalLabModal
+              <SearchDentalLabModal
                 closeModal={closeModal}
                 ref={modalRef}
                 dentalLabSelector={(state) =>

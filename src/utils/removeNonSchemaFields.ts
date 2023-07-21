@@ -1,3 +1,4 @@
+import { CreateStockType } from "../types/StockTypes";
 import { CreateContractType, UpdateContractType } from "../types/contractTypes";
 
 export const removeUnWantedFields = <T extends {}, K extends keyof T>(
@@ -72,4 +73,15 @@ export const removeNonContractFields = (
   // debugger;
 
   return filteredData;
+};
+
+export const removeNonStockFields = (
+  data: Omit<CreateStockType, "inOutType">
+) => {
+  const { contractName, contractNo, equipments, ...rest } = data;
+
+  const filterData: Record<string, any> = { ...rest };
+  filterData.equipments = equipments.map((eq) => eq.id);
+
+  return filterData;
 };

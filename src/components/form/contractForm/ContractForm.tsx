@@ -14,7 +14,7 @@ import {
   CustomRadioField,
   CustomShowModalField,
 } from "../../custom/CustomFormField";
-import DentalLabModal from "../../modal/DentalLabModal";
+import SearchDentalLabModal from "../../modal/SearchDentalLabModal";
 import style from "../Form.module.css";
 
 function ContractForm() {
@@ -53,7 +53,7 @@ function ContractForm() {
           />
           <CustomShowModalField text="選擇客戶">
             {({ modalRef, closeModal }) => (
-              <DentalLabModal
+              <SearchDentalLabModal
                 closeModal={closeModal}
                 ref={modalRef}
                 dentalLabSelector={(state) =>

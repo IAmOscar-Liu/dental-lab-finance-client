@@ -16,8 +16,13 @@ export type AppLink = {
 };
 
 export type TableGroupData = {
-  title: string;
-  heads?: String[];
+  title: string | JSX.Element;
+  heads?: { text: string; sortFn?: (a: string, b: string) => number }[];
   data: (string | JSX.Element)[][];
   tails?: String[];
+};
+
+export type TextWithFormatter = {
+  text: string;
+  formatter?: (value: any) => any;
 };

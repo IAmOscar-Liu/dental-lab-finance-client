@@ -3,6 +3,8 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { CustomShowModalButton } from "../../components/custom/CustomFormField";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import ContractConfirmChargeDateModal from "../../components/modal/ContractConfirmChargeDateModal";
+import ContractOperateModal from "../../components/modal/ContractOperateModal";
 import ContractSubmitModal from "../../components/modal/ContractSubmitModal";
 import { useGetContractQuery } from "../../redux/contractApi";
 import {
@@ -15,7 +17,6 @@ import {
 } from "../../utils/formatString";
 import { handleDownloadPDF } from "../../utils/handleDownloadPDF";
 import style from "../Single.module.css";
-import ContractOperateModal from "../../components/modal/ContractOperateModal";
 
 function SingleContract() {
   const { contractType, contractId } = useParams();
@@ -75,7 +76,9 @@ function SingleContract() {
                 <p key={key}>
                   <span>{value.text}</span>
                   <span>
-                    {value.formatter(data![key as keyof typeof data])}
+                    {value.formatter
+                      ? value.formatter(data![key as keyof typeof data])
+                      : data![key as keyof typeof data]}
                   </span>
                 </p>
               ))}
@@ -105,6 +108,21 @@ function SingleContract() {
                   <CustomShowModalButton text="(財務)進行合約審核">
                     {({ modalRef, closeModal }) => (
                       <ContractOperateModal
+                        closeModal={closeModal}
+                        contractId={data.id}
+                        contractNo={data.contractNo!}
+                        contractName={data.name!}
+                        ref={modalRef}
+                      />
+                    )}
+                  </CustomShowModalButton>
+                )}
+              {data?.status === "COMPLETED" &&
+                data?.contractNo &&
+                data?.name && (
+                  <CustomShowModalButton text="(審核通過)設定約定收費起始日">
+                    {({ modalRef, closeModal }) => (
+                      <ContractConfirmChargeDateModal
                         closeModal={closeModal}
                         contractId={data.id}
                         contractNo={data.contractNo!}

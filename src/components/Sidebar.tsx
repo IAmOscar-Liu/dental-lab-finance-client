@@ -47,6 +47,24 @@ const LINKS: AppLink[] = [
   },
   {
     icon: <MdOutlineStickyNote2 />,
+    title: "庫存管理",
+    pathname: "/stock-management",
+    hasChildren: true,
+  },
+  {
+    icon: <IoIosAddCircle />,
+    title: "新增入/出庫",
+    pathname: "/stock-management/new",
+    hasChildren: false,
+  },
+  {
+    icon: <AiFillEye />,
+    title: "瀏覽庫存",
+    pathname: "/stock-management/overview",
+    hasChildren: false,
+  },
+  {
+    icon: <MdOutlineStickyNote2 />,
     title: "牙技所管理",
     pathname: "/dental-lab-management",
     hasChildren: true,

@@ -7,18 +7,17 @@ import CustomSearchInputText from "../../components/custom/CustomSearchInputText
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
 import {
-  DENTAL_DISPLAY_TYPES,
+  DENTAL_DISPLAY_TYPE_SELECTIONS,
   DentalDisplayType,
   DentalLab,
+  getDentalStatusPriority,
   getDentalStatusText,
 } from "../../types/dentalLabTypes";
 import style from "../Management.module.css";
 
 function DentalManagement() {
   const { data, isLoading, error } = useGetDentalLabsQuery();
-  const [filter, setFilter] = useState<DentalDisplayType>(
-    DentalDisplayType.ALL
-  );
+  const [filter, setFilter] = useState<DentalDisplayType>("ALL");
   const filterHistory = useRef<Map<any, DentalLab[]>>();
   const navigate = useNavigate();
 
@@ -29,13 +28,8 @@ function DentalManagement() {
       return filterHistory.current.get(_filter)!;
 
     let results: DentalLab[] = [];
-    if (_filter === DentalDisplayType.ALL) results = data;
-    if (_filter === DentalDisplayType.CONTACT)
-      results = data.filter((e) => e.status === "CONTACT");
-    if (_filter === DentalDisplayType.UNDER_CONTRACT)
-      results = data.filter((e) => e.status === "UNDER_CONTRACT");
-    if (_filter === DentalDisplayType.TERMINATED)
-      results = data.filter((e) => e.status === "TERMINATED");
+    if (_filter === "ALL") results = data;
+    else results = data.filter((e) => e.status === _filter);
 
     filterHistory.current?.set(_filter, results);
     return results;
@@ -57,13 +51,16 @@ function DentalManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {DENTAL_DISPLAY_TYPES.map((displayType) => (
+            {DENTAL_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
               <button
-                key={displayType.type}
-                disabled={displayType.type === filter}
-                onClick={() => setFilter(displayType.type)}
+                key={displayType}
+                disabled={displayType === filter}
+                onClick={() => setFilter(displayType)}
               >
-                {displayType.text} ({getFilteredData(displayType.type).length})
+                {displayType === "ALL"
+                  ? "全部"
+                  : getDentalStatusText(displayType)}{" "}
+                ({getFilteredData(displayType).length})
               </button>
             ))}
             <button onClick={() => navigate("/dental-lab-management/new")}>
@@ -84,14 +81,18 @@ function DentalManagement() {
             tableGroupData={{
               title: "",
               heads: [
-                "統一編號",
-                "牙技所名稱",
-                "狀態",
-                "國家",
-                "City/State",
-                "電話",
-                "Email",
-                "查看細節",
+                { text: "統一編號", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "牙技所名稱", sortFn: (a, b) => a.localeCompare(b) },
+                {
+                  text: "狀態",
+                  sortFn: (a, b) =>
+                    getDentalStatusPriority(a) - getDentalStatusPriority(b),
+                },
+                { text: "國家", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "City/State", sortFn: (a, b) => a.localeCompare(b) },
+                { text: "電話" },
+                { text: "Email" },
+                { text: "查看細節" },
               ],
               data: getFilteredData(filter).map((dental) => [
                 dental.uniformNo ?? "",

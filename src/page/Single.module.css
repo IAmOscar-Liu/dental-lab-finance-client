@@ -91,3 +91,8 @@
 .single-detail-body > .equipment-table {
   grid-column: 1 / -1;
 }
+
+.single-detail-body > .equipment-table .table-title {
+  font-size: 1.12em;
+  color: black;
+}

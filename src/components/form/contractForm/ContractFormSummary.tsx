@@ -19,7 +19,11 @@ function ContractFormSummary() {
               style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
             >
               <span>{value.text}</span>
-              <span>{value.formatter((createData as any)[key])}</span>
+              <span>
+                {value.formatter
+                  ? value.formatter((createData as any)[key])
+                  : (createData as any)[key]}
+              </span>
             </p>
           ))}
         </div>

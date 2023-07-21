@@ -16,7 +16,9 @@ function DentalUpdateFormSummary() {
             <p key={key}>
               <span>{value.text}</span>
               <span>
-                {value.formatter(updateData[key as keyof typeof updateData])}
+                {value.formatter
+                  ? value.formatter(updateData[key as keyof typeof updateData])
+                  : updateData[key as keyof typeof updateData]}
               </span>
             </p>
           ))}
