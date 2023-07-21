@@ -7,6 +7,10 @@ import {
   getEquipmentStatusText,
 } from "../../../types/equipmentTypes";
 import {
+  getLocalISOStringFromUTC,
+  getUTCISOStringFromLocal,
+} from "../../../utils/formatString";
+import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
@@ -137,9 +141,15 @@ function EquipmentForm() {
             labelname="保固期限"
             type="date"
             placeholder="yyyy/mm/dd"
-            initialValue={createData.warrantyDate.slice(0, 10)}
+            initialValue={getLocalISOStringFromUTC(
+              createData.warrantyDate
+            ).slice(0, 10)}
             handleChange={(value) =>
-              dispatch(setCreateEquipment({ warrantyDate: value }))
+              dispatch(
+                setCreateEquipment({
+                  warrantyDate: getUTCISOStringFromLocal(value),
+                })
+              )
             }
             required
           />
@@ -147,9 +157,15 @@ function EquipmentForm() {
             labelname="到貨日"
             type="date"
             placeholder="yyyy/mm/dd"
-            initialValue={createData.receivedDate.slice(0, 10)}
+            initialValue={getLocalISOStringFromUTC(
+              createData.receivedDate
+            ).slice(0, 10)}
             handleChange={(value) =>
-              dispatch(setCreateEquipment({ receivedDate: value }))
+              dispatch(
+                setCreateEquipment({
+                  receivedDate: getUTCISOStringFromLocal(value),
+                })
+              )
             }
             required
           />

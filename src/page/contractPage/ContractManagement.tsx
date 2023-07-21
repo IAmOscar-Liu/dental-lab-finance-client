@@ -15,6 +15,7 @@ import {
   getContractTypePriority,
   getContractTypeText,
 } from "../../types/contractTypes";
+import { getLocalISOStringFromUTC as UTC2Local } from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function ContractManagement() {
@@ -104,7 +105,7 @@ function ContractManagement() {
                 contract.name ?? "",
                 getContractTypeText(contract.type).slice(0, -2),
                 getContractStatusText(contract.status),
-                (contract.signingDate ?? "").slice(0, 10),
+                (UTC2Local(contract.signingDate) ?? "").slice(0, 10),
                 contract.customerName ?? "",
                 <Link
                   to={`/contract-management/overview/${contract.type}/${contract.id}`}

@@ -7,6 +7,10 @@ import {
   getContractTypeText,
 } from "../../../types/contractTypes";
 import {
+  getLocalISOStringFromUTC,
+  getUTCISOStringFromLocal,
+} from "../../../utils/formatString";
+import {
   CustomInputSelect,
   CustomInputText,
   CustomInputTextArea,
@@ -94,9 +98,15 @@ function ContractForm() {
             labelname="合約簽約日"
             type="date"
             placeholder="yyyy/mm/dd"
-            initialValue={createData.signingDate.slice(0, 10)}
+            initialValue={getLocalISOStringFromUTC(
+              createData.signingDate
+            ).slice(0, 10)}
             handleChange={(value) =>
-              dispatch(setCreateContract({ signingDate: value }))
+              dispatch(
+                setCreateContract({
+                  signingDate: getUTCISOStringFromLocal(value),
+                })
+              )
             }
             required
           />

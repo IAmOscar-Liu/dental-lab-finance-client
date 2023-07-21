@@ -13,6 +13,7 @@ import {
   getStockTypePriority,
   getStockTypeText,
 } from "../../types/StockTypes";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function StockManagement() {
@@ -88,7 +89,7 @@ function StockManagement() {
               ],
               data: getFilteredData(filter).map((stock) => [
                 getStockTypeText(stock.inOutType),
-                (stock.inOutTime ?? "").slice(0, 10),
+                (getLocalISOStringFromUTC(stock.inOutTime) ?? "").slice(0, 10),
                 stock.operator ?? "",
                 (stock.equipments?.length ?? 0) + "",
                 <Link to={`/stock-management/overview/${stock.id}`}>

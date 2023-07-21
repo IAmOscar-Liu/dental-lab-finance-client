@@ -1,9 +1,14 @@
 import { setCreateStock } from "../../../redux/stockSlice";
 import { store, useAppDispatch } from "../../../redux/store";
 import {
+  EquipmentBriefType,
   STOCK_TYPE_SELECTIONS,
   getStockTypeText,
 } from "../../../types/StockTypes";
+import {
+  getLocalISOStringFromUTC,
+  getUTCISOStringFromLocal,
+} from "../../../utils/formatString";
 import {
   CustomInputText,
   CustomInputTextArea,
@@ -82,9 +87,14 @@ function StockForm() {
           <CustomInputText
             labelname="入/出庫時間"
             type="datetime-local"
-            initialValue={createData.inOutTime.slice(0, 16)}
+            initialValue={getLocalISOStringFromUTC(createData.inOutTime).slice(
+              0,
+              16
+            )}
             handleChange={(value) =>
-              dispatch(setCreateStock({ inOutTime: value }))
+              dispatch(
+                setCreateStock({ inOutTime: getUTCISOStringFromLocal(value) })
+              )
             }
             required
           />
@@ -98,7 +108,7 @@ function StockForm() {
           />
         </div>
         <div className={style["right-form"]}>
-          <CustomShowList
+          <CustomShowList<EquipmentBriefType>
             labelname="入/出庫設備"
             noSelectMessage="未選擇設備"
             valueSelector={(state) => state.stock.createData.equipments}

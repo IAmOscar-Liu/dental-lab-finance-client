@@ -15,6 +15,7 @@ import {
   getEquipmentTypePriority,
   getEquipmentTypeText,
 } from "../../types/equipmentTypes";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function EquipmentManagement() {
@@ -112,8 +113,14 @@ function EquipmentManagement() {
                 getEquipmentStatusText(equipment.equipmentStatus),
                 equipment.currency ?? "",
                 (equipment.amount ?? 0) + "",
-                (equipment.warrantyDate ?? "").slice(0, 10),
-                (equipment.receivedDate ?? "").slice(0, 10),
+                (getLocalISOStringFromUTC(equipment.warrantyDate) ?? "").slice(
+                  0,
+                  10
+                ),
+                (getLocalISOStringFromUTC(equipment.receivedDate) ?? "").slice(
+                  0,
+                  10
+                ),
                 (equipment.serviceLife ?? 0) + " mo",
                 <Link to={`/equipment-management/overview/${equipment.id}`}>
                   查看細節

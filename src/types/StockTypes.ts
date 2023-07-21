@@ -47,10 +47,15 @@ export type StockInOutDetail = {
   equipments: EquipmentDetail[];
 }>;
 
+export type EquipmentBriefType = Pick<
+  EquipmentDetail,
+  "id" | "serialNumber" | "equipmentType"
+>;
+
 export type CreateStockType = NonNullableFields<
   Omit<StockInOutDetail, "id" | "createdTime" | "modifiedTime" | "equipments">
 > & {
-  equipments: Pick<EquipmentDetail, "id" | "serialNumber" | "equipmentType">[];
+  equipments: EquipmentBriefType[];
   contractNo?: string;
   contractName?: string;
 };

@@ -7,10 +7,11 @@ import {
   useRef,
   useState,
 } from "react";
+import { AiFillDelete } from "react-icons/ai";
 import { RootState, useAppSelector } from "../../redux/store";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
-import { AiFillDelete } from "react-icons/ai";
 
 interface CustomTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelname: string;
@@ -72,7 +73,7 @@ export function CustomInputText({
           defaultValue={initialValue}
           onChange={(e) => {
             if (type === "date" || type === "datetime-local")
-              handleChange(new Date(e.target.valueAsNumber).toISOString());
+              handleChange(getLocalISOStringFromUTC(new Date().toISOString()));
             else handleChange(e.target.value);
           }}
           onInput={(e) => {
@@ -120,7 +121,7 @@ export function CustomInputTextByValue({
           value={value}
           onChange={(e) => {
             if (handleChange && (type === "date" || type === "datetime-local"))
-              handleChange(new Date(e.target.valueAsNumber).toISOString());
+              handleChange(getLocalISOStringFromUTC(new Date().toISOString()));
             else if (handleChange) handleChange(e.target.value);
           }}
           onInput={(e) => {
@@ -371,7 +372,7 @@ export function CustomShowModalButton({
   );
 }
 
-export function CustomShowList({
+export function CustomShowList<T extends { id: string }>({
   labelname,
   noSelectMessage,
   valueSelector,
@@ -380,8 +381,8 @@ export function CustomShowList({
 }: {
   labelname: string;
   noSelectMessage: string;
-  valueSelector: (state: RootState) => any[];
-  renderlist: (value: any) => ReactNode;
+  valueSelector: (state: RootState) => T[];
+  renderlist: (value: T) => ReactNode;
   handleDelete: (id: string) => void;
 }) {
   const values = useAppSelector(valueSelector);
@@ -435,9 +436,7 @@ export function CustomShowList({
                 <div>
                   {renderlist(value)}
                   <div className="flex"></div>
-                  {value.id && (
-                    <AiFillDelete onClick={() => handleDelete(value.id)} />
-                  )}
+                  <AiFillDelete onClick={() => handleDelete(value.id)} />
                 </div>
               </li>
             ))}
