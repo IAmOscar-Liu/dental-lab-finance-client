@@ -9,7 +9,10 @@ import {
   getEquipmentStatusText,
   getEquipmentTypeText,
 } from "../../types/equipmentTypes";
-import { getLocalISOStringFromUTC } from "../../utils/formatString";
+import {
+  formatDollarString,
+  getLocalISOStringFromUTC,
+} from "../../utils/formatString";
 import style from "../Single.module.css";
 
 function SingleStock() {
@@ -90,7 +93,7 @@ function SingleStock() {
                       getEquipmentTypeText(equipment.equipmentType),
                       getEquipmentStatusText(equipment.equipmentStatus),
                       equipment.currency ?? "",
-                      (equipment.amount ?? 0) + "",
+                      (formatDollarString(equipment.amount) ?? 0) + "",
                       (
                         getLocalISOStringFromUTC(equipment.warrantyDate) ?? ""
                       ).slice(0, 10),

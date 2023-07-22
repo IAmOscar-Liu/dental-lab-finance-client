@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
@@ -15,7 +16,10 @@ import {
   getEquipmentTypePriority,
   getEquipmentTypeText,
 } from "../../types/equipmentTypes";
-import { getLocalISOStringFromUTC } from "../../utils/formatString";
+import {
+  formatDollarString,
+  getLocalISOStringFromUTC,
+} from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function EquipmentManagement() {
@@ -50,7 +54,7 @@ function EquipmentManagement() {
       {isLoading ? (
         <LoadingSpinner totalHeight={350} />
       ) : error ? (
-        <div>Error: {JSON.stringify(error)}</div>
+        <ErrorMessage error={error} />
       ) : (
         <>
           <div className={style["filter-btns"]}>
@@ -98,7 +102,11 @@ function EquipmentManagement() {
                     getEquipmentStatusPriority(b),
                 },
                 { text: "幣別", sortFn: (a, b) => a.localeCompare(b) },
-                { text: "單價", sortFn: (a, b) => +a - +b },
+                {
+                  text: "單價",
+                  sortFn: (a, b) =>
+                    +a.replace(/[^\d]/g, "") - +b.replace(/[^\d]/g, ""),
+                },
                 { text: "保固期限", sortFn: (a, b) => a.localeCompare(b) },
                 { text: "到貨日", sortFn: (a, b) => a.localeCompare(b) },
                 {
@@ -112,7 +120,7 @@ function EquipmentManagement() {
                 getEquipmentTypeText(equipment.equipmentType),
                 getEquipmentStatusText(equipment.equipmentStatus),
                 equipment.currency ?? "",
-                (equipment.amount ?? 0) + "",
+                (formatDollarString(equipment.amount) ?? 0) + "",
                 (getLocalISOStringFromUTC(equipment.warrantyDate) ?? "").slice(
                   0,
                   10

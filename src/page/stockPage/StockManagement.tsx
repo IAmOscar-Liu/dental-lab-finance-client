@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
@@ -48,7 +49,7 @@ function StockManagement() {
       {isLoading ? (
         <LoadingSpinner totalHeight={350} />
       ) : error ? (
-        <div>Error: {JSON.stringify(error)}</div>
+        <ErrorMessage error={error} />
       ) : (
         <>
           <div className={style["filter-btns"]}>
@@ -77,7 +78,7 @@ function StockManagement() {
                     getStockTypePriority(a) - getStockTypePriority(b),
                 },
                 {
-                  text: "入出庫日期",
+                  text: "入庫/出庫日期",
                   sortFn: (a, b) => a.localeCompare(b),
                 },
                 {

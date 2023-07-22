@@ -6,6 +6,7 @@ import {
   getContractStatusText,
   getContractTypeText,
 } from "../../types/contractTypes";
+import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
 import style from "./SearchModal.module.css";
@@ -31,7 +32,7 @@ const SearchContractModal = forwardRef<
         {isLoading ? (
           <LoadingSpinner totalHeight={250} />
         ) : error ? (
-          <div>{JSON.stringify(error)}</div>
+          <ErrorMessage error={error} style={{ marginInline: 30 }} />
         ) : (
           <div className={style["modal-body-result"]}>
             <ul

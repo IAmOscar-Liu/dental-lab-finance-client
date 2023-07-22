@@ -1,0 +1,16 @@
+.error > h1 {
+  font-size: 1.3em;
+  background-color: red;
+  color: white;
+  padding: 4px 1em;
+  border-radius: 0.5em;
+}
+
+.error-content {
+  margin-top: 10px;
+  padding: 0.6em 1em;
+  color: #555;
+  background-color: white;
+  border-radius: 0.5em;
+  font-size: 1.1em;
+}

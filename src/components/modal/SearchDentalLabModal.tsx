@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
 import { RootState, useAppSelector } from "../../redux/store";
 import { DentalLab } from "../../types/dentalLabTypes";
+import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
 import style from "./SearchModal.module.css";
@@ -27,7 +28,7 @@ const SearchDentalLabModal = forwardRef<
         {isLoading ? (
           <LoadingSpinner totalHeight={250} />
         ) : error ? (
-          <div>{JSON.stringify(error)}</div>
+          <ErrorMessage error={error} style={{ marginInline: 30 }} />
         ) : (
           <div className={style["modal-body-result"]}>
             <ul>

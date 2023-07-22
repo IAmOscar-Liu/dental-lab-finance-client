@@ -1,11 +1,13 @@
 import { CSSProperties, forwardRef } from "react";
 import { useGetEquipmentsQuery } from "../../redux/equipmentApi";
 import { RootState, useAppSelector } from "../../redux/store";
+import { EquipmentBriefType } from "../../types/StockTypes";
 import {
   EquipmentDetail,
   getEquipmentStatusText,
   getEquipmentTypeText,
 } from "../../types/equipmentTypes";
+import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
 import style from "./SearchModal.module.css";
@@ -15,9 +17,7 @@ const SearchEquipmentModal = forwardRef<
   {
     closeModal: () => void;
     onChange: (value: EquipmentDetail) => void;
-    equipmentSelectors: (
-      state: RootState
-    ) => Pick<EquipmentDetail, "id" | "serialNumber">[];
+    equipmentSelectors: (state: RootState) => EquipmentBriefType[];
   }
 >(({ closeModal, onChange, equipmentSelectors }, ref) => {
   const { data, isLoading, error } = useGetEquipmentsQuery();
@@ -33,7 +33,7 @@ const SearchEquipmentModal = forwardRef<
         {isLoading ? (
           <LoadingSpinner totalHeight={250} />
         ) : error ? (
-          <div>{JSON.stringify(error)}</div>
+          <ErrorMessage error={error} style={{ marginInline: 30 }} />
         ) : (
           <div className={style["modal-body-result"]}>
             <ul
