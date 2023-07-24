@@ -19,7 +19,10 @@ const SearchContractModal = forwardRef<
     contractSelectors: (state: RootState) => string;
   }
 >(({ closeModal, onChange, contractSelectors }, ref) => {
-  const { data, isLoading, error } = useGetContractsQuery();
+  const { data, isLoading, error } = useGetContractsQuery({
+    pageSize: 100,
+    pageNo: 1,
+  });
   const contractId = useAppSelector(contractSelectors);
 
   return (
@@ -49,7 +52,7 @@ const SearchContractModal = forwardRef<
                 <p>合約狀態</p>
                 <p>客戶名稱</p>
               </li>
-              {data?.map((contract) => (
+              {data?.result.map((contract) => (
                 <li
                   key={contract.id}
                   className={contract.id === contractId ? style.active : ""}

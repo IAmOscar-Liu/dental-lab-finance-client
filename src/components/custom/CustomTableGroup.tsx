@@ -1,14 +1,16 @@
 import { CSSProperties, useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 import { TableGroupData } from "../../types";
 import style from "./CustomTableGroup.module.css";
 
 function CustomTableGroup({
   tableGroupData,
-  columnWidths,
+  columnWidths = [],
+  tableMinWidth = "auto",
 }: {
   tableGroupData: TableGroupData;
   columnWidths?: (number | string)[];
+  tableMinWidth?: number | string;
 }) {
   const [sortedData, setSortedData] = useState<typeof tableGroupData.data>([]);
   const [sortDirections, setSortDirections] = useState<("asc" | "desc")[]>([]);
@@ -22,17 +24,19 @@ function CustomTableGroup({
 
   return (
     <div className={style["table-group"]}>
-      <div className={style["table-group-title"]}>{tableGroupData.title}</div>
+      {tableGroupData.title && <p>{tableGroupData.title}</p>}
       <div className={style["table-group-table"]}>
         <table
-          className={columnWidths ? style["column-width"] : ""}
+          className={columnWidths.length > 0 ? style["column-width"] : ""}
           style={
             {
               "--column-widths": columnWidths
-                ? columnWidths
-                    .map((e) => (typeof e === "string" ? e : e + "fr"))
-                    .join(" ")
-                : "",
+                .map((e) => (typeof e === "string" ? e : e + "fr"))
+                .join(" "),
+              "--table-min-width":
+                typeof tableMinWidth === "number"
+                  ? tableMinWidth + "px"
+                  : tableMinWidth,
             } as CSSProperties
           }
         >
@@ -62,12 +66,13 @@ function CustomTableGroup({
                 >
                   <span>
                     {text}
-                    {sortFn &&
-                      (sortDirections[thIdx] === "asc" ? (
-                        <FaChevronDown />
-                      ) : (
-                        <FaChevronUp />
-                      ))}
+                    {sortFn && (
+                      <FaChevronDown
+                        className={
+                          sortDirections[thIdx] === "desc" ? style.reverse : ""
+                        }
+                      />
+                    )}
                   </span>
                 </th>
               ))}

@@ -15,7 +15,10 @@ const SearchDentalLabModal = forwardRef<
     dentalLabSelector: (state: RootState) => string;
   }
 >(({ closeModal, onChange, dentalLabSelector }, ref) => {
-  const { data, isLoading, error } = useGetDentalLabsQuery();
+  const { data, isLoading, error } = useGetDentalLabsQuery({
+    pageSize: 100,
+    pageNo: 1,
+  });
   const dentalLabId = useAppSelector(dentalLabSelector);
 
   return (
@@ -38,7 +41,7 @@ const SearchDentalLabModal = forwardRef<
                 <p>City / State</p>
                 <p>牙技所統一編號</p>
               </li>
-              {data?.map((dentalLab) => (
+              {data?.result.map((dentalLab) => (
                 <li
                   key={dentalLab.id}
                   className={

@@ -7,6 +7,8 @@ import {
 } from "../types/equipmentTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
 import { removeUnWantedFields } from "../utils/removeNonSchemaFields";
+import { SearchQueryType } from "../types";
+import { formatSearchQuery } from "../utils/formatString";
 
 export const equipmentApi = createApi({
   reducerPath: "equipmentApi",
@@ -16,16 +18,22 @@ export const equipmentApi = createApi({
   tagTypes: ["Equipment"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getEquipments: build.query<EquipmentDetail[], void>({
-      query: () => ({
-        url: `/equipments?page=0&pageSize=100&sort=createdTime%2Cdesc`,
+    getEquipments: build.query<EquipmentQueryResult, SearchQueryType>({
+      query: (searchQuery) => ({
+        url: `/equipments?${formatSearchQuery(searchQuery)}`,
         validateStatus: allowStatusCode304,
       }),
-      transformResponse: (response: EquipmentQueryResult) => response.result,
+      transformResponse: (response: EquipmentQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Equipment" as const, id })),
+              ...result.result.map(({ id }) => ({
+                type: "Equipment" as const,
+                id,
+              })),
               { type: "Equipment", id: "LIST" },
             ]
           : [{ type: "Equipment", id: "LIST" }],

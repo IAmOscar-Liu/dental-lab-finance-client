@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SearchQueryType } from "../types";
 import {
   ContractConfirmChargeDateType,
-  ContractDetail,
   ContractOperateType,
   ContractQueryResult,
   ContractSubmitType,
@@ -13,6 +13,7 @@ import {
   UpdateContractType,
 } from "../types/contractTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
+import { formatSearchQuery } from "../utils/formatString";
 import { removeNonContractFields } from "../utils/removeNonSchemaFields";
 
 export const contractApi = createApi({
@@ -23,16 +24,22 @@ export const contractApi = createApi({
   tagTypes: ["Contract"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getContracts: build.query<ContractDetail[], void>({
-      query: () => ({
-        url: `/contracts?page=0&pageSize=100&sort=createdTime%2Cdesc`,
+    getContracts: build.query<ContractQueryResult, SearchQueryType>({
+      query: (searchQuery) => ({
+        url: `/contracts?${formatSearchQuery(searchQuery)}`,
         validateStatus: allowStatusCode304,
       }),
-      transformResponse: (response: ContractQueryResult) => response.result,
+      transformResponse: (response: ContractQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Contract" as const, id })),
+              ...result.result.map(({ id }) => ({
+                type: "Contract" as const,
+                id,
+              })),
               { type: "Contract", id: "LIST" },
             ]
           : [{ type: "Contract", id: "LIST" }],

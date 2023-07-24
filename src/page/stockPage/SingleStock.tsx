@@ -1,5 +1,6 @@
 import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
@@ -45,7 +46,7 @@ function SingleStock() {
       {isLoading ? (
         <LoadingSpinner totalHeight={350} />
       ) : error ? (
-        <div>{JSON.stringify(error)}</div>
+        <ErrorMessage error={error} />
       ) : (
         <div className={style["single-detail"]}>
           <h1>
@@ -57,6 +58,7 @@ function SingleStock() {
             </button>
           </h1>
           <div className={style["single-detail-body"]}>
+            <p className={style.title}>出庫/入庫資料</p>
             {Object.entries(stockDetailkeyNameTable)
               .filter(([_, value]) => value.text !== "備註")
               .map(([key, value]) => (
@@ -73,39 +75,42 @@ function SingleStock() {
               <span>{"備註"}</span>
               <span>{data?.remark ?? ""}</span>
             </p>
-            <div className={style["equipment-table"]}>
-              {data?.equipments && data.equipments.length > 0 && (
-                <CustomTableGroup
-                  tableGroupData={{
-                    title: <p className={style["table-title"]}>設備明細</p>,
-                    heads: [
-                      { text: "設備序號" },
-                      { text: "設備種類" },
-                      { text: "設備狀態" },
-                      { text: "幣別" },
-                      { text: "單價" },
-                      { text: "保固期限" },
-                      { text: "到貨日" },
-                      { text: "租期" },
-                    ],
-                    data: data.equipments.map((equipment) => [
-                      equipment.serialNumber ?? "",
-                      getEquipmentTypeText(equipment.equipmentType),
-                      getEquipmentStatusText(equipment.equipmentStatus),
-                      equipment.currency ?? "",
-                      (formatDollarString(equipment.amount) ?? 0) + "",
-                      (
-                        getLocalISOStringFromUTC(equipment.warrantyDate) ?? ""
-                      ).slice(0, 10),
-                      (
-                        getLocalISOStringFromUTC(equipment.receivedDate) ?? ""
-                      ).slice(0, 10),
-                      (equipment.serviceLife ?? 0) + " mo",
-                    ]),
-                  }}
-                />
-              )}
-            </div>
+            {data?.equipments && data.equipments.length > 0 && (
+              <>
+                <p className={style.title}>設備明細</p>
+                <div className={style["detail-table"]}>
+                  <CustomTableGroup
+                    tableMinWidth={800}
+                    tableGroupData={{
+                      heads: [
+                        { text: "設備序號" },
+                        { text: "設備種類" },
+                        { text: "設備狀態" },
+                        { text: "幣別" },
+                        { text: "單價" },
+                        { text: "保固期限" },
+                        { text: "到貨日" },
+                        { text: "租期" },
+                      ],
+                      data: data.equipments.map((equipment) => [
+                        equipment.serialNumber ?? "",
+                        getEquipmentTypeText(equipment.equipmentType),
+                        getEquipmentStatusText(equipment.equipmentStatus),
+                        equipment.currency ?? "",
+                        (formatDollarString(equipment.amount) ?? 0) + "",
+                        (
+                          getLocalISOStringFromUTC(equipment.warrantyDate) ?? ""
+                        ).slice(0, 10),
+                        (
+                          getLocalISOStringFromUTC(equipment.receivedDate) ?? ""
+                        ).slice(0, 10),
+                        (equipment.serviceLife ?? 0) + " mo",
+                      ]),
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

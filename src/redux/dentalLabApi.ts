@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SearchQueryType } from "../types";
 import {
   CreateDentalLabType,
   DentalLab,
@@ -6,6 +7,7 @@ import {
   UpdateDentalLabType,
 } from "../types/dentalLabTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
+import { formatSearchQuery } from "../utils/formatString";
 
 export const dentalLabApi = createApi({
   reducerPath: "dentalLabApi",
@@ -15,16 +17,22 @@ export const dentalLabApi = createApi({
   tagTypes: ["DentalLab"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getDentalLabs: build.query<DentalLab[], void>({
-      query: () => ({
-        url: `/dental-labs?page=0&pageSize=100&sort=createdTime,desc`,
+    getDentalLabs: build.query<DentalLabQueryResult, SearchQueryType>({
+      query: (searchQuery) => ({
+        url: `/dental-labs?${formatSearchQuery(searchQuery)}`,
         validateStatus: allowStatusCode304,
       }),
-      transformResponse: (response: DentalLabQueryResult) => response.result,
+      transformResponse: (response: DentalLabQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "DentalLab" as const, id })),
+              ...result.result.map(({ id }) => ({
+                type: "DentalLab" as const,
+                id,
+              })),
               { type: "DentalLab", id: "LIST" },
             ]
           : [{ type: "DentalLab", id: "LIST" }],

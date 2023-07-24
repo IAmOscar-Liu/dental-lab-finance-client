@@ -1,3 +1,5 @@
+import { SearchQueryType } from "../types";
+
 export const formatISODateString = (value: any) => {
   if (typeof value !== "string") return value ?? "";
 
@@ -77,4 +79,14 @@ export const formatDataISOString = (data: Record<string, any>) => {
   }
 
   return data;
+};
+
+export const formatSearchQuery = (query: SearchQueryType) => {
+  const page = (query?.pageNo || 1) - 1;
+  const pageSize = query?.pageSize || 10;
+  const sortBy = query?.sortBy || [{ text: "createdTime", method: "desc" }];
+
+  return `page=${page}&pageSize=${pageSize}&sort=${
+    sortBy[0].text + "%2C" + sortBy[0].method
+  }`;
 };

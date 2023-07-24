@@ -1,5 +1,6 @@
 import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { CustomShowModalButton } from "../../components/custom/CustomFormField";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
@@ -50,7 +51,7 @@ function SingleContract() {
       {isLoading ? (
         <LoadingSpinner totalHeight={350} />
       ) : error ? (
-        <div>{JSON.stringify(error)}</div>
+        <ErrorMessage error={error} />
       ) : (
         <div className={style["single-detail"]}>
           <h1>
@@ -117,7 +118,7 @@ function SingleContract() {
                     )}
                   </CustomShowModalButton>
                 )}
-              {data?.status === "COMPLETED" &&
+              {data?.status === "EFFECTED" &&
                 data?.contractNo &&
                 data?.name && (
                   <CustomShowModalButton text="(審核通過)設定約定收費起始日">

@@ -15,7 +15,7 @@ export const CONTRACT_DISPLAY_TYPE_SELECTIONS = [
 export const CONTRACT_STATUS_SELECTIONS = [
   "CONFIRMING",
   "SUBMIT_FOR_REVIEW",
-  "COMPLETED",
+  "EFFECTED",
   "EXECUTING",
   "TERMINATE",
   "END",
@@ -37,7 +37,7 @@ const contractTypeAndText = CONTRACT_TYPE_SELECTIONS.map((type) => {
 const contractStatusAndText = CONTRACT_STATUS_SELECTIONS.map((status) => {
   if (status === "CONFIRMING") return [status, "確認中"];
   else if (status === "SUBMIT_FOR_REVIEW") return [status, "審核中"];
-  else if (status === "COMPLETED") return [status, "審核通過"];
+  else if (status === "EFFECTED") return [status, "已生效"];
   else if (status === "EXECUTING") return [status, "履行中"];
   else if (status === "TERMINATE") return [status, "已終止"];
   return [status, "已解約"];

@@ -7,6 +7,7 @@
   margin-block: 16px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .single-detail > h1 > span {
@@ -16,6 +17,7 @@
 }
 
 .single-detail > h1 > button {
+  margin-left: auto;
   border: none;
   outline: none;
   font-size: 0.6em;
@@ -36,7 +38,7 @@
   padding: 32px 28px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 24px;
+  gap: 20px 24px;
   box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -88,11 +90,7 @@
   text-align: end;
 }
 
-.single-detail-body > .equipment-table {
+.single-detail-body > .detail-table {
   grid-column: 1 / -1;
-}
-
-.single-detail-body > .equipment-table .table-title {
-  font-size: 1.12em;
-  color: black;
+  margin-top: -16px;
 }

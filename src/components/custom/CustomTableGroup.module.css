@@ -2,21 +2,24 @@
   margin-top: 12px;
 }
 
-.table-group-title {
+.table-group > p {
   color: #555;
-  margin-bottom: 8px;
 }
 
 .table-group-table {
-  margin-bottom: 1em;
+  margin-block: 8px 1em;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
   overflow-x: auto;
+}
+
+.table-group-table:has(.column-width) {
   border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .table-group-table table {
   border-collapse: collapse;
-  width: max(100%, 840px);
+  width: 100%;
+  min-width: var(--table-min-width, auto);
 }
 
 .table-group-table table.column-width tr {
@@ -34,20 +37,20 @@
 
 .table-group-table table.column-width tr th.with-sort > span > svg {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   left: calc(100% + 5px);
   top: 50%;
-  transform: translateY(-40%);
-  opacity: 0;
+  transform: translateY(-35%);
+  transition: transform 0.5s;
+}
+
+.table-group-table table.column-width tr th.with-sort > span > svg.reverse {
+  transform: translateY(-35%) rotate(180deg);
 }
 
 .table-group-table table.column-width tr th.with-sort:hover {
   background-color: hsl(13, 70%, 70%);
-}
-
-.table-group-table table.column-width tr th.with-sort:hover > span > svg {
-  opacity: 1;
 }
 
 .table-group-table table tr:has(th) {

@@ -16,7 +16,7 @@ export type AppLink = {
 };
 
 export type TableGroupData = {
-  title: string | JSX.Element;
+  title?: string | JSX.Element;
   heads?: { text: string; sortFn?: (a: string, b: string) => number }[];
   data: (string | JSX.Element)[][];
   tails?: String[];
@@ -25,4 +25,23 @@ export type TableGroupData = {
 export type TextWithFormatter = {
   text: string;
   formatter?: (value: any) => any;
+};
+
+export const SEARCH_QUERY_PAGE_SIZE_SELECTIONS = [3, 10, 25, 50, 100] as const;
+
+export type PageSize = (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number];
+
+export type SearchQueryType =
+  | Partial<{
+      pageNo: number;
+      pageSize: PageSize;
+      sortBy: { text: string; method: "asc" | "desc" }[];
+    }>
+  | undefined;
+
+export type PaginationValueType = {
+  totalCount: number;
+  totalPage: number;
+  pageNo: number;
+  pageSize: PageSize;
 };

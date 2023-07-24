@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import CustomQueryController from "../../components/custom/CustomQueryController";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetContractsQuery } from "../../redux/contractApi";
+import { useGetContractsPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import {
   CONTRACT_DISPLAY_TYPE_SELECTIONS,
   ContractDetail,
@@ -20,7 +21,8 @@ import { getLocalISOStringFromUTC as UTC2Local } from "../../utils/formatString"
 import style from "../Management.module.css";
 
 function ContractManagement() {
-  const { data, isLoading, error } = useGetContractsQuery();
+  const { value, updateValue, data, isLoading, isFetching, error } =
+    useGetContractsPaginationQuery({ pageNo: 1, pageSize: 10 });
   const [filter, setFilter] = useState<ContractDisplayType>("ALL");
   const filterHistory = useRef<Map<any, ContractDetail[]>>();
   const navigate = useNavigate();
@@ -32,8 +34,8 @@ function ContractManagement() {
       return filterHistory.current.get(_filter)!;
 
     let results: ContractDetail[] = [];
-    if (_filter === "ALL") results = data;
-    else results = results = data.filter((e) => e.type === _filter);
+    if (_filter === "ALL") results = data.result;
+    else results = results = data.result.filter((e) => e.type === _filter);
 
     filterHistory.current?.set(_filter, results);
     return results;
@@ -71,51 +73,57 @@ function ContractManagement() {
               新增合約
             </button>
           </div>
-          <CustomTableGroup
-            columnWidths={[
-              "max(15ch, 15%)",
-              "auto",
-              "12ch",
-              "12ch",
-              "12ch",
-              "max(12ch, 12%)",
-              "10ch",
-            ]}
-            tableGroupData={{
-              title: "",
-              heads: [
-                { text: "合約編號", sortFn: (a, b) => a.localeCompare(b) },
-                { text: "合約名稱", sortFn: (a, b) => a.localeCompare(b) },
-                {
-                  text: "合約種類",
-                  sortFn: (a, b) =>
-                    getContractTypePriority(a + "合約") -
-                    getContractTypePriority(b + "合約"),
-                },
-                {
-                  text: "合約狀態",
-                  sortFn: (a, b) =>
-                    getContractStatusPriority(a) - getContractStatusPriority(b),
-                },
-                { text: "簽約日", sortFn: (a, b) => a.localeCompare(b) },
-                { text: "客戶名稱", sortFn: (a, b) => a.localeCompare(b) },
-                { text: "合約細節" },
-              ],
-              data: getFilteredData(filter).map((contract) => [
-                contract.contractNo ?? "",
-                contract.name ?? "",
-                getContractTypeText(contract.type).slice(0, -2),
-                getContractStatusText(contract.status),
-                (UTC2Local(contract.signingDate) ?? "").slice(0, 10),
-                contract.customerName ?? "",
-                <Link
-                  to={`/contract-management/overview/${contract.type}/${contract.id}`}
-                >
-                  查看細節
-                </Link>,
-              ]),
-            }}
-          />
+          <CustomQueryController value={value} updateValue={updateValue} />
+          {isFetching ? (
+            <LoadingSpinner totalHeight={350} />
+          ) : (
+            <CustomTableGroup
+              tableMinWidth={840}
+              columnWidths={[
+                "max(15ch, 15%)",
+                "auto",
+                "12ch",
+                "12ch",
+                "12ch",
+                "max(12ch, 12%)",
+                "10ch",
+              ]}
+              tableGroupData={{
+                heads: [
+                  { text: "合約編號", sortFn: (a, b) => a.localeCompare(b) },
+                  { text: "合約名稱", sortFn: (a, b) => a.localeCompare(b) },
+                  {
+                    text: "合約種類",
+                    sortFn: (a, b) =>
+                      getContractTypePriority(a + "合約") -
+                      getContractTypePriority(b + "合約"),
+                  },
+                  {
+                    text: "合約狀態",
+                    sortFn: (a, b) =>
+                      getContractStatusPriority(a) -
+                      getContractStatusPriority(b),
+                  },
+                  { text: "簽約日", sortFn: (a, b) => a.localeCompare(b) },
+                  { text: "客戶名稱", sortFn: (a, b) => a.localeCompare(b) },
+                  { text: "查看細節" },
+                ],
+                data: getFilteredData(filter).map((contract) => [
+                  contract.contractNo ?? "",
+                  contract.name ?? "",
+                  getContractTypeText(contract.type).slice(0, -2),
+                  getContractStatusText(contract.status),
+                  (UTC2Local(contract.signingDate) ?? "").slice(0, 10),
+                  contract.customerName ?? "",
+                  <Link
+                    to={`/contract-management/overview/${contract.type}/${contract.id}`}
+                  >
+                    查看細節
+                  </Link>,
+                ]),
+              }}
+            />
+          )}
         </>
       )}
     </div>

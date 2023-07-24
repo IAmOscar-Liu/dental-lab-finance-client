@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SearchQueryType } from "../types";
 import {
   CreateStockType,
   StockInOutDetail,
@@ -6,6 +7,7 @@ import {
   UpdateStockType,
 } from "../types/StockTypes";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
+import { formatSearchQuery } from "../utils/formatString";
 import { removeNonStockFields } from "../utils/removeNonSchemaFields";
 
 export const stockApi = createApi({
@@ -16,16 +18,22 @@ export const stockApi = createApi({
   tagTypes: ["Stock"],
   keepUnusedDataFor: 60,
   endpoints: (build) => ({
-    getStocks: build.query<StockInOutDetail[], void>({
-      query: () => ({
-        url: `/equipments-inout?page=0&pageSize=100&sort=createdTime%2Cdesc`,
+    getStocks: build.query<StockQueryResult, SearchQueryType>({
+      query: (searchQuery) => ({
+        url: `/equipments-inout?${formatSearchQuery(searchQuery)}`,
         validateStatus: allowStatusCode304,
       }),
-      transformResponse: (response: StockQueryResult) => response.result,
+      transformResponse: (response: StockQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Stock" as const, id })),
+              ...result.result.map(({ id }) => ({
+                type: "Stock" as const,
+                id,
+              })),
               { type: "Stock", id: "LIST" },
             ]
           : [{ type: "Stock", id: "LIST" }],

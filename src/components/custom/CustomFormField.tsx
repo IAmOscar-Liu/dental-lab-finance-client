@@ -73,7 +73,11 @@ export function CustomInputText({
           defaultValue={initialValue}
           onChange={(e) => {
             if (type === "date" || type === "datetime-local")
-              handleChange(getLocalISOStringFromUTC(new Date().toISOString()));
+              handleChange(
+                getLocalISOStringFromUTC(
+                  new Date(e.target.valueAsNumber).toISOString()
+                )
+              );
             else handleChange(e.target.value);
           }}
           onInput={(e) => {
@@ -121,7 +125,11 @@ export function CustomInputTextByValue({
           value={value}
           onChange={(e) => {
             if (handleChange && (type === "date" || type === "datetime-local"))
-              handleChange(getLocalISOStringFromUTC(new Date().toISOString()));
+              handleChange(
+                getLocalISOStringFromUTC(
+                  new Date(e.target.valueAsNumber).toISOString()
+                )
+              );
             else if (handleChange) handleChange(e.target.value);
           }}
           onInput={(e) => {

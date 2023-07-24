@@ -120,7 +120,7 @@ export const createEquipmentkeyNameTable: Record<
     text: "設備到貨日",
     formatter: formatISODateString,
   },
-  serviceLife: { text: "設備使用長度(月)" },
+  serviceLife: { text: "設備租賃時間", formatter: (value) => value + " 個月" },
   remark: { text: "備註" },
 };
 

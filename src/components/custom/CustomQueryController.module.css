@@ -1,0 +1,91 @@
+.controller {
+  padding: 5px 16px;
+  margin-block: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  background-color: rgb(244, 191, 177);
+  font-size: 1.02em;
+  flex-wrap: wrap;
+  gap: 12px 8px;
+}
+
+.select-num-of-entries select {
+  width: 7ch;
+  font-size: 0.9em;
+}
+
+.select-page-btns {
+  display: flex;
+}
+
+.select-page-btns > svg {
+  transform: translateY(4px);
+}
+
+.select-page-btns > button {
+  margin-inline: 1px;
+  font-size: 0.9em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 3ch;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: hsl(13, var(--saturation, 68%), var(--brightness, 39%));
+  padding-block: 3px;
+  color: white;
+}
+
+.select-page-btns > button:hover {
+  --brightness: 50%;
+}
+
+.select-page-btns > button.active {
+  pointer-events: none;
+  --brightness: 70%;
+}
+
+.select-page-btns > button:is(.prev, .next) {
+  background-color: transparent;
+  position: relative;
+  isolation: isolate;
+}
+
+.select-page-btns > button:is(.prev, .next)::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.select-page-btns > button:is(.prev, .next):hover::before {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.select-page-btns > button:is(.prev, .next) > svg {
+  transform: translateY(1px);
+  border-radius: 50%;
+}
+
+.select-page-btns > button.next > svg {
+  transform: rotate(180deg) translateY(-1px);
+}
+
+.select-page {
+  display: flex;
+}
+
+.select-page > form {
+  margin-left: 6px;
+}
+
+.select-page > form > input[type="number"] {
+  padding-left: 3px;
+  font-size: 0.9em;
+  width: calc(3px + 5ch);
+}

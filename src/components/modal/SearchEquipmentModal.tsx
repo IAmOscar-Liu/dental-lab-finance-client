@@ -11,6 +11,7 @@ import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
 import style from "./SearchModal.module.css";
+import { formatDollarString } from "../../utils/formatString";
 
 const SearchEquipmentModal = forwardRef<
   HTMLDivElement,
@@ -20,7 +21,10 @@ const SearchEquipmentModal = forwardRef<
     equipmentSelectors: (state: RootState) => EquipmentBriefType[];
   }
 >(({ closeModal, onChange, equipmentSelectors }, ref) => {
-  const { data, isLoading, error } = useGetEquipmentsQuery();
+  const { data, isLoading, error } = useGetEquipmentsQuery({
+    pageNo: 1,
+    pageSize: 100,
+  });
   const equipments = useAppSelector(equipmentSelectors);
 
   return (
@@ -47,10 +51,10 @@ const SearchEquipmentModal = forwardRef<
                 <p>設備序號</p>
                 <p>設備種類</p>
                 <p>設備狀態</p>
-                <p>幣別/單價</p>
+                <p>幣別 & 單價</p>
                 <p>租期</p>
               </li>
-              {data?.map((equipment) => (
+              {data?.result.map((equipment) => (
                 <li
                   key={equipment.id}
                   className={
@@ -64,9 +68,12 @@ const SearchEquipmentModal = forwardRef<
                   <p>{getEquipmentTypeText(equipment.equipmentType)}</p>
                   <p>{getEquipmentStatusText(equipment.equipmentStatus)}</p>
                   <p>
-                    {[equipment.currency, equipment.amount]
+                    {[
+                      equipment.currency,
+                      formatDollarString(equipment.amount).slice(2),
+                    ]
                       .filter((e) => !!e)
-                      .join(" / ")}
+                      .join(" ")}
                   </p>
                   <p>{(equipment.serviceLife ?? 0) + " mo"}</p>
                 </li>
