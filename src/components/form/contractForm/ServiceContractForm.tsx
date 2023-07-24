@@ -3,6 +3,8 @@ import { store, useAppDispatch } from "../../../redux/store";
 import {
   BILLING_PERIOD_UNIT_SELECTIONS,
   BILLING_UNIT,
+  BillingPeriodUnit,
+  BillingUnit,
 } from "../../../types/contractTypes";
 import {
   CustomInputText,
@@ -74,8 +76,7 @@ function ServiceContractForm() {
                     ...serviceContractDetail,
                     billing: {
                       ...serviceContractDetail.billing,
-                      periodUnit:
-                        value as (typeof BILLING_PERIOD_UNIT_SELECTIONS)[number],
+                      periodUnit: value as BillingPeriodUnit,
                     },
                   },
                 })
@@ -144,7 +145,7 @@ function ServiceContractForm() {
                     ...serviceContractDetail,
                     billing: {
                       ...serviceContractDetail.billing,
-                      billingUnit: value as (typeof BILLING_UNIT)[number],
+                      billingUnit: value as BillingUnit,
                     },
                   },
                 })

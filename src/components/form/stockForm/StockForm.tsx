@@ -3,6 +3,7 @@ import { store, useAppDispatch } from "../../../redux/store";
 import {
   EquipmentBriefType,
   STOCK_TYPE_SELECTIONS,
+  StockType,
   getStockTypeText,
 } from "../../../types/StockTypes";
 import {
@@ -69,7 +70,7 @@ function StockForm() {
             handleChange={(value) =>
               dispatch(
                 setCreateStock({
-                  inOutType: value as (typeof STOCK_TYPE_SELECTIONS)[number],
+                  inOutType: value as StockType,
                 })
               )
             }

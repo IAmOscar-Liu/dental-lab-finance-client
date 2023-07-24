@@ -3,6 +3,8 @@ import { useAppDispatch } from "../../../redux/store";
 import {
   DENTAL_REGION_SELECTIONS,
   DENTAL_STATUS_SELECTIONS,
+  DentalRegion,
+  DentalStatus,
   UpdateDentalLabType,
   getDentalStatusText,
 } from "../../../types/dentalLabTypes";
@@ -45,7 +47,7 @@ function DentalUpdateForm({ updateData }: { updateData: UpdateDentalLabType }) {
             handleChange={(value) =>
               dispatch(
                 setUpdateDentalLab({
-                  status: value as (typeof DENTAL_STATUS_SELECTIONS)[number],
+                  status: value as DentalStatus,
                 })
               )
             }
@@ -58,7 +60,7 @@ function DentalUpdateForm({ updateData }: { updateData: UpdateDentalLabType }) {
             handleChange={(value) =>
               dispatch(
                 setUpdateDentalLab({
-                  region: value as (typeof DENTAL_REGION_SELECTIONS)[number],
+                  region: value as DentalRegion,
                 })
               )
             }

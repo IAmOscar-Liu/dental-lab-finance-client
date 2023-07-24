@@ -1,7 +1,10 @@
 import { setUpdateContract } from "../../../redux/contractSlice";
 import { store, useAppDispatch } from "../../../redux/store";
 import { UpdateContractType } from "../../../types/contractTypes";
-import { EQUIPMENT_TYPE_SELECTIONS } from "../../../types/equipmentTypes";
+import {
+  EQUIPMENT_TYPE_SELECTIONS,
+  EquipmentType,
+} from "../../../types/equipmentTypes";
 import {
   CustomInputSelect,
   CustomInputText,
@@ -33,8 +36,7 @@ function LeaseContractUpdateForm({
                 setUpdateContract({
                   leaseContractDetail: {
                     ...store.getState().contract.updateData.leaseContractDetail,
-                    equipmentType:
-                      value as (typeof EQUIPMENT_TYPE_SELECTIONS)[number],
+                    equipmentType: value as EquipmentType,
                   },
                 })
               )

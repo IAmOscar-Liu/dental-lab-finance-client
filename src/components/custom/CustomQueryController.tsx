@@ -2,6 +2,7 @@ import { useMemo, useRef } from "react";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { GrPrevious } from "react-icons/gr";
 import {
+  PageSize,
   PaginationValueType,
   SEARCH_QUERY_PAGE_SIZE_SELECTIONS,
 } from "../../types";
@@ -51,8 +52,7 @@ function CustomQueryController({
           value={pageSize + ""}
           onChange={(e) =>
             updateValue({
-              pageSize: +e.target
-                .value as (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number],
+              pageSize: +e.target.value as PageSize,
             })
           }
         >

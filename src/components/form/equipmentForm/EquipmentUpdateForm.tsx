@@ -4,6 +4,9 @@ import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
+  EquipmentOwnerType,
+  EquipmentStatus,
+  EquipmentType,
   UpdateEquipmentType,
   getEquipmentStatusText,
 } from "../../../types/equipmentTypes";
@@ -49,8 +52,7 @@ function EquipmentUpdateForm({
             handleChange={(value) =>
               dispatch(
                 setUpdateEquipment({
-                  ownerType:
-                    value as (typeof EQUIPMENT_OWNER_TYPE_SELECTIONS)[number],
+                  ownerType: value as EquipmentOwnerType,
                 })
               )
             }
@@ -71,8 +73,7 @@ function EquipmentUpdateForm({
             handleChange={(value) =>
               dispatch(
                 setUpdateEquipment({
-                  equipmentType:
-                    value as (typeof EQUIPMENT_TYPE_SELECTIONS)[number],
+                  equipmentType: value as EquipmentType,
                 })
               )
             }
@@ -93,8 +94,7 @@ function EquipmentUpdateForm({
             handleChange={(value) =>
               dispatch(
                 setUpdateEquipment({
-                  equipmentStatus:
-                    value as (typeof EQUIPMENT_STATUS_SELECTIONS)[number],
+                  equipmentStatus: value as EquipmentStatus,
                 })
               )
             }
