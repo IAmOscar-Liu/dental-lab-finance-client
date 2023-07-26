@@ -46,6 +46,7 @@ function LeaseContractUpdateForm({
           />
           <CustomInputText
             labelname="合約周期(月)"
+            type="number"
             initialValue={updateData.leaseContractDetail.contractPeriod + ""}
             handleChange={(value) =>
               dispatch(

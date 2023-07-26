@@ -24,7 +24,9 @@ function CustomTableGroup({
 
   return (
     <div className={style["table-group"]}>
-      {tableGroupData.title && <p>{tableGroupData.title}</p>}
+      {tableGroupData.title && (
+        <div className={style["table-group-title"]}>{tableGroupData.title}</div>
+      )}
       <div className={style["table-group-table"]}>
         <table
           className={columnWidths.length > 0 ? style["column-width"] : ""}
@@ -41,64 +43,84 @@ function CustomTableGroup({
           }
         >
           {tableGroupData.heads ? (
-            <tr>
-              {tableGroupData.heads.map(({ text, sortFn }, thIdx) => (
-                <th
-                  key={thIdx}
-                  className={sortFn ? style["with-sort"] : ""}
-                  onClick={() => {
-                    if (!sortFn || typeof sortedData[0]?.[thIdx] !== "string")
-                      return;
-                    setSortedData(() => {
-                      const result = [...sortedData].sort((a, b) =>
-                        sortFn(a[thIdx] as string, b[thIdx] as string)
-                      );
+            <thead>
+              <tr>
+                {tableGroupData.heads.map(
+                  ({ text, sortFn, style: TextStyle = {} }, thIdx) => (
+                    <th
+                      key={thIdx}
+                      className={sortFn ? style["with-sort"] : ""}
+                      onClick={() => {
+                        if (
+                          !sortFn ||
+                          typeof sortedData[0]?.[thIdx] !== "string"
+                        )
+                          return;
+                        setSortedData(() => {
+                          const result = [...sortedData].sort((a, b) =>
+                            sortFn(a[thIdx] as string, b[thIdx] as string)
+                          );
 
-                      if (sortDirections[thIdx] === "asc") return result;
-                      return result.reverse();
-                    });
-                    setSortDirections(
-                      sortDirections.map((dir, dIdx) =>
-                        dIdx === thIdx ? (dir === "asc" ? "desc" : "asc") : dir
-                      )
-                    );
-                  }}
-                >
-                  <span>
-                    {text}
-                    {sortFn && (
-                      <FaChevronDown
-                        className={
-                          sortDirections[thIdx] === "desc" ? style.reverse : ""
-                        }
-                      />
-                    )}
-                  </span>
-                </th>
-              ))}
-            </tr>
+                          if (sortDirections[thIdx] === "asc") return result;
+                          return result.reverse();
+                        });
+                        setSortDirections(
+                          sortDirections.map((dir, dIdx) =>
+                            dIdx === thIdx
+                              ? dir === "asc"
+                                ? "desc"
+                                : "asc"
+                              : dir
+                          )
+                        );
+                      }}
+                    >
+                      <span style={TextStyle}>
+                        {text}
+                        {sortFn && (
+                          <FaChevronDown
+                            className={
+                              sortDirections[thIdx] === "desc"
+                                ? style.reverse
+                                : ""
+                            }
+                          />
+                        )}
+                      </span>
+                    </th>
+                  )
+                )}
+              </tr>
+            </thead>
           ) : (
-            <tr style={{ display: "none" }}>
-              {Array(tableGroupData.data[0].length)
-                .fill(null)
-                .map((_, thIdx) => (
-                  <th key={thIdx}></th>
-                ))}
-            </tr>
+            <thead>
+              <tr style={{ display: "none" }}>
+                {Array(tableGroupData.data[0].length)
+                  .fill(null)
+                  .map((_, thIdx) => (
+                    <th key={thIdx}></th>
+                  ))}
+              </tr>
+            </thead>
           )}
-          {sortedData.map((tr, trIdx) => (
-            <tr key={trIdx}>
-              {tr.map((td, tdIdx) => (
-                <td key={tdIdx}>{td}</td>
-              ))}
-            </tr>
-          ))}
+
+          <tbody>
+            {sortedData.map((tr, trIdx) => (
+              <tr key={trIdx}>
+                {tr.map((td, tdIdx) => (
+                  <td key={tdIdx}>{td}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
           {tableGroupData.tails && (
-            <tr>
-              {tableGroupData.tails.map((th, thIdx) => (
-                <th key={thIdx}>{th}</th>
-              ))}
-            </tr>
+            <thead>
+              <tr>
+                {tableGroupData.tails.map((th, thIdx) => (
+                  <th key={thIdx}>{th}</th>
+                ))}
+              </tr>
+            </thead>
           )}
         </table>
       </div>

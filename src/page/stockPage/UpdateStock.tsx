@@ -4,62 +4,56 @@ import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
-import EquipmentUpdateForm from "../../components/form/equipmentForm/EquipmentUpdateForm";
-import EquipmentUpdateFormSummary from "../../components/form/equipmentForm/EquipmentUpdateFormSummary";
-import { useGetCustomEquipmentQuery } from "../../hooks/useGetCustomQuery";
-import { useInitialUpdateEqupmentData } from "../../hooks/useInitialUpdateData";
+import StockUpdateForm from "../../components/form/stockForm/StockUpdateForm";
+import StockUpdateFormSummary from "../../components/form/stockForm/StockUpdateFormSummary";
+import { useGetCustomStockQuery } from "../../hooks/useGetCustomQuery";
+import { useInitialUpdateStockData } from "../../hooks/useInitialUpdateData";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
-import { useUpdateEquipmentMutation } from "../../redux/equipmentApi";
-import { resetUpdateEquipment } from "../../redux/equipmentSlice";
+import { useUpdateStockMutation } from "../../redux/stockApi";
+import { resetUpdateStock } from "../../redux/stockSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { UpdateEquipmentType } from "../../types/equipmentTypes";
-import { hasEquipmentDataChanged } from "../../utils/compareData";
+import { UpdateStockType } from "../../types/StockTypes";
+import { hasStockDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 
-function UpdateEquipmentComp({
+function UpdateStockComp({
   texts,
   children,
 }: {
   texts: string[];
-  children: (currentStepIndex: number, data: UpdateEquipmentType) => ReactNode;
+  children: (currentStepIndex: number, data: UpdateStockType) => ReactNode;
 }) {
-  const { equipmentId } = useParams();
-  const { data, isLoading, error } = useGetCustomEquipmentQuery({
-    equipmentId,
-  });
-  const [updateEquipment, { isLoading: isUpdating }] =
-    useUpdateEquipmentMutation();
+  const { stockId } = useParams();
+  const { data, isLoading, error } = useGetCustomStockQuery({ stockId });
+  const [updateStock, { isLoading: isUpdating }] = useUpdateStockMutation();
   const { currentStepIndex, isFirstStep, isLastStep, next, back, goTo } =
     useMultiStepFormController(texts.length);
-  const initialUpdateData = useInitialUpdateEqupmentData(
-    data,
-    currentStepIndex
-  );
+  const initialUpdateData = useInitialUpdateStockData(data, currentStepIndex);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  if (!equipmentId) return <Navigate to="/equipment-management" />;
+  if (!stockId) return <Navigate to="/stock-management" />;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isUpdating || isLastStep) return;
-    if (!hasEquipmentDataChanged(data, store.getState().equipment.updateData))
+    if (!hasStockDataChanged(data, store.getState().stock.updateData))
       return window.alert("Nothing changes");
     next();
   };
 
-  const handleUpdateEquipment = () => {
+  const handleUpdateStock = () => {
     if (!isLastStep) return;
 
     // handle API calls
-    const submitData = store.getState().equipment.updateData;
+    const submitData = store.getState().stock.updateData;
     // console.log(submitData);
-    updateEquipment(submitData)
+    updateStock(submitData)
       .unwrap()
       .then(() => {
-        window.alert("Dental lab has been updated successfully!");
-        dispatch(resetUpdateEquipment());
-        navigate(`/equipment-management/overview/${equipmentId}`, {
+        window.alert("Stock has been updated successfully!");
+        dispatch(resetUpdateStock());
+        navigate(`/stock-management/overview/${stockId}`, {
           replace: true,
         });
       })
@@ -73,11 +67,11 @@ function UpdateEquipmentComp({
     <div className={style["utility-form"]}>
       <CustomPageTitle
         icon={<MdUpdate />}
-        title="設備管理/更新設備"
+        title="庫存管理/更新庫存"
         tailing={
-          <Link to="/equipment-management">
+          <Link to="/stock-management">
             <AiOutlineLeft />
-            回設備管理
+            回庫存管理
           </Link>
         }
       />
@@ -106,9 +100,9 @@ function UpdateEquipmentComp({
             <button
               disabled={isUpdating || !isLastStep}
               className={style.submit}
-              onClick={handleUpdateEquipment}
+              onClick={handleUpdateStock}
             >
-              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新設備</span>
+              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新庫存</span>
               {isUpdating && (
                 <div className={style["spinner-wrapper"]}>
                   <LoadingSpinner />
@@ -138,17 +132,16 @@ function UpdateEquipmentComp({
   );
 }
 
-function UpdateEquipment() {
+function UpdateStock() {
   return (
-    <UpdateEquipmentComp texts={["牙技所資料設定", "牙技所內容確認"]}>
+    <UpdateStockComp texts={["庫存資料設定", "庫存內容確認"]}>
       {(formStep, updateData) => {
-        if (formStep === 0)
-          return <EquipmentUpdateForm updateData={updateData} />;
-        else if (formStep === 1) return <EquipmentUpdateFormSummary />;
+        if (formStep === 0) return <StockUpdateForm updateData={updateData} />;
+        else if (formStep === 1) return <StockUpdateFormSummary />;
         return null;
       }}
-    </UpdateEquipmentComp>
+    </UpdateStockComp>
   );
 }
 
-export default UpdateEquipment;
+export default UpdateStock;

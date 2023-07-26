@@ -41,6 +41,8 @@ export type StockInOutDetail = {
   inOutTime: string;
   operator: string;
   contractId: string;
+  contractNo?: string;
+  contractName?: string;
   createdTime: string;
   modifiedTime: string;
   remark: string;
@@ -56,8 +58,6 @@ export type CreateStockType = NonNullableFields<
   Omit<StockInOutDetail, "id" | "createdTime" | "modifiedTime" | "equipments">
 > & {
   equipments: EquipmentBriefType[];
-  contractNo?: string;
-  contractName?: string;
 };
 
 export type UpdateStockType = { id: string } & CreateStockType;

@@ -66,10 +66,7 @@ export const stockApi = createApi({
         body: removeNonStockFields(rest),
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Stock", id },
-        { type: "Stock", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Stock", id }],
     }),
   }),
 });

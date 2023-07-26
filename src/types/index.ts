@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export type NullableFields<T> = { [K in keyof T]: T[K] | null };
 
 export type NonNullableFields<T> = {
@@ -17,9 +19,13 @@ export type AppLink = {
 
 export type TableGroupData = {
   title?: string | JSX.Element;
-  heads?: { text: string; sortFn?: (a: string, b: string) => number }[];
+  heads?: {
+    text: string;
+    sortFn?: (a: string, b: string) => number;
+    style?: CSSProperties;
+  }[];
   data: (string | JSX.Element)[][];
-  tails?: String[];
+  tails?: string[];
 };
 
 export type TextWithFormatter = {
@@ -27,7 +33,9 @@ export type TextWithFormatter = {
   formatter?: (value: any) => any;
 };
 
-export const SEARCH_QUERY_PAGE_SIZE_SELECTIONS = [3, 10, 25, 50, 100] as const;
+export const SEARCH_QUERY_PAGE_SIZE_SELECTIONS = [
+  3, 10, 25, 50, 100, 1000,
+] as const;
 
 export type PageSize = (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number];
 
@@ -44,4 +52,10 @@ export type PaginationValueType = {
   totalPage: number;
   pageNo: number;
   pageSize: PageSize;
+};
+
+export const centerTextStyle: CSSProperties = {
+  marginInline: "auto",
+  width: "max-content",
+  display: "block",
 };

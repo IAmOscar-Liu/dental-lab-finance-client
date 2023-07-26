@@ -21,11 +21,18 @@
   border: none;
   outline: none;
   font-size: 0.6em;
-  padding: 3px 1em;
-  border-radius: 10000px;
+  padding: 3px 0.7em;
+  border-radius: 0.5em;
   color: white;
   background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.single-detail > h1 > button > svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 3px;
+  transform: translateY(2px);
 }
 
 .single-detail > h1 > button:hover {
@@ -79,6 +86,13 @@
 
 .single-detail-body > .btn-groups > button:hover {
   --saturation: 75%;
+}
+
+.single-detail-body > .btn-groups > button > svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 3px;
+  transform: translateY(3px);
 }
 
 .single-detail-body > p span:first-of-type {

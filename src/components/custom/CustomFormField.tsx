@@ -9,7 +9,6 @@ import {
 } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { RootState, useAppSelector } from "../../redux/store";
-import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import { getInvalidMessage } from "../../utils/getInvalidMessage";
 import style from "./CustomFormField.module.css";
 
@@ -74,9 +73,9 @@ export function CustomInputText({
           onChange={(e) => {
             if (type === "date" || type === "datetime-local")
               handleChange(
-                getLocalISOStringFromUTC(
-                  new Date(e.target.valueAsNumber).toISOString()
-                )
+                // getLocalISOStringFromUTC(
+                new Date(e.target.valueAsNumber).toISOString()
+                // )
               );
             else handleChange(e.target.value);
           }}
@@ -126,9 +125,9 @@ export function CustomInputTextByValue({
           onChange={(e) => {
             if (handleChange && (type === "date" || type === "datetime-local"))
               handleChange(
-                getLocalISOStringFromUTC(
-                  new Date(e.target.valueAsNumber).toISOString()
-                )
+                // getLocalISOStringFromUTC(
+                new Date(e.target.valueAsNumber).toISOString()
+                // )
               );
             else if (handleChange) handleChange(e.target.value);
           }}
@@ -326,9 +325,11 @@ export function CustomShowModalField({
 export function CustomShowModalButton({
   text,
   style,
+  icon,
   children,
 }: {
   text: string;
+  icon?: JSX.Element;
   style?: CSSProperties;
   children: (value: {
     modalRef: React.RefObject<HTMLDivElement>;
@@ -369,6 +370,7 @@ export function CustomShowModalButton({
         }}
         style={style}
       >
+        {icon}
         {text}
       </button>
       {isOpen &&

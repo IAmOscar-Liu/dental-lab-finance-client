@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
 import { RootState, useAppSelector } from "../../redux/store";
-import { DentalLab } from "../../types/dentalLabTypes";
+import { DentalLabDetail } from "../../types/dentalLabTypes";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
@@ -11,12 +11,12 @@ const SearchDentalLabModal = forwardRef<
   HTMLDivElement,
   {
     closeModal: () => void;
-    onChange: (value: DentalLab) => void;
+    onChange: (value: DentalLabDetail) => void;
     dentalLabSelector: (state: RootState) => string;
   }
 >(({ closeModal, onChange, dentalLabSelector }, ref) => {
   const { data, isLoading, error } = useGetDentalLabsQuery({
-    pageSize: 100,
+    pageSize: 1000,
     pageNo: 1,
   });
   const dentalLabId = useAppSelector(dentalLabSelector);

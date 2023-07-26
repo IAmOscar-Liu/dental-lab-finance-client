@@ -38,6 +38,26 @@ export const equipmentApi = createApi({
             ]
           : [{ type: "Equipment", id: "LIST" }],
     }),
+    getAvailableEquipments: build.query<EquipmentQueryResult, SearchQueryType>({
+      query: (searchQuery) => ({
+        url: `/equipments/queryAvailable?${formatSearchQuery(searchQuery)}`,
+        validateStatus: allowStatusCode304,
+      }),
+      transformResponse: (response: EquipmentQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.result.map(({ id }) => ({
+                type: "Equipment" as const,
+                id,
+              })),
+              { type: "Equipment", id: "LIST" },
+            ]
+          : [{ type: "Equipment", id: "LIST" }],
+    }),
     getEquipment: build.query<EquipmentDetail, { equipmentId: string }>({
       query: ({ equipmentId }) => ({
         url: `/equipments/${equipmentId}`,
@@ -68,16 +88,14 @@ export const equipmentApi = createApi({
         body: removeUnWantedFields(rest, ["ownerName"]),
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Equipment", id },
-        { type: "Equipment", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Equipment", id }],
     }),
   }),
 });
 
 export const {
   useGetEquipmentsQuery,
+  useGetAvailableEquipmentsQuery,
   useGetEquipmentQuery,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,

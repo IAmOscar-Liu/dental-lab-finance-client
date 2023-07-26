@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MdOutlineStickyNote2 } from "react-icons/md";
+import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -70,6 +70,7 @@ function ContractManagement() {
               </button>
             ))}
             <button onClick={() => navigate("/contract-management/new")}>
+              <MdOutlineAdd />
               新增合約
             </button>
           </div>

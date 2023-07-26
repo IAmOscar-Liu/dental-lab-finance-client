@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { SearchQueryType } from "../types";
 import {
   ContractConfirmChargeDateType,
+  ContractDetail,
   ContractOperateType,
   ContractQueryResult,
   ContractSubmitType,
@@ -44,6 +45,45 @@ export const contractApi = createApi({
             ]
           : [{ type: "Contract", id: "LIST" }],
     }),
+    getContractsByDentalLabId: build.query<
+      ContractQueryResult,
+      { dentalLabId: string; searchQuery: SearchQueryType }
+    >({
+      query: (queryInput) => ({
+        url: `/contracts/dental-labs/${
+          queryInput.dentalLabId
+        }?${formatSearchQuery(queryInput.searchQuery)}`,
+        validateStatus: allowStatusCode304,
+      }),
+      transformResponse: (response: ContractQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.result.map(({ id }) => ({
+                type: "Contract" as const,
+                id,
+              })),
+              { type: "Contract", id: "LIST" },
+            ]
+          : [{ type: "Contract", id: "LIST" }],
+    }),
+    getBriefContract: build.query<ContractDetail, { contractId: string }>({
+      query: ({ contractId }) => ({
+        url: `/contracts/${contractId}`,
+        validateStatus: allowStatusCode304,
+      }),
+      transformResponse: (response: {
+        code: number;
+        message: string;
+        data: ContractDetail;
+      }) => response.data,
+      providesTags: (_, __, { contractId }) => [
+        { type: "Contract", id: contractId },
+      ],
+    }),
     getContract: build.query<
       ServiceContractDetail | SellContractDetail | LeaseContractDetail,
       { contractType: ContractType; contractId: string }
@@ -77,10 +117,7 @@ export const contractApi = createApi({
         body: removeNonContractFields(rest),
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Contract", id },
-        { type: "Contract", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Contract", id }],
     }),
     submitContract: build.mutation<any, ContractSubmitType>({
       query: ({ id, ...rest }) => ({
@@ -89,10 +126,7 @@ export const contractApi = createApi({
         body: rest,
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Contract", id },
-        { type: "Contract", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Contract", id }],
     }),
     operateContract: build.mutation<any, ContractOperateType>({
       query: ({ id, decision, ...rest }) => ({
@@ -101,10 +135,7 @@ export const contractApi = createApi({
         body: rest,
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Contract", id },
-        { type: "Contract", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Contract", id }],
     }),
     confirmChargeDate: build.mutation<any, ContractConfirmChargeDateType>({
       query: ({ id, ...rest }) => ({
@@ -113,17 +144,16 @@ export const contractApi = createApi({
         body: rest,
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Contract", id },
-        { type: "Contract", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "Contract", id }],
     }),
   }),
 });
 
 export const {
   useGetContractsQuery,
+  useGetContractsByDentalLabIdQuery,
   useGetContractQuery,
+  useGetBriefContractQuery,
   useCreateContractMutation,
   useUpdateContractMutation,
   useSubmitContractMutation,

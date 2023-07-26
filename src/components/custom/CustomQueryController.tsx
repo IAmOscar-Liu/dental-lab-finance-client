@@ -56,7 +56,9 @@ function CustomQueryController({
             })
           }
         >
-          {SEARCH_QUERY_PAGE_SIZE_SELECTIONS.map((selection) => (
+          {SEARCH_QUERY_PAGE_SIZE_SELECTIONS.filter(
+            (selection) => selection <= 100
+          ).map((selection) => (
             <option key={selection} value={selection}>
               {selection}
             </option>
@@ -85,8 +87,9 @@ function CustomQueryController({
       </div>
       <div className="flex"></div>
       <p>
-        Showing {(pageNo - 1) * pageSize + 1} to{" "}
-        {Math.min(pageNo * pageSize, totalCount)} of {totalCount} entries
+        Showing <b>{(pageNo - 1) * pageSize + 1}</b> to{" "}
+        <b>{Math.min(pageNo * pageSize, totalCount)}</b> of <b>{totalCount}</b>{" "}
+        entries
       </p>
       <div className="flex"></div>
       <p className={style["select-page-btns"]}>

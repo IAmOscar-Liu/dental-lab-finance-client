@@ -1,15 +1,37 @@
+import { StockInOutDetail, UpdateStockType } from "../types/StockTypes";
 import {
   LeaseContractDetail,
   SellContractDetail,
   ServiceContractDetail,
   UpdateContractType,
 } from "../types/contractTypes";
-import { DentalLab, UpdateDentalLabType } from "../types/dentalLabTypes";
+import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLabTypes";
 import { EquipmentDetail, UpdateEquipmentType } from "../types/equipmentTypes";
 
-export const hasDentalLabDataChanged = (
-  oldData: DentalLab | undefined,
-  updatedData: UpdateDentalLabType | undefined
+export const hasStockDataChanged = (
+  oldData: StockInOutDetail | undefined,
+  updatedData: UpdateStockType | undefined
+) => {
+  if (!oldData || !updatedData) return false;
+
+  const { contractNo, contractName, equipments, ...rest } = updatedData;
+
+  for (const [key, value] of Object.entries(rest)) {
+    if (((oldData as any)[key] ?? "") !== (value ?? "")) return true;
+  }
+
+  if (equipments.length !== (oldData.equipments || []).length) return true;
+
+  for (const { id } of equipments) {
+    if (!oldData.equipments?.find((eq) => eq.id === id)) return true;
+  }
+
+  return false;
+};
+
+export const hasEquipmentDataChanged = (
+  oldData: EquipmentDetail | undefined,
+  updatedData: UpdateEquipmentType | undefined
 ) => {
   if (!oldData || !updatedData) return false;
 
@@ -20,9 +42,9 @@ export const hasDentalLabDataChanged = (
   return false;
 };
 
-export const hasEquipmentDataChanged = (
-  oldData: EquipmentDetail | undefined,
-  updatedData: UpdateEquipmentType | undefined
+export const hasDentalLabDataChanged = (
+  oldData: DentalLabDetail | undefined,
+  updatedData: UpdateDentalLabType | undefined
 ) => {
   if (!oldData || !updatedData) return false;
 

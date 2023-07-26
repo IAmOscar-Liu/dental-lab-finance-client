@@ -113,7 +113,7 @@ function EquipmentUpdateForm({
         </div>
         <div className={style["right-form"]}>
           <CustomInputText
-            labelname="使用時間(月)"
+            labelname="使用年限(月)"
             type="number"
             initialValue={updateData.serviceLife + ""}
             handleChange={(value) =>

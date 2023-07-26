@@ -20,6 +20,7 @@ import UpdateEquipment from "./page/equipmentPage/UpdateEquipment";
 import CreateStock from "./page/stockPage/CreateStock";
 import SingleStock from "./page/stockPage/SingleStock";
 import StockManagement from "./page/stockPage/StockManagement";
+import UpdateStock from "./page/stockPage/UpdateStock";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         element: <SingleStock />,
       },
       {
+        path: "stock-management/update",
+        element: <UpdateStock />,
+      },
+      {
+        path: "stock-management/update/:stockId",
+        element: <UpdateStock />,
+      },
+      {
         path: "dental-lab-management",
         element: <DentalManagement />,
       },
@@ -87,7 +96,7 @@ const router = createBrowserRouter([
         element: <SingleDentalLab />,
       },
       {
-        path: "dental-lab-management/overview/:dentalId",
+        path: "dental-lab-management/overview/:dentalLabId",
         element: <SingleDentalLab />,
       },
       {
@@ -95,7 +104,7 @@ const router = createBrowserRouter([
         element: <UpdateDentalLab />,
       },
       {
-        path: "dental-lab-management/update/:dentalId",
+        path: "dental-lab-management/update/:dentalLabId",
         element: <UpdateDentalLab />,
       },
       {

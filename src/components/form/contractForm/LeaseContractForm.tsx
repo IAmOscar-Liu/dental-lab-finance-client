@@ -42,6 +42,7 @@ function LeaseContractForm() {
           />
           <CustomInputText
             labelname="合約周期(月)"
+            type="number"
             initialValue={createData.leaseContractDetail.contractPeriod + ""}
             handleChange={(value) =>
               dispatch(

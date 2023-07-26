@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { setUpdateEquipment } from "../redux/equipmentSlice";
 import { store, useAppDispatch } from "../redux/store";
 import { EquipmentDetail, UpdateEquipmentType } from "../types/equipmentTypes";
-import { DentalLab, UpdateDentalLabType } from "../types/dentalLabTypes";
+import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLabTypes";
 import { setUpdateDentalLab } from "../redux/dentalLabSlice";
 import {
   LeaseContractDetail,
@@ -11,6 +11,62 @@ import {
   UpdateContractType,
 } from "../types/contractTypes";
 import { setUpdateContract } from "../redux/contractSlice";
+import { StockInOutDetail, UpdateStockType } from "../types/StockTypes";
+import { setUpdateStock } from "../redux/stockSlice";
+
+export function useInitialUpdateStockData(
+  data: StockInOutDetail | undefined,
+  currentStepIndex: number
+) {
+  const dispatch = useAppDispatch();
+  const isFirst = useRef(true);
+  const [initialUpdateData, setInitialUpdateData] = useState<UpdateStockType>(
+    store.getState().stock.updateData
+  );
+
+  useEffect(() => {
+    if (data) {
+      // console.log("set initial updateData");
+      const _updateData: UpdateStockType = isFirst.current
+        ? {
+            id: data.id,
+            inOutType: data.inOutType ?? "IN",
+            inOutTime: data.inOutTime ?? "",
+            operator: data.operator ?? "",
+            contractId: data.contractId ?? "",
+            contractNo: data.contractNo ?? "",
+            contractName: data.contractName ?? "",
+            remark: data.remark ?? "",
+            equipments: (data.equipments || []).map((eq) => ({
+              id: eq.id,
+              serialNumber: eq.serialNumber,
+              equipmentType: eq.equipmentType,
+            })),
+          }
+        : store.getState().stock.updateData;
+
+      setInitialUpdateData(_updateData);
+
+      if (isFirst.current) {
+        // console.log("set dispatch data");
+        dispatch(setUpdateStock(_updateData));
+      }
+
+      if (data.contractNo && data.contractName) {
+        dispatch(
+          setUpdateStock({
+            contractNo: data.contractNo,
+            contractName: data.contractName,
+          })
+        );
+      }
+
+      isFirst.current = false;
+    }
+  }, [data, currentStepIndex, dispatch]);
+
+  return initialUpdateData;
+}
 
 export function useInitialUpdateEqupmentData(
   data: EquipmentDetail | undefined,
@@ -57,7 +113,7 @@ export function useInitialUpdateEqupmentData(
 }
 
 export function useInitialUpdateDentalLabData(
-  data: DentalLab | undefined,
+  data: DentalLabDetail | undefined,
   currentStepIndex: number
 ) {
   const dispatch = useAppDispatch();

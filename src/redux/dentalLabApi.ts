@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { SearchQueryType } from "../types";
 import {
   CreateDentalLabType,
-  DentalLab,
+  DentalLabDetail,
   DentalLabQueryResult,
   UpdateDentalLabType,
 } from "../types/dentalLabTypes";
@@ -37,18 +37,18 @@ export const dentalLabApi = createApi({
             ]
           : [{ type: "DentalLab", id: "LIST" }],
     }),
-    getDentalLab: build.query<DentalLab, { dentalId: string }>({
-      query: ({ dentalId }) => ({
-        url: `/dental-labs/${dentalId}`,
+    getDentalLab: build.query<DentalLabDetail, { dentalLabId: string }>({
+      query: ({ dentalLabId }) => ({
+        url: `/dental-labs/${dentalLabId}`,
         validateStatus: allowStatusCode304,
       }),
       transformResponse: (response: {
         code: number;
         message: string;
-        data: DentalLab;
+        data: DentalLabDetail;
       }) => response.data,
-      providesTags: (_, __, { dentalId }) => [
-        { type: "DentalLab", id: dentalId },
+      providesTags: (_, __, { dentalLabId }) => [
+        { type: "DentalLab", id: dentalLabId },
       ],
     }),
     createDentalLab: build.mutation<any, CreateDentalLabType>({
@@ -67,10 +67,7 @@ export const dentalLabApi = createApi({
         body: rest,
         validateStatus: allowStatusCode304,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "DentalLab", id },
-        { type: "DentalLab", id: "LIST" },
-      ],
+      invalidatesTags: (_, __, { id }) => [{ type: "DentalLab", id }],
     }),
   }),
 });

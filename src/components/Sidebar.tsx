@@ -2,7 +2,7 @@ import { AiFillEye, AiFillHeart, AiFillHome } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaFileContract } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
-import { MdBrowserUpdated, MdOutlineStickyNote2 } from "react-icons/md";
+import { MdUpdate, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { AppLink } from "../types";
 import { isLinkActive } from "../utils/isLinkActive";
@@ -40,14 +40,14 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
-    icon: <MdBrowserUpdated />,
+    icon: <MdUpdate />,
     title: "更新設備",
     pathname: "/equipment-management/update",
     hasChildren: false,
   },
   {
     icon: <MdOutlineStickyNote2 />,
-    title: "庫存管理",
+    title: "入/出庫管理",
     pathname: "/stock-management",
     hasChildren: true,
   },
@@ -58,8 +58,14 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
+    icon: <MdUpdate />,
+    title: "更新入/出庫",
+    pathname: "/stock-management/update",
+    hasChildren: false,
+  },
+  {
     icon: <AiFillEye />,
-    title: "瀏覽庫存",
+    title: "瀏覽入/出庫",
     pathname: "/stock-management/overview",
     hasChildren: false,
   },
@@ -82,7 +88,7 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
-    icon: <MdBrowserUpdated />,
+    icon: <MdUpdate />,
     title: "更新牙技所",
     pathname: "/dental-lab-management/update",
     hasChildren: false,
@@ -106,7 +112,7 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
-    icon: <MdBrowserUpdated />,
+    icon: <MdUpdate />,
     title: "更新合約",
     pathname: "/contract-management/update",
     hasChildren: false,

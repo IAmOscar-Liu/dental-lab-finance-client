@@ -1,5 +1,5 @@
 import { CSSProperties, forwardRef } from "react";
-import { useGetEquipmentsQuery } from "../../redux/equipmentApi";
+import { useGetAvailableEquipmentsQuery } from "../../redux/equipmentApi";
 import { RootState, useAppSelector } from "../../redux/store";
 import { EquipmentBriefType } from "../../types/StockTypes";
 import {
@@ -7,11 +7,11 @@ import {
   getEquipmentStatusText,
   getEquipmentTypeText,
 } from "../../types/equipmentTypes";
+import { formatDollarString } from "../../utils/formatString";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";
 import style from "./SearchModal.module.css";
-import { formatDollarString } from "../../utils/formatString";
 
 const SearchEquipmentModal = forwardRef<
   HTMLDivElement,
@@ -21,9 +21,9 @@ const SearchEquipmentModal = forwardRef<
     equipmentSelectors: (state: RootState) => EquipmentBriefType[];
   }
 >(({ closeModal, onChange, equipmentSelectors }, ref) => {
-  const { data, isLoading, error } = useGetEquipmentsQuery({
+  const { data, isLoading, error } = useGetAvailableEquipmentsQuery({
     pageNo: 1,
-    pageSize: 100,
+    pageSize: 1000,
   });
   const equipments = useAppSelector(equipmentSelectors);
 

@@ -3,6 +3,7 @@ import { store, useAppDispatch } from "../../../redux/store";
 import {
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
+  ContractType,
   getContractStatusText,
   getContractTypeText,
 } from "../../../types/contractTypes";
@@ -80,7 +81,7 @@ function ContractForm() {
             handleChange={(value) =>
               dispatch(
                 setCreateContract({
-                  type: value as (typeof CONTRACT_TYPE_SELECTIONS)[number],
+                  type: value as ContractType,
                 })
               )
             }

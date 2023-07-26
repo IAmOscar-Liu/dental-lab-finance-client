@@ -128,7 +128,7 @@ function EquipmentForm() {
         </div>
         <div className={style["right-form"]}>
           <CustomInputText
-            labelname="使用時間(月)"
+            labelname="使用年限(月)"
             type="number"
             initialValue={createData.serviceLife + ""}
             handleChange={(value) =>

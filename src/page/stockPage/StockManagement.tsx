@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MdOutlineStickyNote2 } from "react-icons/md";
+import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -66,7 +66,8 @@ function StockManagement() {
               </button>
             ))}
             <button onClick={() => navigate("/stock-management/new")}>
-              新增庫存
+              <MdOutlineAdd />
+              新增入/出庫
             </button>
           </div>
           <CustomQueryController value={value} updateValue={updateValue} />

@@ -1,6 +1,6 @@
 import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
-import { MdBrowserUpdated } from "react-icons/md";
+import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
@@ -25,11 +25,11 @@ function UpdateDentalLabComp({
   texts: string[];
   children: (currentStepIndex: number, data: UpdateDentalLabType) => ReactNode;
 }) {
-  const { dentalId } = useParams();
+  const { dentalLabId } = useParams();
   const { data, isLoading, error } = useGetDentalLabQuery(
-    { dentalId: dentalId ?? "" },
+    { dentalLabId: dentalLabId ?? "" },
     {
-      skip: !dentalId,
+      skip: !dentalLabId,
     }
   );
   const [updateDentalLab, { isLoading: isUpdating }] =
@@ -43,7 +43,7 @@ function UpdateDentalLabComp({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  if (!dentalId) return <Navigate to="/dental-lab-management" />;
+  if (!dentalLabId) return <Navigate to="/dental-lab-management" />;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,7 +64,7 @@ function UpdateDentalLabComp({
       .then(() => {
         window.alert("Dental lab has been updated successfully!");
         dispatch(resetUpdateDentalLab());
-        navigate(`/dental-lab-management/overview/${dentalId}`, {
+        navigate(`/dental-lab-management/overview/${dentalLabId}`, {
           replace: true,
         });
       })
@@ -77,7 +77,7 @@ function UpdateDentalLabComp({
   return (
     <div className={style["utility-form"]}>
       <CustomPageTitle
-        icon={<MdBrowserUpdated />}
+        icon={<MdUpdate />}
         title="牙技所管理/更新牙技所"
         tailing={
           <Link to="/dental-lab-management">

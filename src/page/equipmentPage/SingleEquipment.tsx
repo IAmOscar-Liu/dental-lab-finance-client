@@ -1,9 +1,10 @@
 import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
+import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
-import useGetCustomEquipmentQuery from "../../hooks/useGetCustomEquipmentQuery";
+import { useGetCustomEquipmentQuery } from "../../hooks/useGetCustomQuery";
 import { equipmentDetailkeyNameTable } from "../../types/equipmentTypes";
 import style from "../Single.module.css";
 
@@ -47,6 +48,7 @@ function SingleEquipment() {
                 navigate(`/equipment-management/update/${data?.id}`)
               }
             >
+              <MdUpdate />
               更新設備
             </button>
           </h1>

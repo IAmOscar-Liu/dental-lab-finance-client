@@ -20,7 +20,7 @@ const SearchContractModal = forwardRef<
   }
 >(({ closeModal, onChange, contractSelectors }, ref) => {
   const { data, isLoading, error } = useGetContractsQuery({
-    pageSize: 100,
+    pageSize: 1000,
     pageNo: 1,
   });
   const contractId = useAppSelector(contractSelectors);
@@ -52,19 +52,24 @@ const SearchContractModal = forwardRef<
                 <p>合約狀態</p>
                 <p>客戶名稱</p>
               </li>
-              {data?.result.map((contract) => (
-                <li
-                  key={contract.id}
-                  className={contract.id === contractId ? style.active : ""}
-                  onClick={() => onChange(contract)}
-                >
-                  <p>{contract.contractNo ?? ""}</p>
-                  <p>{contract.name ?? ""}</p>
-                  <p>{getContractTypeText(contract.type).slice(0, -2)}</p>
-                  <p>{getContractStatusText(contract.status)}</p>
-                  <p>{contract.customerName}</p>
-                </li>
-              ))}
+              {data?.result
+                .filter(
+                  (contract) =>
+                    contract.type === "LEASE" || contract.type === "SELL"
+                )
+                .map((contract) => (
+                  <li
+                    key={contract.id}
+                    className={contract.id === contractId ? style.active : ""}
+                    onClick={() => onChange(contract)}
+                  >
+                    <p>{contract.contractNo ?? ""}</p>
+                    <p>{contract.name ?? ""}</p>
+                    <p>{getContractTypeText(contract.type).slice(0, -2)}</p>
+                    <p>{getContractStatusText(contract.status)}</p>
+                    <p>{contract.customerName}</p>
+                  </li>
+                ))}
             </ul>
           </div>
         )}

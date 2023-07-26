@@ -34,7 +34,15 @@
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.filter-btns button:last-of-type {
+  --saturation: 90%;
+  --brightness: 65%;
+  margin-inline: auto 0;
+  padding-left: 0.5em;
+}
+
 .filter-btns button:hover {
+  --saturation: 68%;
   --brightness: 50%;
 }
 
@@ -43,7 +51,8 @@
   --brightness: 70%;
 }
 
-.filter-btns button:last-of-type {
-  margin-left: auto;
-  border-radius: 10000px;
+.filter-btns button:last-of-type > svg {
+  width: 18px;
+  height: 18px;
+  transform: translateY(2px);
 }

@@ -1,4 +1,10 @@
-import { AiFillEye, AiOutlineLeft } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiOutlineAudit,
+  AiOutlineDownload,
+  AiOutlineLeft,
+} from "react-icons/ai";
+import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -65,6 +71,7 @@ function SingleContract() {
                 )
               }
             >
+              <MdUpdate />
               更新合約
             </button>
           </h1>
@@ -91,7 +98,10 @@ function SingleContract() {
               {data?.status === "CONFIRMING" &&
                 data?.contractNo &&
                 data?.name && (
-                  <CustomShowModalButton text="(業務)送出合約審核">
+                  <CustomShowModalButton
+                    text="送出合約審核(業務)"
+                    icon={<AiOutlineAudit />}
+                  >
                     {({ modalRef, closeModal }) => (
                       <ContractSubmitModal
                         closeModal={closeModal}
@@ -106,7 +116,10 @@ function SingleContract() {
               {data?.status === "SUBMIT_FOR_REVIEW" &&
                 data?.contractNo &&
                 data?.name && (
-                  <CustomShowModalButton text="(財務)進行合約審核">
+                  <CustomShowModalButton
+                    text="進行合約審核(財務)"
+                    icon={<AiOutlineAudit />}
+                  >
                     {({ modalRef, closeModal }) => (
                       <ContractOperateModal
                         closeModal={closeModal}
@@ -121,7 +134,10 @@ function SingleContract() {
               {data?.status === "EFFECTED" &&
                 data?.contractNo &&
                 data?.name && (
-                  <CustomShowModalButton text="(審核通過)設定約定收費起始日">
+                  <CustomShowModalButton
+                    text="設定約定收費起始日(審核通過)"
+                    icon={<AiOutlineAudit />}
+                  >
                     {({ modalRef, closeModal }) => (
                       <ContractConfirmChargeDateModal
                         closeModal={closeModal}
@@ -133,7 +149,10 @@ function SingleContract() {
                     )}
                   </CustomShowModalButton>
                 )}
-              <button onClick={() => {}}>下載合約PDF</button>
+              <button onClick={() => {}}>
+                <AiOutlineDownload />
+                下載合約PDF
+              </button>
             </div>
 
             {data?.type === "SERVICE" && (
@@ -193,6 +212,7 @@ function SingleContract() {
                       )
                     }
                   >
+                    <AiOutlineDownload />
                     下載收費方案PDF
                   </button>
                 </div>

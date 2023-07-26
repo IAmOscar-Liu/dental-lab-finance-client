@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MdOutlineStickyNote2 } from "react-icons/md";
+import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -73,6 +73,7 @@ function EquipmentManagement() {
               </button>
             ))}
             <button onClick={() => navigate("/equipment-management/new")}>
+              <MdOutlineAdd />
               新增設備
             </button>
           </div>
@@ -116,7 +117,7 @@ function EquipmentManagement() {
                   { text: "保固期限", sortFn: (a, b) => a.localeCompare(b) },
                   { text: "到貨日", sortFn: (a, b) => a.localeCompare(b) },
                   {
-                    text: "租期",
+                    text: "年限",
                     sortFn: (a, b) =>
                       +a.replace("mo", "") - +b.replace("mo", ""),
                   },

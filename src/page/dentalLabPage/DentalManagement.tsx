@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MdOutlineStickyNote2 } from "react-icons/md";
+import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -11,7 +11,7 @@ import { useGetDentaLabsPaginationQuery } from "../../hooks/useGetPaginationQuer
 import {
   DENTAL_DISPLAY_TYPE_SELECTIONS,
   DentalDisplayType,
-  DentalLab,
+  DentalLabDetail,
   getDentalStatusPriority,
   getDentalStatusText,
 } from "../../types/dentalLabTypes";
@@ -21,7 +21,7 @@ function DentalManagement() {
   const { value, updateValue, data, isLoading, isFetching, error } =
     useGetDentaLabsPaginationQuery({ pageNo: 1, pageSize: 10 });
   const [filter, setFilter] = useState<DentalDisplayType>("ALL");
-  const filterHistory = useRef<Map<any, DentalLab[]>>();
+  const filterHistory = useRef<Map<any, DentalLabDetail[]>>();
   const navigate = useNavigate();
 
   const getFilteredData = (_filter: DentalDisplayType) => {
@@ -30,7 +30,7 @@ function DentalManagement() {
     if (filterHistory.current?.has(_filter))
       return filterHistory.current.get(_filter)!;
 
-    let results: DentalLab[] = [];
+    let results: DentalLabDetail[] = [];
     if (_filter === "ALL") results = data.result;
     else results = data.result.filter((e) => e.status === _filter);
 
@@ -67,6 +67,7 @@ function DentalManagement() {
               </button>
             ))}
             <button onClick={() => navigate("/dental-lab-management/new")}>
+              <MdOutlineAdd />
               新增牙技所
             </button>
           </div>

@@ -1,5 +1,6 @@
 import { NonNullableFields, NullableFields, TextWithFormatter } from ".";
 import { formatISOTimeString } from "../utils/formatString";
+import { ContractDetail } from "./contractTypes";
 
 export const DENTAL_STATUS_SELECTIONS = [
   "CONTACT",
@@ -43,10 +44,10 @@ export interface DentalLabQueryResult {
   totalPage: number;
   pageNo: number;
   pageSize: number;
-  result: DentalLab[];
+  result: DentalLabDetail[];
 }
 
-export type DentalLab = { id: string } & NullableFields<{
+export type DentalLabDetail = { id: string } & NullableFields<{
   name: string;
   status: DentalStatus;
   region: DentalRegion;
@@ -64,8 +65,12 @@ export type DentalLab = { id: string } & NullableFields<{
   remark: string;
 }>;
 
+export type DentalLabWithContracts = DentalLabDetail & {
+  contracts?: ContractDetail[];
+};
+
 export type CreateDentalLabType = NonNullableFields<
-  Omit<DentalLab, "id" | "createdTime" | "modifiedTime">
+  Omit<DentalLabDetail, "id" | "createdTime" | "modifiedTime">
 >;
 
 export type UpdateDentalLabType = { id: string } & CreateDentalLabType;
@@ -101,7 +106,7 @@ export const updateDentalLabkeyNameTable: Record<
 };
 
 export const dentalDetailLabkeyNameTable: Record<
-  keyof DentalLab,
+  keyof DentalLabDetail,
   TextWithFormatter
 > = {
   ...updateDentalLabkeyNameTable,

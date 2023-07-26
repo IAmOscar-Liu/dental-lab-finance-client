@@ -1,6 +1,6 @@
 import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
-import { MdBrowserUpdated } from "react-icons/md";
+import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
@@ -85,7 +85,7 @@ function UpdateContractComp({
   return (
     <div className={style["utility-form"]}>
       <CustomPageTitle
-        icon={<MdBrowserUpdated />}
+        icon={<MdUpdate />}
         title="合約管理/更新合約"
         tailing={
           <Link to="/contract-management">
