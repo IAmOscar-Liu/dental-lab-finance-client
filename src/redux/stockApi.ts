@@ -38,6 +38,31 @@ export const stockApi = createApi({
             ]
           : [{ type: "Stock", id: "LIST" }],
     }),
+    getStocksByEquipmentId: build.query<
+      StockQueryResult,
+      { equipmentId: string; searchQuery: SearchQueryType }
+    >({
+      query: (queryInput) => ({
+        url: `/equipments-inout/queryByEquipmentId?${formatSearchQuery(
+          queryInput.searchQuery
+        )}&equipmentId=${queryInput.equipmentId}`,
+        validateStatus: allowStatusCode304,
+      }),
+      transformResponse: (response: StockQueryResult) => ({
+        ...response,
+        pageNo: response.pageNo + 1,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.result.map(({ id }) => ({
+                type: "Stock" as const,
+                id,
+              })),
+              { type: "Stock", id: "LIST" },
+            ]
+          : [{ type: "Stock", id: "LIST" }],
+    }),
     getStock: build.query<StockInOutDetail, { stockId: string }>({
       query: ({ stockId }) => ({
         url: `/equipments-inout/${stockId}`,
@@ -73,6 +98,7 @@ export const stockApi = createApi({
 
 export const {
   useGetStocksQuery,
+  useGetStocksByEquipmentIdQuery,
   useGetStockQuery,
   useCreateStockMutation,
   useUpdateStockMutation,

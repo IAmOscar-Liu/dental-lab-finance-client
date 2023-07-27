@@ -24,7 +24,7 @@
   padding: 3px 0.7em;
   border-radius: 0.5em;
   color: white;
-  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
+  background-color: hsl(25, var(--saturation, 75%), var(--lightness, 47%));
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -37,7 +37,7 @@
 
 .single-detail > h1 > button:hover {
   --saturation: 90%;
-  --brightness: 60%;
+  --lightness: 60%;
 }
 
 .single-detail-body {

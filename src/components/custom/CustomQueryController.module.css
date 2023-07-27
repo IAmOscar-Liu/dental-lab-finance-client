@@ -12,17 +12,30 @@
   gap: 12px 8px;
 }
 
+.controller > * {
+  color: #262626;
+}
+
 .select-num-of-entries select {
   width: 7ch;
   font-size: 0.9em;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid #555;
+  border-radius: 3px;
+}
+
+.show-entries-range > b {
+  color: hsl(13 68% 30%);
 }
 
 .select-page-btns {
   display: flex;
 }
 
-.select-page-btns > svg {
+.select-page-btns > svg.moreIcon {
   transform: translateY(4px);
+  pointer-events: none;
 }
 
 .select-page-btns > button {
@@ -35,18 +48,18 @@
   border: none;
   border-radius: 3px;
   outline: none;
-  background-color: hsl(13, var(--saturation, 68%), var(--brightness, 39%));
+  background-color: hsl(13, var(--saturation, 68%), var(--lightness, 39%));
   padding-block: 3px;
   color: white;
 }
 
 .select-page-btns > button:hover {
-  --brightness: 50%;
+  --lightness: 50%;
 }
 
 .select-page-btns > button.active {
   pointer-events: none;
-  --brightness: 70%;
+  --lightness: 70%;
 }
 
 .select-page-btns > button:is(.prev, .next) {
@@ -82,6 +95,13 @@
 
 .select-page > form {
   margin-left: 6px;
+}
+
+.select-page > form > input[type="number"] {
+  background-color: transparent;
+  outline: none;
+  border: 1px solid #555;
+  border-radius: 3px;
 }
 
 .select-page > form > input[type="number"] {

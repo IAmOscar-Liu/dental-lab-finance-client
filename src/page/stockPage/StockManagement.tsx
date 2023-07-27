@@ -19,8 +19,14 @@ import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function StockManagement() {
-  const { value, updateValue, data, isLoading, isFetching, error } =
-    useGetStocksPaginationQuery({ pageNo: 1, pageSize: 10 });
+  const {
+    paginationValue,
+    updatePaginationValue,
+    data,
+    isLoading,
+    isFetching,
+    error,
+  } = useGetStocksPaginationQuery({ pageNo: 1, pageSize: 10 });
   const [filter, setFilter] = useState<StockDisplayType>("ALL");
   const filterHistory = useRef<Map<any, StockInOutDetail[]>>();
   const navigate = useNavigate();
@@ -70,45 +76,72 @@ function StockManagement() {
               新增入/出庫
             </button>
           </div>
-          <CustomQueryController value={value} updateValue={updateValue} />
+          <CustomQueryController
+            paginationValue={paginationValue}
+            updatePaginationValue={updatePaginationValue}
+          />
           {isFetching ? (
             <LoadingSpinner totalHeight={350} />
           ) : (
-            <CustomTableGroup
-              tableMinWidth={600}
-              columnWidths={["1fr", "1fr", "1fr", "1fr", "12ch"]}
-              tableGroupData={{
-                heads: [
-                  {
-                    text: "入庫/出庫",
-                    sortFn: (a, b) =>
-                      getStockTypePriority(a) - getStockTypePriority(b),
-                  },
-                  {
-                    text: "入庫/出庫日期",
-                    sortFn: (a, b) => a.localeCompare(b),
-                  },
-                  {
-                    text: "Operator",
-                    sortFn: (a, b) => a.localeCompare(b),
-                  },
-                  { text: "設備數量", sortFn: (a, b) => +a - +b },
-                  { text: "查看細節" },
-                ],
-                data: getFilteredData(filter).map((stock) => [
-                  getStockTypeText(stock.inOutType),
-                  (getLocalISOStringFromUTC(stock.inOutTime) ?? "").slice(
-                    0,
-                    10
-                  ),
-                  stock.operator ?? "",
-                  (stock.equipments?.length ?? 0) + "",
-                  <Link to={`/stock-management/overview/${stock.id}`}>
-                    查看細節
-                  </Link>,
-                ]),
-              }}
-            />
+            <>
+              <CustomTableGroup
+                tableMinWidth={600}
+                columnWidths={[
+                  "10ch",
+                  "15ch",
+                  "8ch",
+                  "1fr",
+                  "1fr",
+                  "1fr",
+                  "10ch",
+                ]}
+                tableGroupData={{
+                  heads: [
+                    {
+                      text: "入/出庫",
+                      sortFn: (a, b) =>
+                        getStockTypePriority(a) - getStockTypePriority(b),
+                    },
+                    {
+                      text: "入/出庫日期",
+                      sortFn: (a, b) => a.localeCompare(b),
+                    },
+                    {
+                      text: "數量",
+                      sortFn: (a, b) =>
+                        +a.replace("台", "") - +b.replace("台", ""),
+                    },
+                    {
+                      text: "Operator",
+                      sortFn: (a, b) => a.localeCompare(b),
+                    },
+                    { text: "合約名稱" },
+                    { text: "合約編號" },
+                    { text: "查看細節" },
+                  ],
+                  data: getFilteredData(filter).map((stock) => [
+                    getStockTypeText(stock.inOutType),
+                    (getLocalISOStringFromUTC(stock.inOutTime) ?? "").slice(
+                      0,
+                      10
+                    ),
+                    (stock.equipments?.length ?? 0) + " 台",
+                    stock.operator ?? "",
+                    stock.contractName ?? "",
+                    stock.contractNo ?? "",
+                    <Link to={`/stock-management/overview/${stock.id}`}>
+                      查看細節
+                    </Link>,
+                  ]),
+                }}
+              />
+              {getFilteredData(filter).length >= 25 && (
+                <CustomQueryController
+                  paginationValue={paginationValue}
+                  updatePaginationValue={updatePaginationValue}
+                />
+              )}
+            </>
           )}
         </>
       )}

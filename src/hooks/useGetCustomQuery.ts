@@ -5,10 +5,13 @@ import {
 } from "../redux/contractApi";
 import { useGetDentalLabQuery } from "../redux/dentalLabApi";
 import { useGetEquipmentQuery } from "../redux/equipmentApi";
-import { useGetStockQuery } from "../redux/stockApi";
+import {
+  useGetStockQuery,
+  useGetStocksByEquipmentIdQuery,
+} from "../redux/stockApi";
 import { StockInOutDetail } from "../types/StockTypes";
 import { DentalLabWithContracts } from "../types/dentalLabTypes";
-import { EquipmentDetail } from "../types/equipmentTypes";
+import { EquipmentWithStockHistory } from "../types/equipmentTypes";
 
 export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
   const [data, setData] = useState<StockInOutDetail | undefined>();
@@ -43,10 +46,12 @@ export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
 
 export function useGetCustomEquipmentQuery({
   equipmentId,
+  withStockHistory = false,
 }: {
   equipmentId?: string;
+  withStockHistory?: boolean;
 }) {
-  const [data, setData] = useState<EquipmentDetail | undefined>();
+  const [data, setData] = useState<EquipmentWithStockHistory | undefined>();
 
   const { data: equipmentData, ...rest } = useGetEquipmentQuery(
     { equipmentId: equipmentId ?? "" },
@@ -60,14 +65,28 @@ export function useGetCustomEquipmentQuery({
     { skip: !equipmentData }
   );
 
+  const { data: stockData } = useGetStocksByEquipmentIdQuery(
+    {
+      searchQuery: { pageNo: 1, pageSize: 1000 },
+      equipmentId: equipmentData?.id ?? "",
+    },
+    { skip: !withStockHistory || !equipmentData }
+  );
+
   useEffect(() => {
     if (equipmentData && dentalLabData) {
       setData({ ...equipmentData, ownerName: dentalLabData.name });
     }
-  }, [equipmentData, dentalLabData]);
+    if (equipmentData && stockData) {
+      setData({
+        ...equipmentData,
+        stockHistory: stockData.result.map(({ equipments, ...rest }) => rest),
+      });
+    }
+  }, [equipmentData, dentalLabData, stockData]);
 
   return {
-    data: data || equipmentData,
+    data: (data || equipmentData) as EquipmentWithStockHistory | undefined,
     ...rest,
   };
 }

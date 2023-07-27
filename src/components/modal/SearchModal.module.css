@@ -125,7 +125,7 @@ footer.footer > button {
   letter-spacing: 1px;
   border: none;
   outline: none;
-  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
+  background-color: hsl(25, var(--saturation, 75%), var(--lightness, 47%));
   color: white;
   padding: 3px 2em;
   border-radius: 10000px;
@@ -134,5 +134,5 @@ footer.footer > button {
 
 footer.footer > button:hover {
   --saturation: 80%;
-  --brightness: 40%;
+  --lightness: 40%;
 }

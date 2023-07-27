@@ -9,11 +9,11 @@ import {
 import style from "./CustomQueryController.module.css";
 
 function CustomQueryController({
-  value: { totalCount = 0, totalPage = 1, pageNo = 1, pageSize = 10 },
-  updateValue,
+  paginationValue: { totalCount = 0, totalPage = 1, pageNo = 1, pageSize = 10 },
+  updatePaginationValue,
 }: {
-  value: Partial<PaginationValueType>;
-  updateValue: (
+  paginationValue: Partial<PaginationValueType>;
+  updatePaginationValue: (
     update: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
   ) => void;
 }) {
@@ -51,7 +51,7 @@ function CustomQueryController({
           name="select-num-of-entries"
           value={pageSize + ""}
           onChange={(e) =>
-            updateValue({
+            updatePaginationValue({
               pageSize: +e.target.value as PageSize,
             })
           }
@@ -72,7 +72,9 @@ function CustomQueryController({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            updateValue({ pageNo: +(pageInputRef?.current?.value || 1) });
+            updatePaginationValue({
+              pageNo: +(pageInputRef?.current?.value || 1),
+            });
           }}
         >
           <input
@@ -86,7 +88,7 @@ function CustomQueryController({
         </form>
       </div>
       <div className="flex"></div>
-      <p>
+      <p className={style["show-entries-range"]}>
         Showing <b>{(pageNo - 1) * pageSize + 1}</b> to{" "}
         <b>{Math.min(pageNo * pageSize, totalCount)}</b> of <b>{totalCount}</b>{" "}
         entries
@@ -95,7 +97,9 @@ function CustomQueryController({
       <p className={style["select-page-btns"]}>
         <button
           className={style.prev}
-          onClick={() => pageNo > 1 && updateValue({ pageNo: pageNo - 1 })}
+          onClick={() =>
+            pageNo > 1 && updatePaginationValue({ pageNo: pageNo - 1 })
+          }
         >
           <GrPrevious />
         </button>
@@ -103,19 +107,19 @@ function CustomQueryController({
           typeof idx === "number" ? (
             <button
               key={idx}
-              onClick={() => updateValue({ pageNo: idx })}
+              onClick={() => updatePaginationValue({ pageNo: idx })}
               className={idx === pageNo ? style.active : ""}
             >
               {idx}
             </button>
           ) : (
-            <FiMoreHorizontal key={idx} />
+            <FiMoreHorizontal key={idx} className={style.moreIcon} />
           )
         )}
         <button
           className={style.next}
           onClick={() =>
-            pageNo < totalPage && updateValue({ pageNo: pageNo + 1 })
+            pageNo < totalPage && updatePaginationValue({ pageNo: pageNo + 1 })
           }
         >
           <GrPrevious />

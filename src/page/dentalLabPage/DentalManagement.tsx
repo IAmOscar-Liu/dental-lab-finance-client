@@ -18,8 +18,14 @@ import {
 import style from "../Management.module.css";
 
 function DentalManagement() {
-  const { value, updateValue, data, isLoading, isFetching, error } =
-    useGetDentaLabsPaginationQuery({ pageNo: 1, pageSize: 10 });
+  const {
+    paginationValue,
+    updatePaginationValue,
+    data,
+    isLoading,
+    isFetching,
+    error,
+  } = useGetDentaLabsPaginationQuery({ pageNo: 1, pageSize: 10 });
   const [filter, setFilter] = useState<DentalDisplayType>("ALL");
   const filterHistory = useRef<Map<any, DentalLabDetail[]>>();
   const navigate = useNavigate();
@@ -71,51 +77,68 @@ function DentalManagement() {
               新增牙技所
             </button>
           </div>
-          <CustomQueryController value={value} updateValue={updateValue} />
+          <CustomQueryController
+            paginationValue={paginationValue}
+            updatePaginationValue={updatePaginationValue}
+          />
           {isFetching ? (
             <LoadingSpinner totalHeight={350} />
           ) : (
-            <CustomTableGroup
-              tableMinWidth={840}
-              columnWidths={[
-                "max(10ch, 10%)",
-                "auto",
-                "9ch",
-                "max(9ch, 9%)",
-                "max(12ch, 12%)",
-                "max(12ch, 12%)",
-                "max(18ch, 18%)",
-                "10ch",
-              ]}
-              tableGroupData={{
-                heads: [
-                  { text: "統一編號", sortFn: (a, b) => a.localeCompare(b) },
-                  { text: "牙技所名稱", sortFn: (a, b) => a.localeCompare(b) },
-                  {
-                    text: "狀態",
-                    sortFn: (a, b) =>
-                      getDentalStatusPriority(a) - getDentalStatusPriority(b),
-                  },
-                  { text: "國家", sortFn: (a, b) => a.localeCompare(b) },
-                  { text: "City/State", sortFn: (a, b) => a.localeCompare(b) },
-                  { text: "電話" },
-                  { text: "Email" },
-                  { text: "查看細節" },
-                ],
-                data: getFilteredData(filter).map((dental) => [
-                  dental.uniformNo ?? "",
-                  dental.name ?? "",
-                  getDentalStatusText(dental.status),
-                  dental.country ?? "",
-                  [dental.city, dental.state].filter((e) => !!e).join(" / "),
-                  dental.phoneNumber ?? "",
-                  dental.email ?? "",
-                  <Link to={`/dental-lab-management/overview/${dental.id}`}>
-                    查看細節
-                  </Link>,
-                ]),
-              }}
-            />
+            <>
+              <CustomTableGroup
+                tableMinWidth={840}
+                columnWidths={[
+                  "max(10ch, 10%)",
+                  "auto",
+                  "9ch",
+                  "max(9ch, 9%)",
+                  "max(12ch, 12%)",
+                  "max(12ch, 12%)",
+                  "max(18ch, 18%)",
+                  "10ch",
+                ]}
+                tableGroupData={{
+                  heads: [
+                    { text: "統一編號", sortFn: (a, b) => a.localeCompare(b) },
+                    {
+                      text: "牙技所名稱",
+                      sortFn: (a, b) => a.localeCompare(b),
+                    },
+                    {
+                      text: "狀態",
+                      sortFn: (a, b) =>
+                        getDentalStatusPriority(a) - getDentalStatusPriority(b),
+                    },
+                    { text: "國家", sortFn: (a, b) => a.localeCompare(b) },
+                    {
+                      text: "City/State",
+                      sortFn: (a, b) => a.localeCompare(b),
+                    },
+                    { text: "電話" },
+                    { text: "Email" },
+                    { text: "查看細節" },
+                  ],
+                  data: getFilteredData(filter).map((dental) => [
+                    dental.uniformNo ?? "",
+                    dental.name ?? "",
+                    getDentalStatusText(dental.status),
+                    dental.country ?? "",
+                    [dental.city, dental.state].filter((e) => !!e).join(" / "),
+                    dental.phoneNumber ?? "",
+                    dental.email ?? "",
+                    <Link to={`/dental-lab-management/overview/${dental.id}`}>
+                      查看細節
+                    </Link>,
+                  ]),
+                }}
+              />
+              {getFilteredData(filter).length >= 25 && (
+                <CustomQueryController
+                  paginationValue={paginationValue}
+                  updatePaginationValue={updatePaginationValue}
+                />
+              )}
+            </>
           )}
         </>
       )}

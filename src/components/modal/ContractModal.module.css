@@ -63,7 +63,7 @@ footer.footer > button {
   font-size: 0.95em;
   border: none;
   outline: none;
-  background-color: hsl(25, var(--saturation, 75%), var(--brightness, 47%));
+  background-color: hsl(25, var(--saturation, 75%), var(--lightness, 47%));
   color: white;
   padding: 3px 2em;
   border-radius: 10000px;
@@ -73,7 +73,7 @@ footer.footer > button {
 
 footer.footer > button:hover {
   --saturation: 80%;
-  --brightness: 40%;
+  --lightness: 40%;
 }
 
 footer.footer > button[type="submit"] .spinner-wrapper {
@@ -84,9 +84,9 @@ footer.footer > button[type="submit"] .spinner-wrapper {
 }
 
 footer.footer > button:last-of-type {
-  background: hsl(0, 0%, var(--brightness, 56%));
+  background: hsl(0, 0%, var(--lightness, 56%));
 }
 
 footer.footer > button:last-of-type:hover {
-  --brightness: 45%;
+  --lightness: 45%;
 }

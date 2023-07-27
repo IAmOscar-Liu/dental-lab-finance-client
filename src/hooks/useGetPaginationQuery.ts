@@ -39,8 +39,8 @@ export function useGetEquipmentsPaginationQuery(
   }, [data]);
 
   return {
-    value,
-    updateValue,
+    paginationValue: value,
+    updatePaginationValue: updateValue,
     data,
     ...rest,
   };
@@ -80,8 +80,8 @@ export function useGetStocksPaginationQuery(
   }, [data]);
 
   return {
-    value,
-    updateValue,
+    paginationValue: value,
+    updatePaginationValue: updateValue,
     data,
     ...rest,
   };
@@ -121,8 +121,8 @@ export function useGetDentaLabsPaginationQuery(
   }, [data]);
 
   return {
-    value,
-    updateValue,
+    paginationValue: value,
+    updatePaginationValue: updateValue,
     data,
     ...rest,
   };
@@ -162,8 +162,8 @@ export function useGetContractsPaginationQuery(
   }, [data]);
 
   return {
-    value,
-    updateValue,
+    paginationValue: value,
+    updatePaginationValue: updateValue,
     data,
     ...rest,
   };

@@ -4,8 +4,12 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { useGetCustomEquipmentQuery } from "../../hooks/useGetCustomQuery";
+import { centerTextStyle } from "../../types";
+import { getStockTypeText } from "../../types/StockTypes";
 import { equipmentDetailkeyNameTable } from "../../types/equipmentTypes";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Single.module.css";
 
 function SingleEquipment() {
@@ -13,6 +17,7 @@ function SingleEquipment() {
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetCustomEquipmentQuery({
     equipmentId,
+    withStockHistory: true,
   });
 
   if (!equipmentId) return <Navigate to="/equipment-management" />;
@@ -53,6 +58,7 @@ function SingleEquipment() {
             </button>
           </h1>
           <div className={style["single-detail-body"]}>
+            <p className={style.title}>設備資料</p>
             {Object.entries(equipmentDetailkeyNameTable)
               .filter(([_, value]) => value.text !== "備註")
               .map(([key, value]) => (
@@ -69,6 +75,51 @@ function SingleEquipment() {
               <span>{"備註"}</span>
               <span>{data?.remark ?? ""}</span>
             </p>
+            {data?.stockHistory && data.stockHistory.length > 0 && (
+              <>
+                <p className={style.title}>入/出庫明細</p>
+                <div className={style["detail-table"]}>
+                  <CustomTableGroup
+                    tableMinWidth={800}
+                    tableGroupData={{
+                      heads: [
+                        { text: "入庫/出庫", style: centerTextStyle },
+                        { text: "入庫/出庫日期", style: centerTextStyle },
+                        { text: "Operator", style: centerTextStyle },
+                        { text: "合約名稱", style: centerTextStyle },
+                        { text: "合約編號", style: centerTextStyle },
+                        { text: "查看細節", style: centerTextStyle },
+                      ],
+                      data: data.stockHistory.map((stock) => [
+                        <span style={centerTextStyle}>
+                          {getStockTypeText(stock.inOutType) ?? ""}
+                        </span>,
+                        <span style={centerTextStyle}>
+                          {(
+                            getLocalISOStringFromUTC(stock.inOutTime) ?? ""
+                          ).slice(0, 10)}
+                        </span>,
+                        <span style={centerTextStyle}>
+                          {stock.operator ?? ""}
+                        </span>,
+                        <span style={centerTextStyle}>
+                          {stock.contractName ?? ""}
+                        </span>,
+                        <span style={centerTextStyle}>
+                          {stock.contractNo ?? ""}
+                        </span>,
+                        <Link
+                          style={centerTextStyle}
+                          to={`/stock-management/overview/${stock.id}`}
+                        >
+                          查看細節
+                        </Link>,
+                      ]),
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

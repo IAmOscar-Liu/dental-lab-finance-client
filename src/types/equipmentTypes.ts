@@ -4,6 +4,7 @@ import {
   formatISODateString,
   formatISOTimeString,
 } from "../utils/formatString";
+import { StockInOutDetail } from "./StockTypes";
 
 export const EQUIPMENT_STATUS_SELECTIONS = [
   "Unknown",
@@ -87,6 +88,10 @@ export type EquipmentDetail = {
   modifiedTime: string;
   remark: string;
 }>;
+
+export type EquipmentWithStockHistory = EquipmentDetail & {
+  stockHistory?: Omit<StockInOutDetail, "equipments">[];
+};
 
 export type CreateEquipmentType = NonNullableFields<
   Omit<EquipmentDetail, "id" | "createdTime" | "modifiedTime">
