@@ -3,6 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import ContractUpdateForm from "../../components/form/contractForm/ContractUpdateForm";
 import ContractUpdateFormSummary from "../../components/form/contractForm/ContractUpdateFormSummary";
@@ -18,8 +19,8 @@ import {
 import { resetUpdateContract } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
 import { UpdateContractType, getContractType } from "../../types/contractTypes";
-import style from "../UtilityForm.module.css";
 import { hasContractDataChanged } from "../../utils/compareData";
+import style from "../UtilityForm.module.css";
 
 function UpdateContractComp({
   texts,
@@ -121,18 +122,12 @@ function UpdateContractComp({
                 </Fragment>
               ))}
             </div>
-            <button
+            <CustomLoadingButton
+              text="更新合約"
+              isLoading={isUpdating}
               disabled={isUpdating || !isLastStep}
-              className={style.submit}
               onClick={handleUpdateContract}
-            >
-              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新合約</span>
-              {isUpdating && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            />
           </div>
 
           <div className={style["form-wrapper"]}>

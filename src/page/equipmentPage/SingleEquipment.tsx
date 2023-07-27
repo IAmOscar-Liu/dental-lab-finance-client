@@ -83,11 +83,10 @@ function SingleEquipment() {
                     tableMinWidth={800}
                     tableGroupData={{
                       heads: [
-                        { text: "入庫/出庫", style: centerTextStyle },
-                        { text: "入庫/出庫日期", style: centerTextStyle },
+                        { text: "入/出庫", style: centerTextStyle },
+                        { text: "入/出庫日期", style: centerTextStyle },
+                        { text: "設備數量", style: centerTextStyle },
                         { text: "Operator", style: centerTextStyle },
-                        { text: "合約名稱", style: centerTextStyle },
-                        { text: "合約編號", style: centerTextStyle },
                         { text: "查看細節", style: centerTextStyle },
                       ],
                       data: data.stockHistory.map((stock) => [
@@ -100,13 +99,10 @@ function SingleEquipment() {
                           ).slice(0, 10)}
                         </span>,
                         <span style={centerTextStyle}>
+                          {stock.equipmentCount + " 台"}
+                        </span>,
+                        <span style={centerTextStyle}>
                           {stock.operator ?? ""}
-                        </span>,
-                        <span style={centerTextStyle}>
-                          {stock.contractName ?? ""}
-                        </span>,
-                        <span style={centerTextStyle}>
-                          {stock.contractNo ?? ""}
                         </span>,
                         <Link
                           style={centerTextStyle}

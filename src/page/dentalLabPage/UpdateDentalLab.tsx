@@ -3,6 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import DentalUpdateForm from "../../components/form/dentalLabForm/DentalUpdateForm";
 import DentalUpdateFormSummary from "../../components/form/dentalLabForm/DentalUpdateFormSummary";
@@ -108,18 +109,12 @@ function UpdateDentalLabComp({
                 </Fragment>
               ))}
             </div>
-            <button
+            <CustomLoadingButton
+              text="更新牙技所"
+              isLoading={isUpdating}
               disabled={isUpdating || !isLastStep}
-              className={style.submit}
               onClick={handleUpdateDantalLab}
-            >
-              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新牙技所</span>
-              {isUpdating && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            />
           </div>
 
           <div className={style["form-wrapper"]}>

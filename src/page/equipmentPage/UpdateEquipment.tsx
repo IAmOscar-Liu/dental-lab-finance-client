@@ -3,6 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import EquipmentUpdateForm from "../../components/form/equipmentForm/EquipmentUpdateForm";
 import EquipmentUpdateFormSummary from "../../components/form/equipmentForm/EquipmentUpdateFormSummary";
@@ -103,18 +104,12 @@ function UpdateEquipmentComp({
                 </Fragment>
               ))}
             </div>
-            <button
+            <CustomLoadingButton
+              text="更新設備"
+              isLoading={isUpdating}
               disabled={isUpdating || !isLastStep}
-              className={style.submit}
               onClick={handleUpdateEquipment}
-            >
-              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新設備</span>
-              {isUpdating && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            />
           </div>
 
           <div className={style["form-wrapper"]}>

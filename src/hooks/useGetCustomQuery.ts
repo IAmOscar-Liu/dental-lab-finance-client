@@ -80,7 +80,10 @@ export function useGetCustomEquipmentQuery({
     if (equipmentData && stockData) {
       setData({
         ...equipmentData,
-        stockHistory: stockData.result.map(({ equipments, ...rest }) => rest),
+        stockHistory: stockData.result.map(({ equipments, ...rest }) => ({
+          ...rest,
+          equipmentCount: (equipments || []).length,
+        })),
       });
     }
   }, [equipmentData, dentalLabData, stockData]);
@@ -108,7 +111,7 @@ export function useGetCustomDentalLabQuery({
   const { data: contractData } = useGetContractsByDentalLabIdQuery(
     {
       dentalLabId: dentalLabData?.id ?? "",
-      searchQuery: { pageNo: 1, pageSize: 100 },
+      searchQuery: { pageNo: 1, pageSize: 1000 },
     },
     { skip: !dentalLabData }
   );

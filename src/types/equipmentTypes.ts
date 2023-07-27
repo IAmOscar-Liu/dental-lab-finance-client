@@ -90,7 +90,9 @@ export type EquipmentDetail = {
 }>;
 
 export type EquipmentWithStockHistory = EquipmentDetail & {
-  stockHistory?: Omit<StockInOutDetail, "equipments">[];
+  stockHistory?: (Omit<StockInOutDetail, "equipments"> & {
+    equipmentCount: number;
+  })[];
 };
 
 export type CreateEquipmentType = NonNullableFields<

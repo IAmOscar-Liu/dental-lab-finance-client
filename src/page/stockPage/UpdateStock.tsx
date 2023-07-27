@@ -3,6 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { MdUpdate } from "react-icons/md";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import StockUpdateForm from "../../components/form/stockForm/StockUpdateForm";
 import StockUpdateFormSummary from "../../components/form/stockForm/StockUpdateFormSummary";
@@ -97,18 +98,12 @@ function UpdateStockComp({
                 </Fragment>
               ))}
             </div>
-            <button
+            <CustomLoadingButton
+              text="更新庫存"
+              isLoading={isUpdating}
               disabled={isUpdating || !isLastStep}
-              className={style.submit}
               onClick={handleUpdateStock}
-            >
-              <span style={{ opacity: isUpdating ? 0 : 1 }}>更新庫存</span>
-              {isUpdating && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            />
           </div>
 
           <div className={style["form-wrapper"]}>

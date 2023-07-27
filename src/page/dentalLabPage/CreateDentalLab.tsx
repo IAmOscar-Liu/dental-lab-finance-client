@@ -2,7 +2,7 @@ import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import DentalForm from "../../components/form/dentalLabForm/DentalForm";
 import DentalFormSummary from "../../components/form/dentalLabForm/DentalFormSummary";
@@ -79,18 +79,12 @@ function CreateDentalLabComp({
             </Fragment>
           ))}
         </div>
-        <button
+        <CustomLoadingButton
+          text="新增牙技所"
+          isLoading={isCreating}
           disabled={isCreating || !isLastStep}
-          className={style.submit}
           onClick={handleCreateDantalLab}
-        >
-          <span style={{ opacity: isCreating ? 0 : 1 }}>新增牙技所</span>
-          {isCreating && (
-            <div className={style["spinner-wrapper"]}>
-              <LoadingSpinner />
-            </div>
-          )}
-        </button>
+        />
       </div>
 
       <div className={style["form-wrapper"]}>

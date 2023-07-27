@@ -1,19 +1,19 @@
 import { FormEvent, Fragment, ReactNode } from "react";
-import { useCreateContractMutation } from "../../redux/contractApi";
-import { Link, useNavigate } from "react-router-dom";
-import useMultiStepFormController from "../../hooks/useMultiStepFormController";
-import { store, useAppDispatch } from "../../redux/store";
-import { resetCreateContract } from "../../redux/contractSlice";
-import style from "../UtilityForm.module.css";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import { Link, useNavigate } from "react-router-dom";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import ContractForm from "../../components/form/contractForm/ContractForm";
-import SellContractForm from "../../components/form/contractForm/SellContractForm";
-import LeaseContractForm from "../../components/form/contractForm/LeaseContractForm";
-import ServiceContractForm from "../../components/form/contractForm/ServiceContractForm";
 import ContractFormSummary from "../../components/form/contractForm/ContractFormSummary";
+import LeaseContractForm from "../../components/form/contractForm/LeaseContractForm";
+import SellContractForm from "../../components/form/contractForm/SellContractForm";
+import ServiceContractForm from "../../components/form/contractForm/ServiceContractForm";
+import useMultiStepFormController from "../../hooks/useMultiStepFormController";
+import { useCreateContractMutation } from "../../redux/contractApi";
+import { resetCreateContract } from "../../redux/contractSlice";
+import { store, useAppDispatch } from "../../redux/store";
+import style from "../UtilityForm.module.css";
 
 function CreateContractComp({
   texts,
@@ -87,18 +87,12 @@ function CreateContractComp({
             </Fragment>
           ))}
         </div>
-        <button
+        <CustomLoadingButton
+          text="新增合約"
+          isLoading={isCreating}
           disabled={isCreating || !isLastStep}
-          className={style.submit}
           onClick={handleCreateContract}
-        >
-          <span style={{ opacity: isCreating ? 0 : 1 }}>新增合約</span>
-          {isCreating && (
-            <div className={style["spinner-wrapper"]}>
-              <LoadingSpinner />
-            </div>
-          )}
-        </button>
+        />
       </div>
 
       <div className={style["form-wrapper"]}>

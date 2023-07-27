@@ -86,15 +86,7 @@ function StockManagement() {
             <>
               <CustomTableGroup
                 tableMinWidth={600}
-                columnWidths={[
-                  "10ch",
-                  "15ch",
-                  "8ch",
-                  "1fr",
-                  "1fr",
-                  "1fr",
-                  "10ch",
-                ]}
+                columnWidths={["1fr", "1fr", "1fr", "1fr", "12ch"]}
                 tableGroupData={{
                   heads: [
                     {
@@ -107,7 +99,7 @@ function StockManagement() {
                       sortFn: (a, b) => a.localeCompare(b),
                     },
                     {
-                      text: "數量",
+                      text: "設備數量",
                       sortFn: (a, b) =>
                         +a.replace("台", "") - +b.replace("台", ""),
                     },
@@ -115,20 +107,16 @@ function StockManagement() {
                       text: "Operator",
                       sortFn: (a, b) => a.localeCompare(b),
                     },
-                    { text: "合約名稱" },
-                    { text: "合約編號" },
                     { text: "查看細節" },
                   ],
                   data: getFilteredData(filter).map((stock) => [
-                    getStockTypeText(stock.inOutType),
+                    getStockTypeText(stock.inOutType) ?? "",
                     (getLocalISOStringFromUTC(stock.inOutTime) ?? "").slice(
                       0,
                       10
                     ),
-                    (stock.equipments?.length ?? 0) + " 台",
+                    (stock.equipments || []).length + " 台",
                     stock.operator ?? "",
-                    stock.contractName ?? "",
-                    stock.contractNo ?? "",
                     <Link to={`/stock-management/overview/${stock.id}`}>
                       查看細節
                     </Link>,

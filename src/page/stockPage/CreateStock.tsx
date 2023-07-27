@@ -2,15 +2,15 @@ import { FormEvent, Fragment, ReactNode } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import CustomLoadingButton from "../../components/custom/CustomLoadingButton";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
+import StockForm from "../../components/form/stockForm/StockForm";
+import StockFormSummary from "../../components/form/stockForm/StockFormSummary";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useCreateStockMutation } from "../../redux/stockApi";
 import { resetCreateStock } from "../../redux/stockSlice";
 import { store, useAppDispatch } from "../../redux/store";
 import style from "../UtilityForm.module.css";
-import StockForm from "../../components/form/stockForm/StockForm";
-import StockFormSummary from "../../components/form/stockForm/StockFormSummary";
 
 function CreateStockComp({
   texts,
@@ -78,18 +78,12 @@ function CreateStockComp({
             </Fragment>
           ))}
         </div>
-        <button
+        <CustomLoadingButton
+          text="新增庫存"
+          isLoading={isCreating}
           disabled={isCreating || !isLastStep}
-          className={style.submit}
           onClick={handleCreateStock}
-        >
-          <span style={{ opacity: isCreating ? 0 : 1 }}>新增庫存</span>
-          {isCreating && (
-            <div className={style["spinner-wrapper"]}>
-              <LoadingSpinner />
-            </div>
-          )}
-        </button>
+        />
       </div>
 
       <div className={style["form-wrapper"]}>

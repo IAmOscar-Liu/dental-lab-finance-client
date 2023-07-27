@@ -1,0 +1,29 @@
+.button {
+  border: none;
+  outline: none;
+  font-size: 1.1em;
+  padding: 3px 1em;
+  border-radius: 10000px;
+  color: white;
+  background-color: hsl(25, var(--saturation, 75%), var(--ligntness, 47%));
+  position: relative;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button:hover {
+  --saturation: 60%;
+  --ligntness: 70%;
+}
+
+.button .spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.45);
+}
+
+.button:disabled {
+  --saturation: 0%;
+  --ligntness: 70%;
+  pointer-events: none;
+}
