@@ -5,13 +5,13 @@ import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetCustomStockQuery } from "../../hooks/useGetCustomQuery";
-import { centerTextStyle } from "../../types";
-import { stockDetailkeyNameTable } from "../../types/StockTypes";
+import { centerTextStyle } from "../../constant";
 import {
   getEquipmentStatusText,
   getEquipmentTypeText,
-} from "../../types/equipmentTypes";
+} from "../../constant/equipment";
+import { stockDetailkeyNameTable } from "../../constant/stock";
+import { useGetCustomStockQuery } from "../../hooks/useGetCustomQuery";
 import {
   formatDollarString,
   getLocalISOStringFromUTC,
@@ -64,6 +64,13 @@ function SingleStock() {
                     {value.formatter
                       ? value.formatter(data![key as keyof typeof data])
                       : data![key as keyof typeof data]}
+                    {key === "contractName" && data?.contractName && (
+                      <Link
+                        to={`/contract-management/overview/${data?.contractType}/${data?.contractId}`}
+                      >
+                        <AiFillEye />
+                      </Link>
+                    )}
                   </span>
                 </p>
               ))}

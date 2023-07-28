@@ -104,6 +104,24 @@
   text-align: end;
 }
 
+.single-detail-body > p span:last-of-type > a {
+  margin-left: 5px;
+  border-radius: 3px;
+  padding-inline: 3px;
+  background-color: hsl(25, var(--saturation, 75%), var(--lightness, 47%));
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.single-detail-body > p span:last-of-type > a:hover {
+  --saturation: 90%;
+  --lightness: 60%;
+}
+
+.single-detail-body > p span:last-of-type > a > svg {
+  transform: translateY(2px);
+}
+
 .single-detail-body > .detail-table {
   grid-column: 1 / -1;
   margin-top: -16px;

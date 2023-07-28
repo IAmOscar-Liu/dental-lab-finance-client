@@ -1,11 +1,10 @@
+import {
+  STOCK_TYPE_SELECTIONS,
+  getStockTypeText,
+} from "../../../constant/stock";
 import { setCreateStock } from "../../../redux/stockSlice";
 import { store, useAppDispatch } from "../../../redux/store";
-import {
-  EquipmentBriefType,
-  STOCK_TYPE_SELECTIONS,
-  StockType,
-  getStockTypeText,
-} from "../../../types/StockTypes";
+import { EquipmentBriefType, StockType } from "../../../types/stock";
 import {
   getLocalISOStringFromUTC,
   getUTCISOStringFromLocal,

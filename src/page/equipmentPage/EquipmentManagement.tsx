@@ -7,16 +7,16 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomQueryController from "../../components/custom/CustomQueryController";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetEquipmentsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
   EQUIPMENT_DISPLAY_TYPE_SELECTIONS,
-  EquipmentDetail,
-  EquipmentDisplayType,
   getEquipmentStatusPriority,
   getEquipmentStatusText,
   getEquipmentTypePriority,
   getEquipmentTypeText,
-} from "../../types/equipmentTypes";
+} from "../../constant/equipment";
+import { useGetEquipmentsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { EquipmentDetail, EquipmentDisplayType } from "../../types/equipment";
 import {
   formatDollarString,
   getLocalISOStringFromUTC,
@@ -153,7 +153,8 @@ function EquipmentManagement() {
                   ]),
                 }}
               />
-              {getFilteredData(filter).length >= 25 && (
+              {getFilteredData(filter).length >=
+                MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER && (
                 <CustomQueryController
                   paginationValue={paginationValue}
                   updatePaginationValue={updatePaginationValue}

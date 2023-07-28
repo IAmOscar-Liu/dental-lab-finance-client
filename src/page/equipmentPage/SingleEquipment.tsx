@@ -5,10 +5,10 @@ import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
+import { centerTextStyle } from "../../constant";
+import { equipmentDetailkeyNameTable } from "../../constant/equipment";
+import { getStockTypeText } from "../../constant/stock";
 import { useGetCustomEquipmentQuery } from "../../hooks/useGetCustomQuery";
-import { centerTextStyle } from "../../types";
-import { getStockTypeText } from "../../types/StockTypes";
-import { equipmentDetailkeyNameTable } from "../../types/equipmentTypes";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Single.module.css";
 
@@ -68,6 +68,13 @@ function SingleEquipment() {
                     {value.formatter
                       ? value.formatter(data![key as keyof typeof data])
                       : data![key as keyof typeof data]}
+                    {key === "ownerName" && data?.ownerName && (
+                      <Link
+                        to={`/dental-lab-management/overview/${data?.ownerId}`}
+                      >
+                        <AiFillEye />
+                      </Link>
+                    )}
                   </span>
                 </p>
               ))}

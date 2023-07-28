@@ -1,5 +1,5 @@
+import { updateStockKeyNameTable } from "../../../constant/stock";
 import { useAppSelector } from "../../../redux/store";
-import { updateStockKeyNameTable } from "../../../types/StockTypes";
 import style from "../SummarizeForm.module.css";
 
 function StockUpdateFormSummary() {

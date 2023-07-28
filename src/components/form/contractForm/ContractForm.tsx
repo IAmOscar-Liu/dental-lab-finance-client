@@ -1,12 +1,12 @@
-import { setCreateContract } from "../../../redux/contractSlice";
-import { store, useAppDispatch } from "../../../redux/store";
 import {
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
-  ContractType,
   getContractStatusText,
   getContractTypeText,
-} from "../../../types/contractTypes";
+} from "../../../constant/contract";
+import { setCreateContract } from "../../../redux/contractSlice";
+import { store, useAppDispatch } from "../../../redux/store";
+import { ContractType } from "../../../types/contract";
 import {
   getLocalISOStringFromUTC,
   getUTCISOStringFromLocal,

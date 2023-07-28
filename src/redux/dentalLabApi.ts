@@ -5,7 +5,7 @@ import {
   DentalLabDetail,
   DentalLabQueryResult,
   UpdateDentalLabType,
-} from "../types/dentalLabTypes";
+} from "../types/dentalLab";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
 import { formatSearchQuery } from "../utils/formatString";
 

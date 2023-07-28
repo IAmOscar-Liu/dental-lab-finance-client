@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { useGetDentalLabsQuery } from "../../redux/dentalLabApi";
 import { RootState, useAppSelector } from "../../redux/store";
-import { DentalLabDetail } from "../../types/dentalLabTypes";
+import { DentalLabDetail } from "../../types/dentalLab";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";

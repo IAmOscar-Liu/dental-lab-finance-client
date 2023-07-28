@@ -1,11 +1,11 @@
 import { FormEvent, forwardRef } from "react";
+import { CONTRACT_OPERATE_DECISION_SELECTIONS } from "../../constant/contract";
 import { useOperateContractMutation } from "../../redux/contractApi";
 import {
   resetOperateContract,
   setOperateContract,
 } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { CONTRACT_OPERATE_DECISION_SELECTIONS } from "../../types/contractTypes";
 import LoadingSpinner from "../LoadingSpinner";
 import {
   CustomInputText,

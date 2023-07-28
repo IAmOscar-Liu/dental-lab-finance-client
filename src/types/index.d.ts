@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { SEARCH_QUERY_PAGE_SIZE_SELECTIONS } from "../constant";
 
 export type NullableFields<T> = { [K in keyof T]: T[K] | null };
 
@@ -33,10 +34,6 @@ export type TextWithFormatter = {
   formatter?: (value: any) => any;
 };
 
-export const SEARCH_QUERY_PAGE_SIZE_SELECTIONS = [
-  3, 10, 25, 50, 100, 1000,
-] as const;
-
 export type PageSize = (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number];
 
 export type SearchQueryType =
@@ -52,10 +49,4 @@ export type PaginationValueType = {
   totalPage: number;
   pageNo: number;
   pageSize: PageSize;
-};
-
-export const centerTextStyle: CSSProperties = {
-  marginInline: "auto",
-  width: "max-content",
-  display: "block",
 };

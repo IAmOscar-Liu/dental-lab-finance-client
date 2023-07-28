@@ -1,5 +1,5 @@
-import { CreateStockType } from "../types/StockTypes";
-import { CreateContractType, UpdateContractType } from "../types/contractTypes";
+import { CreateStockType } from "../types/stock";
+import { CreateContractType, UpdateContractType } from "../types/contract";
 
 export const removeUnWantedFields = <T extends {}, K extends keyof T>(
   data: T,

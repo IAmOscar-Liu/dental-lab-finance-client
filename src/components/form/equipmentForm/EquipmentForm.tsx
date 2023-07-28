@@ -1,14 +1,17 @@
-import { setCreateEquipment } from "../../../redux/equipmentSlice";
-import { store, useAppDispatch } from "../../../redux/store";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
+  getEquipmentStatusText,
+} from "../../../constant/equipment";
+import { setCreateEquipment } from "../../../redux/equipmentSlice";
+import { store, useAppDispatch } from "../../../redux/store";
+import {
   EquipmentOwnerType,
   EquipmentStatus,
   EquipmentType,
-  getEquipmentStatusText,
-} from "../../../types/equipmentTypes";
+} from "../../../types/equipment";
+
 import {
   getLocalISOStringFromUTC,
   getUTCISOStringFromLocal,

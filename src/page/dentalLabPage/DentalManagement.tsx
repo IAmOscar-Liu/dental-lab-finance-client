@@ -7,14 +7,14 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomQueryController from "../../components/custom/CustomQueryController";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetDentaLabsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
   DENTAL_DISPLAY_TYPE_SELECTIONS,
-  DentalDisplayType,
-  DentalLabDetail,
   getDentalStatusPriority,
   getDentalStatusText,
-} from "../../types/dentalLabTypes";
+} from "../../constant/dentalLab";
+import { useGetDentaLabsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { DentalDisplayType, DentalLabDetail } from "../../types/dentalLab";
 import style from "../Management.module.css";
 
 function DentalManagement() {
@@ -132,7 +132,8 @@ function DentalManagement() {
                   ]),
                 }}
               />
-              {getFilteredData(filter).length >= 25 && (
+              {getFilteredData(filter).length >=
+                MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER && (
                 <CustomQueryController
                   paginationValue={paginationValue}
                   updatePaginationValue={updatePaginationValue}

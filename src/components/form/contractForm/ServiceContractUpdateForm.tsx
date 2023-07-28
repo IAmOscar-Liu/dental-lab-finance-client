@@ -1,12 +1,14 @@
-import { setUpdateContract } from "../../../redux/contractSlice";
-import { store, useAppDispatch } from "../../../redux/store";
 import {
   BILLING_PERIOD_UNIT_SELECTIONS,
   BILLING_UNIT,
+} from "../../../constant/contract";
+import { setUpdateContract } from "../../../redux/contractSlice";
+import { store, useAppDispatch } from "../../../redux/store";
+import {
   BillingPeriodUnit,
   BillingUnit,
   UpdateContractType,
-} from "../../../types/contractTypes";
+} from "../../../types/contract";
 import {
   CustomInputText,
   CustomRadioField,

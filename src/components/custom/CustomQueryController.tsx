@@ -1,11 +1,8 @@
 import { useMemo, useRef } from "react";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { GrPrevious } from "react-icons/gr";
-import {
-  PageSize,
-  PaginationValueType,
-  SEARCH_QUERY_PAGE_SIZE_SELECTIONS,
-} from "../../types";
+import { SEARCH_QUERY_PAGE_SIZE_SELECTIONS } from "../../constant";
+import { PageSize, PaginationValueType } from "../../types";
 import style from "./CustomQueryController.module.css";
 
 function CustomQueryController({

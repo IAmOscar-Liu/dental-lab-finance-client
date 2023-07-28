@@ -7,17 +7,17 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomQueryController from "../../components/custom/CustomQueryController";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetContractsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
   CONTRACT_DISPLAY_TYPE_SELECTIONS,
-  ContractDetail,
-  ContractDisplayType,
   getContractStatusPriority,
   getContractStatusText,
   getContractTypePriority,
   getContractTypeText,
-} from "../../types/contractTypes";
-import { getLocalISOStringFromUTC as UTC2Local } from "../../utils/formatString";
+} from "../../constant/contract";
+import { useGetContractsPaginationQuery } from "../../hooks/useGetPaginationQuery";
+import { ContractDetail, ContractDisplayType } from "../../types/contract";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
 function ContractManagement() {
@@ -124,7 +124,9 @@ function ContractManagement() {
                     contract.name ?? "",
                     getContractTypeText(contract.type).slice(0, -2),
                     getContractStatusText(contract.status),
-                    (UTC2Local(contract.signingDate) ?? "").slice(0, 10),
+                    (
+                      getLocalISOStringFromUTC(contract.signingDate) ?? ""
+                    ).slice(0, 10),
                     contract.customerName ?? "",
                     <Link
                       to={`/contract-management/overview/${contract.type}/${contract.id}`}
@@ -134,7 +136,8 @@ function ContractManagement() {
                   ]),
                 }}
               />
-              {getFilteredData(filter).length >= 25 && (
+              {getFilteredData(filter).length >=
+                MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER && (
                 <CustomQueryController
                   paginationValue={paginationValue}
                   updatePaginationValue={updatePaginationValue}

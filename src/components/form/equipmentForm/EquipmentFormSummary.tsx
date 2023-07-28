@@ -1,5 +1,5 @@
+import { createEquipmentkeyNameTable } from "../../../constant/equipment";
 import { useAppSelector } from "../../../redux/store";
-import { createEquipmentkeyNameTable } from "../../../types/equipmentTypes";
 import style from "../SummarizeForm.module.css";
 
 function EquipmentFormSummary() {

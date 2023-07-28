@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import { CreateStockType, UpdateStockType } from "../types/StockTypes";
+import { CreateStockType, UpdateStockType } from "../types/stock";
 
 const DATA: CreateStockType = {
   contractId: "",

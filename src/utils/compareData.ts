@@ -1,12 +1,12 @@
-import { StockInOutDetail, UpdateStockType } from "../types/StockTypes";
+import { StockInOutDetail, UpdateStockType } from "../types/stock";
 import {
   LeaseContractDetail,
   SellContractDetail,
   ServiceContractDetail,
   UpdateContractType,
-} from "../types/contractTypes";
-import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLabTypes";
-import { EquipmentDetail, UpdateEquipmentType } from "../types/equipmentTypes";
+} from "../types/contract";
+import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLab";
+import { EquipmentDetail, UpdateEquipmentType } from "../types/equipment";
 
 export const hasStockDataChanged = (
   oldData: StockInOutDetail | undefined,

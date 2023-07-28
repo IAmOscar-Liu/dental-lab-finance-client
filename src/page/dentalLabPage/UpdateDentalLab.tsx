@@ -15,7 +15,7 @@ import {
 } from "../../redux/dentalLabApi";
 import { resetUpdateDentalLab } from "../../redux/dentalLabSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { UpdateDentalLabType } from "../../types/dentalLabTypes";
+import { UpdateDentalLabType } from "../../types/dentalLab";
 import { hasDentalLabDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 

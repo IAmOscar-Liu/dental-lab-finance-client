@@ -1,6 +1,11 @@
-import { NonNullableFields, NullableFields, TextWithFormatter } from ".";
+import { TextWithFormatter } from "../types";
 import { formatISOTimeString } from "../utils/formatString";
-import { ContractDetail } from "./contractTypes";
+import {
+  DentalStatus,
+  CreateDentalLabType,
+  UpdateDentalLabType,
+  DentalLabDetail,
+} from "../types/dentalLab";
 
 export const DENTAL_STATUS_SELECTIONS = [
   "CONTACT",
@@ -20,12 +25,6 @@ export const DENTAL_REGION_SELECTIONS = [
   "WestEurope",
 ] as const;
 
-export type DentalDisplayType = (typeof DENTAL_DISPLAY_TYPE_SELECTIONS)[number];
-
-export type DentalStatus = (typeof DENTAL_STATUS_SELECTIONS)[number];
-
-export type DentalRegion = (typeof DENTAL_REGION_SELECTIONS)[number];
-
 const dentalStatusAndText = DENTAL_STATUS_SELECTIONS.map((status) => {
   if (status === "CONTACT") return [status, "聯繫中"];
   else if (status === "UNDER_CONTRACT") return [status, "合約中"];
@@ -35,45 +34,6 @@ const dentalStatusAndText = DENTAL_STATUS_SELECTIONS.map((status) => {
 export const getDentalStatusText = (status?: DentalStatus | null) => {
   return dentalStatusAndText.find((el) => el[0] === status)?.[1] || "";
 };
-
-export const getDentalStatusPriority = (text: string) => {
-  return dentalStatusAndText.findIndex((el) => el[1] === text);
-};
-export interface DentalLabQueryResult {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
-  result: DentalLabDetail[];
-}
-
-export type DentalLabDetail = { id: string } & NullableFields<{
-  name: string;
-  status: DentalStatus;
-  region: DentalRegion;
-  country: string;
-  state: string;
-  city: string;
-  address: string;
-  phoneCode: string;
-  phoneNumber: string;
-  contactPerson: string;
-  email: string;
-  uniformNo: string;
-  createdTime: string;
-  modifiedTime: string;
-  remark: string;
-}>;
-
-export type DentalLabWithContracts = DentalLabDetail & {
-  contracts?: ContractDetail[];
-};
-
-export type CreateDentalLabType = NonNullableFields<
-  Omit<DentalLabDetail, "id" | "createdTime" | "modifiedTime">
->;
-
-export type UpdateDentalLabType = { id: string } & CreateDentalLabType;
 
 export const createDentalLabkeyNameTable: Record<
   keyof CreateDentalLabType,
@@ -118,4 +78,8 @@ export const dentalDetailLabkeyNameTable: Record<
     text: "Modified Time",
     formatter: formatISOTimeString,
   },
+};
+
+export const getDentalStatusPriority = (text: string) => {
+  return dentalStatusAndText.findIndex((el) => el[1] === text);
 };

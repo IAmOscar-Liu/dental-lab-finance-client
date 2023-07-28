@@ -1,17 +1,17 @@
 import { useRef, useState, useEffect } from "react";
 import { setUpdateEquipment } from "../redux/equipmentSlice";
 import { store, useAppDispatch } from "../redux/store";
-import { EquipmentDetail, UpdateEquipmentType } from "../types/equipmentTypes";
-import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLabTypes";
+import { EquipmentDetail, UpdateEquipmentType } from "../types/equipment";
+import { DentalLabDetail, UpdateDentalLabType } from "../types/dentalLab";
 import { setUpdateDentalLab } from "../redux/dentalLabSlice";
 import {
   LeaseContractDetail,
   SellContractDetail,
   ServiceContractDetail,
   UpdateContractType,
-} from "../types/contractTypes";
+} from "../types/contract";
 import { setUpdateContract } from "../redux/contractSlice";
-import { StockInOutDetail, UpdateStockType } from "../types/StockTypes";
+import { StockInOutDetail, UpdateStockType } from "../types/stock";
 import { setUpdateStock } from "../redux/stockSlice";
 
 export function useInitialUpdateStockData(

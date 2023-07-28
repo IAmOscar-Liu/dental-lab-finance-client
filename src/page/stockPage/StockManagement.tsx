@@ -8,15 +8,15 @@ import CustomQueryController from "../../components/custom/CustomQueryController
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { useGetStocksPaginationQuery } from "../../hooks/useGetPaginationQuery";
-import {
-  STOCK_DISPLAY_TYPE_SELECTIONS,
-  StockDisplayType,
-  StockInOutDetail,
-  getStockTypePriority,
-  getStockTypeText,
-} from "../../types/StockTypes";
+import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
+import {
+  STOCK_DISPLAY_TYPE_SELECTIONS,
+  getStockTypeText,
+  getStockTypePriority,
+} from "../../constant/stock";
+import { StockDisplayType, StockInOutDetail } from "../../types/stock";
 
 function StockManagement() {
   const {
@@ -123,7 +123,8 @@ function StockManagement() {
                   ]),
                 }}
               />
-              {getFilteredData(filter).length >= 25 && (
+              {getFilteredData(filter).length >=
+                MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER && (
                 <CustomQueryController
                   paginationValue={paginationValue}
                   updatePaginationValue={updatePaginationValue}

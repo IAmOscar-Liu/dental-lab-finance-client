@@ -1,10 +1,16 @@
-import { NonNullableFields, NullableFields, TextWithFormatter } from ".";
+import { TextWithFormatter } from "../types";
 import {
   formatDollarString,
   formatISODateString,
   formatISOTimeString,
 } from "../utils/formatString";
-import { StockInOutDetail } from "./StockTypes";
+import {
+  EquipmentStatus,
+  EquipmentType,
+  CreateEquipmentType,
+  UpdateEquipmentType,
+  EquipmentDetail,
+} from "../types/equipment";
 
 export const EQUIPMENT_STATUS_SELECTIONS = [
   "Unknown",
@@ -22,16 +28,6 @@ export const EQUIPMENT_DISPLAY_TYPE_SELECTIONS = [
 export const EQUIPMENT_TYPE_SELECTIONS = ["Unknown", "ART"] as const;
 
 export const EQUIPMENT_OWNER_TYPE_SELECTIONS = ["Agent", "DentalLab"] as const;
-
-export type EquipmentType = (typeof EQUIPMENT_TYPE_SELECTIONS)[number];
-
-export type EquipmentStatus = (typeof EQUIPMENT_STATUS_SELECTIONS)[number];
-
-export type EquipmentDisplayType =
-  (typeof EQUIPMENT_DISPLAY_TYPE_SELECTIONS)[number];
-
-export type EquipmentOwnerType =
-  (typeof EQUIPMENT_OWNER_TYPE_SELECTIONS)[number];
 
 const equipmentTypeAndText = EQUIPMENT_TYPE_SELECTIONS.map((type) => {
   if (type === "Unknown") return [type, "Unknown"];
@@ -62,45 +58,6 @@ export const getEquipmentTypePriority = (text: string) => {
   return equipmentTypeAndText.findIndex((el) => el[1] === text);
 };
 
-export type EquipmentQueryResult = {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
-  result: EquipmentDetail[];
-};
-
-export type EquipmentDetail = {
-  id: string;
-  ownerId: string;
-} & NullableFields<{
-  equipmentType: EquipmentType;
-  serialNumber: string;
-  currency: string;
-  amount: number;
-  warrantyDate: string;
-  receivedDate: string;
-  serviceLife: number;
-  equipmentStatus: EquipmentStatus;
-  ownerName?: string;
-  ownerType: EquipmentOwnerType;
-  createdTime: string;
-  modifiedTime: string;
-  remark: string;
-}>;
-
-export type EquipmentWithStockHistory = EquipmentDetail & {
-  stockHistory?: (Omit<StockInOutDetail, "equipments"> & {
-    equipmentCount: number;
-  })[];
-};
-
-export type CreateEquipmentType = NonNullableFields<
-  Omit<EquipmentDetail, "id" | "createdTime" | "modifiedTime">
->;
-
-export type UpdateEquipmentType = { id: string } & CreateEquipmentType;
-
 export const createEquipmentkeyNameTable: Record<
   keyof CreateEquipmentType,
   TextWithFormatter
@@ -114,6 +71,7 @@ export const createEquipmentkeyNameTable: Record<
   ownerId: { text: "設備擁有者ID" },
   ownerName: { text: "設備擁有者名稱" },
   ownerType: { text: "設備擁有者類型" },
+  ownerContactPerson: { text: "設備擁有者聯絡人" },
   currency: { text: "幣別" },
   amount: {
     text: "設備單價",

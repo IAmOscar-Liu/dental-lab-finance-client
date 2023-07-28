@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   CreateDentalLabType,
   UpdateDentalLabType,
-} from "../types/dentalLabTypes";
+} from "../types/dentalLab";
 
 const DATA: CreateDentalLabType = Object.freeze({
   name: "",

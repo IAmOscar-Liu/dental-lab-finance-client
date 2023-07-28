@@ -5,13 +5,13 @@ import ErrorMessage from "../../components/ErrorMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetCustomDentalLabQuery } from "../../hooks/useGetCustomQuery";
-import { centerTextStyle } from "../../types";
+import { centerTextStyle } from "../../constant";
 import {
   getContractStatusText,
   getContractTypeText,
-} from "../../types/contractTypes";
-import { dentalDetailLabkeyNameTable } from "../../types/dentalLabTypes";
+} from "../../constant/contract";
+import { dentalDetailLabkeyNameTable } from "../../constant/dentalLab";
+import { useGetCustomDentalLabQuery } from "../../hooks/useGetCustomQuery";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Single.module.css";
 

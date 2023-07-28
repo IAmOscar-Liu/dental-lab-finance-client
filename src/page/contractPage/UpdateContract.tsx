@@ -10,6 +10,7 @@ import ContractUpdateFormSummary from "../../components/form/contractForm/Contra
 import LeaseContractUpdateForm from "../../components/form/contractForm/LeaseContractUpdateForm";
 import SellContractUpdateForm from "../../components/form/contractForm/SellContractUpdateForm";
 import ServiceContractUpdateForm from "../../components/form/contractForm/ServiceContractUpdateForm";
+import { getContractType } from "../../constant/contract";
 import { useInitialUpdateContractData } from "../../hooks/useInitialUpdateData";
 import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import {
@@ -18,7 +19,7 @@ import {
 } from "../../redux/contractApi";
 import { resetUpdateContract } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { UpdateContractType, getContractType } from "../../types/contractTypes";
+import { UpdateContractType } from "../../types/contract";
 import { hasContractDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 

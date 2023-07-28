@@ -1,12 +1,11 @@
-import { setCreateDentalLab } from "../../../redux/dentalLabSlice";
-import { store, useAppDispatch } from "../../../redux/store";
 import {
   DENTAL_REGION_SELECTIONS,
   DENTAL_STATUS_SELECTIONS,
-  DentalRegion,
-  DentalStatus,
   getDentalStatusText,
-} from "../../../types/dentalLabTypes";
+} from "../../../constant/dentalLab";
+import { setCreateDentalLab } from "../../../redux/dentalLabSlice";
+import { store, useAppDispatch } from "../../../redux/store";
+import { DentalRegion, DentalStatus } from "../../../types/dentalLab";
 import {
   CustomInputSelect,
   CustomInputText,

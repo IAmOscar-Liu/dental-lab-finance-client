@@ -13,7 +13,7 @@ import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useUpdateEquipmentMutation } from "../../redux/equipmentApi";
 import { resetUpdateEquipment } from "../../redux/equipmentSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { UpdateEquipmentType } from "../../types/equipmentTypes";
+import { UpdateEquipmentType } from "../../types/equipment";
 import { hasEquipmentDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 

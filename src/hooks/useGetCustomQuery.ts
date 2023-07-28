@@ -9,9 +9,9 @@ import {
   useGetStockQuery,
   useGetStocksByEquipmentIdQuery,
 } from "../redux/stockApi";
-import { StockInOutDetail } from "../types/StockTypes";
-import { DentalLabWithContracts } from "../types/dentalLabTypes";
-import { EquipmentWithStockHistory } from "../types/equipmentTypes";
+import { StockInOutDetail } from "../types/stock";
+import { DentalLabWithContracts } from "../types/dentalLab";
+import { EquipmentWithStockHistory } from "../types/equipment";
 
 export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
   const [data, setData] = useState<StockInOutDetail | undefined>();
@@ -34,6 +34,7 @@ export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
         ...stockData,
         contractNo: contractData.contractNo,
         contractName: contractData.name,
+        contractType: contractData.type,
       });
     }
   }, [stockData, contractData]);
@@ -74,16 +75,17 @@ export function useGetCustomEquipmentQuery({
   );
 
   useEffect(() => {
-    if (equipmentData && dentalLabData) {
-      setData({ ...equipmentData, ownerName: dentalLabData.name });
-    }
-    if (equipmentData && stockData) {
+    if (equipmentData && (dentalLabData || stockData)) {
       setData({
         ...equipmentData,
-        stockHistory: stockData.result.map(({ equipments, ...rest }) => ({
-          ...rest,
-          equipmentCount: (equipments || []).length,
-        })),
+        ownerName: dentalLabData?.name,
+        ownerContactPerson: dentalLabData?.contactPerson,
+        stockHistory: (stockData?.result || []).map(
+          ({ equipments, ...rest }) => ({
+            ...rest,
+            equipmentCount: (equipments || []).length,
+          })
+        ),
       });
     }
   }, [equipmentData, dentalLabData, stockData]);

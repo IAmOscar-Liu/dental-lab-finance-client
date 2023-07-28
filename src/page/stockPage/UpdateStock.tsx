@@ -13,7 +13,7 @@ import useMultiStepFormController from "../../hooks/useMultiStepFormController";
 import { useUpdateStockMutation } from "../../redux/stockApi";
 import { resetUpdateStock } from "../../redux/stockSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import { UpdateStockType } from "../../types/StockTypes";
+import { UpdateStockType } from "../../types/stock";
 import { hasStockDataChanged } from "../../utils/compareData";
 import style from "../UtilityForm.module.css";
 

@@ -5,7 +5,7 @@ import {
   ContractSubmitType,
   CreateContractType,
   UpdateContractType,
-} from "../types/contractTypes";
+} from "../types/contract";
 
 const CREATE_DATA: CreateContractType = {
   contractNo: "",

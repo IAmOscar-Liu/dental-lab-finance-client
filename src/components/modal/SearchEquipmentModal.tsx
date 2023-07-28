@@ -1,12 +1,12 @@
 import { CSSProperties, forwardRef } from "react";
-import { useGetAvailableEquipmentsQuery } from "../../redux/equipmentApi";
-import { RootState, useAppSelector } from "../../redux/store";
-import { EquipmentBriefType } from "../../types/StockTypes";
 import {
-  EquipmentDetail,
   getEquipmentStatusText,
   getEquipmentTypeText,
-} from "../../types/equipmentTypes";
+} from "../../constant/equipment";
+import { useGetAvailableEquipmentsQuery } from "../../redux/equipmentApi";
+import { RootState, useAppSelector } from "../../redux/store";
+import { EquipmentDetail } from "../../types/equipment";
+import { EquipmentBriefType } from "../../types/stock";
 import { formatDollarString } from "../../utils/formatString";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";

@@ -12,7 +12,7 @@ import {
   SellContractDetail,
   ServiceContractDetail,
   UpdateContractType,
-} from "../types/contractTypes";
+} from "../types/contract";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
 import { formatSearchQuery } from "../utils/formatString";
 import { removeNonContractFields } from "../utils/removeNonSchemaFields";

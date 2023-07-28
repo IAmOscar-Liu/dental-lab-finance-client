@@ -1,11 +1,11 @@
 import { CSSProperties, forwardRef } from "react";
-import { useGetContractsQuery } from "../../redux/contractApi";
-import { RootState, useAppSelector } from "../../redux/store";
 import {
-  ContractDetail,
   getContractStatusText,
   getContractTypeText,
-} from "../../types/contractTypes";
+} from "../../constant/contract";
+import { useGetContractsQuery } from "../../redux/contractApi";
+import { RootState, useAppSelector } from "../../redux/store";
+import { ContractDetail } from "../../types/contract";
 import ErrorMessage from "../ErrorMessage";
 import LoadingSpinner from "../LoadingSpinner";
 import CustomSearchInputText from "../custom/CustomSearchInputText";

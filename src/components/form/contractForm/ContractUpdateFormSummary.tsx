@@ -1,5 +1,5 @@
+import { updateContractKeyNameTable } from "../../../constant/contract";
 import { useAppSelector } from "../../../redux/store";
-import { updateContractKeyNameTable } from "../../../types/contractTypes";
 import { formatDollarString } from "../../../utils/formatString";
 import style from "../SummarizeForm.module.css";
 

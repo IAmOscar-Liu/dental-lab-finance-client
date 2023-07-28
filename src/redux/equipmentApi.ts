@@ -4,7 +4,7 @@ import {
   EquipmentDetail,
   EquipmentQueryResult,
   UpdateEquipmentType,
-} from "../types/equipmentTypes";
+} from "../types/equipment";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
 import { removeUnWantedFields } from "../utils/removeNonSchemaFields";
 import { SearchQueryType } from "../types";

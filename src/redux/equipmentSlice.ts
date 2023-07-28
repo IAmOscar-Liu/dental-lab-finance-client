@@ -1,9 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  CreateEquipmentType,
-  UpdateEquipmentType,
-} from "../types/equipmentTypes";
+import { CreateEquipmentType, UpdateEquipmentType } from "../types/equipment";
 
 const DATA: CreateEquipmentType = {
   equipmentType: "ART",

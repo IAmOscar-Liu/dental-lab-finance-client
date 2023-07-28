@@ -1,9 +1,7 @@
+import { EQUIPMENT_TYPE_SELECTIONS } from "../../../constant/equipment";
 import { setCreateContract } from "../../../redux/contractSlice";
 import { store, useAppDispatch } from "../../../redux/store";
-import {
-  EQUIPMENT_TYPE_SELECTIONS,
-  EquipmentType,
-} from "../../../types/equipmentTypes";
+import { EquipmentType } from "../../../types/equipment";
 import {
   CustomInputSelect,
   CustomInputText,

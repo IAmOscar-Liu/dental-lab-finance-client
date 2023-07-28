@@ -1,5 +1,5 @@
+import { updateDentalLabkeyNameTable } from "../../../constant/dentalLab";
 import { useAppSelector } from "../../../redux/store";
-import { updateDentalLabkeyNameTable } from "../../../types/dentalLabTypes";
 import style from "../SummarizeForm.module.css";
 
 function DentalUpdateFormSummary() {

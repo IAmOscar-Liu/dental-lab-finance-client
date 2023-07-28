@@ -13,11 +13,11 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import ContractConfirmChargeDateModal from "../../components/modal/ContractConfirmChargeDateModal";
 import ContractOperateModal from "../../components/modal/ContractOperateModal";
 import ContractSubmitModal from "../../components/modal/ContractSubmitModal";
-import { useGetContractQuery } from "../../redux/contractApi";
 import {
   contractDetailKeyNameTable,
   getContractType,
-} from "../../types/contractTypes";
+} from "../../constant/contract";
+import { useGetContractQuery } from "../../redux/contractApi";
 import {
   formatDollarString,
   formatISOTimeString,
@@ -87,6 +87,13 @@ function SingleContract() {
                     {value.formatter
                       ? value.formatter(data![key as keyof typeof data])
                       : data![key as keyof typeof data]}
+                    {key === "customerName" && data?.customerName && (
+                      <Link
+                        to={`/dental-lab-management/overview/${data?.customerId}`}
+                      >
+                        <AiFillEye />
+                      </Link>
+                    )}
                   </span>
                 </p>
               ))}

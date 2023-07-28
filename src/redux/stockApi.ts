@@ -5,7 +5,7 @@ import {
   StockInOutDetail,
   StockQueryResult,
   UpdateStockType,
-} from "../types/StockTypes";
+} from "../types/stock";
 import { allowStatusCode304 } from "../utils/allowStatusCode304";
 import { formatSearchQuery } from "../utils/formatString";
 import { removeNonStockFields } from "../utils/removeNonSchemaFields";

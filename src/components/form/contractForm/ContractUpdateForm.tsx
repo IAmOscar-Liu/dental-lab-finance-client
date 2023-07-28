@@ -1,11 +1,11 @@
-import { setUpdateContract } from "../../../redux/contractSlice";
-import { useAppDispatch } from "../../../redux/store";
 import {
   CONTRACT_TYPE_SELECTIONS,
-  UpdateContractType,
   getContractStatusText,
   getContractTypeText,
-} from "../../../types/contractTypes";
+} from "../../../constant/contract";
+import { setUpdateContract } from "../../../redux/contractSlice";
+import { useAppDispatch } from "../../../redux/store";
+import { UpdateContractType } from "../../../types/contract";
 import {
   getLocalISOStringFromUTC,
   getUTCISOStringFromLocal,
