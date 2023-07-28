@@ -87,7 +87,7 @@ export function useInitialUpdateEqupmentData(
             currency: data.currency ?? "",
             equipmentStatus: data.equipmentStatus ?? "Available",
             equipmentType: data.equipmentType ?? "ART",
-            ownerId: data.ownerId,
+            ownerId: data.ownerId ?? "",
             ownerType: data.ownerType ?? "DentalLab",
             ownerName: data.ownerName ?? "",
             receivedDate: data.receivedDate ?? "",

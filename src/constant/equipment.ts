@@ -1,16 +1,14 @@
 import { TextWithFormatter } from "../types";
 import {
+  EquipmentDetail,
+  EquipmentStatus,
+  EquipmentType,
+} from "../types/equipment";
+import {
   formatDollarString,
   formatISODateString,
   formatISOTimeString,
 } from "../utils/formatString";
-import {
-  EquipmentStatus,
-  EquipmentType,
-  CreateEquipmentType,
-  UpdateEquipmentType,
-  EquipmentDetail,
-} from "../types/equipment";
 
 export const EQUIPMENT_STATUS_SELECTIONS = [
   "Unknown",
@@ -58,20 +56,21 @@ export const getEquipmentTypePriority = (text: string) => {
   return equipmentTypeAndText.findIndex((el) => el[1] === text);
 };
 
-export const createEquipmentkeyNameTable: Record<
-  keyof CreateEquipmentType,
+export const equipmentDetailkeyNameTable: Record<
+  keyof Omit<EquipmentDetail, "stockHistory">,
   TextWithFormatter
 > = {
+  id: { text: "設備ID" },
   serialNumber: { text: "設備序號" },
   equipmentType: { text: "設備類型" },
   equipmentStatus: {
     text: "設備狀態",
     formatter: getEquipmentStatusText,
   },
-  ownerId: { text: "設備擁有者ID" },
+  ownerId: { text: "設備擁有者ID", hideInFormSummary: true },
   ownerName: { text: "設備擁有者名稱" },
   ownerType: { text: "設備擁有者類型" },
-  ownerContactPerson: { text: "設備擁有者聯絡人" },
+  ownerContactPerson: { text: "設備擁有者聯絡人", hideInFormSummary: true },
   currency: { text: "幣別" },
   amount: {
     text: "設備單價",
@@ -86,22 +85,6 @@ export const createEquipmentkeyNameTable: Record<
     formatter: formatISODateString,
   },
   serviceLife: { text: "設備使用年限", formatter: (value) => value + " 個月" },
-  remark: { text: "備註" },
-};
-
-export const updateEquipmentkeyNameTable: Record<
-  keyof UpdateEquipmentType,
-  TextWithFormatter
-> = {
-  id: { text: "設備ID" },
-  ...createEquipmentkeyNameTable,
-};
-
-export const equipmentDetailkeyNameTable: Record<
-  keyof EquipmentDetail,
-  TextWithFormatter
-> = {
-  ...updateEquipmentkeyNameTable,
   createdTime: {
     text: "Created Time",
     formatter: formatISOTimeString,
@@ -110,4 +93,16 @@ export const equipmentDetailkeyNameTable: Record<
     text: "Modified Time",
     formatter: formatISOTimeString,
   },
+  remark: { text: "備註" },
 };
+
+export const UPDATE_EQUIPMENT_OMIT_FIELDS = [
+  "createdTime",
+  "modifiedTime",
+  "stockHistory",
+] as const;
+
+const { id, createdTime, modifiedTime, ...rest } = equipmentDetailkeyNameTable;
+
+export const createEquipmentkeyNameTable = rest;
+export const updateEquipmentkeyNameTable = { id, ...rest };

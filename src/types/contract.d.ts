@@ -6,8 +6,24 @@ import {
   CONTRACT_OPERATE_DECISION_SELECTIONS,
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
+  UPDATE_CONTRACT_OMIT_FIELDS,
 } from "../constant/contract";
 import { EquipmentType } from "./equipment";
+
+type ContractResultFromAPI = { id: string } & NullableFields<{
+  contractNo: string;
+  name: string;
+  customerId: string;
+  customerName: string;
+  type: ContractType;
+  status: ContractStatus;
+  attachment: string;
+  signingDate: string;
+  chargeDate: string;
+  createdTime: string;
+  modifiedTime: string;
+  remark: string;
+}>;
 
 export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
 
@@ -24,20 +40,7 @@ export interface ContractQueryResult {
   result: ContractDetail[];
 }
 
-export type ContractDetail = { id: string } & NullableFields<{
-  contractNo: string;
-  name: string;
-  customerId: string;
-  customerName: string;
-  type: ContractType;
-  status: ContractStatus;
-  attachment: string;
-  signingDate: string;
-  chargeDate: string;
-  createdTime: string;
-  modifiedTime: string;
-  remark: string;
-}>;
+export type ContractDetail = ContractResultFromAPI;
 
 export type ServiceContractDetail = Omit<ContractDetail, "type"> & {
   type: "SERVICE";
@@ -89,23 +92,32 @@ export type ServiceContractBilling = { id: string } & NullableFields<{
   modifiedTime?: string;
 }>;
 
-export type CreateContractType = NonNullableFields<
-  Omit<ContractDetail, "id" | "createdTime" | "modifiedTime" | "chargeDate">
+export type UpdateContractType = NonNullableFields<
+  Omit<ContractDetail, (typeof UPDATE_CONTRACT_OMIT_FIELDS)[number]>
 > & {
-  serviceContractDetail: Omit<ExtendedServiceContractDetail, "billing"> & {
-    billing: Omit<ServiceContractBilling, "id">;
-  };
+  serviceContractDetail: ExtendedServiceContractDetail;
   leaseContractDetail: ExtendedLeaseContractDetail;
   sellContractDetail: ExtendedSellContractDetail;
 };
 
-export type UpdateContractType = { id: string } & NonNullableFields<
-  Omit<ContractDetail, "id" | "createdTime" | "modifiedTime" | "chargeDate">
+export type CreateContractType = Omit<
+  UpdateContractType,
+  "id" | "serviceContractDetail"
 > & {
-    serviceContractDetail: ExtendedServiceContractDetail;
-    leaseContractDetail: ExtendedLeaseContractDetail;
-    sellContractDetail: ExtendedSellContractDetail;
+  serviceContractDetail: Omit<ExtendedServiceContractDetail, "billing"> & {
+    billing: Omit<ServiceContractBilling, "id">;
   };
+};
+
+// export type CreateContractType = NonNullableFields<
+//   Omit<ContractDetail, "id" | "createdTime" | "modifiedTime" | "chargeDate">
+// > & {
+//   serviceContractDetail: Omit<ExtendedServiceContractDetail, "billing"> & {
+//     billing: Omit<ServiceContractBilling, "id">;
+//   };
+//   leaseContractDetail: ExtendedLeaseContractDetail;
+//   sellContractDetail: ExtendedSellContractDetail;
+// };
 
 export type ContractSubmitType = {
   id: string;

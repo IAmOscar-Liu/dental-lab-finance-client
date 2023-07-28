@@ -13,19 +13,21 @@ function ContractUpdateFormSummary() {
       <div className={style.detail}>
         <h2>合約基本資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(updateContractKeyNameTable).map(([key, value]) => (
-            <p
-              key={key}
-              style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
-            >
-              <span>{value.text}</span>
-              <span>
-                {value.formatter
-                  ? value.formatter((updateData as any)[key])
-                  : (updateData as any)[key]}
-              </span>
-            </p>
-          ))}
+          {Object.entries(updateContractKeyNameTable)
+            .filter(([_, value]) => !value.hideInFormSummary)
+            .map(([key, value]) => (
+              <p
+                key={key}
+                style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
+              >
+                <span>{value.text}</span>
+                <span>
+                  {value.formatter
+                    ? value.formatter((updateData as any)[key])
+                    : (updateData as any)[key]}
+                </span>
+              </p>
+            ))}
         </div>
       </div>
 

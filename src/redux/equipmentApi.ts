@@ -76,7 +76,7 @@ export const equipmentApi = createApi({
       query: (data) => ({
         url: `/equipments`,
         method: "POST",
-        body: removeUnWantedFields(data, ["ownerName"]),
+        body: removeUnWantedFields(data, ["ownerName", "ownerContactPerson"]),
         validateStatus: allowStatusCode304,
       }),
       invalidatesTags: [{ type: "Equipment", id: "LIST" }],
@@ -85,7 +85,7 @@ export const equipmentApi = createApi({
       query: ({ id, ...rest }) => ({
         url: `/equipments/${id}`,
         method: "PUT",
-        body: removeUnWantedFields(rest, ["ownerName"]),
+        body: removeUnWantedFields(rest, ["ownerName", "ownerContactPerson"]),
         validateStatus: allowStatusCode304,
       }),
       invalidatesTags: (_, __, { id }) => [{ type: "Equipment", id }],

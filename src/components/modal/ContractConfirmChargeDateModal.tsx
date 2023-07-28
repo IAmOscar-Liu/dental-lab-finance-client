@@ -5,11 +5,11 @@ import {
   setConfirmChargeDate,
 } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import LoadingSpinner from "../LoadingSpinner";
 import {
   CustomInputText,
   CustomInputTextByValue,
 } from "../custom/CustomFormField";
+import CustomLoadingButton from "../custom/CustomLoadingButton";
 import style from "./ContractModal.module.css";
 
 const ContractConfirmChargeDateModal = forwardRef<
@@ -95,16 +95,12 @@ const ContractConfirmChargeDateModal = forwardRef<
             />
           </div>
           <footer className={style.footer}>
-            <button type="submit" disabled={isConfirming}>
-              <span style={{ opacity: isConfirming ? 0 : 1 }}>
-                送出收費起始日
-              </span>
-              {isConfirming && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            <CustomLoadingButton
+              text="送出收費起始日"
+              type="submit"
+              isLoading={isConfirming}
+              disabled={isConfirming}
+            />
             <button type="button" onClick={closeModal}>
               取消
             </button>

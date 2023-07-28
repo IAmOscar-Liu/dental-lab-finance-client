@@ -11,7 +11,7 @@ import {
 } from "../redux/stockApi";
 import { StockInOutDetail } from "../types/stock";
 import { DentalLabWithContracts } from "../types/dentalLab";
-import { EquipmentWithStockHistory } from "../types/equipment";
+import { EquipmentDetail } from "../types/equipment";
 
 export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
   const [data, setData] = useState<StockInOutDetail | undefined>();
@@ -52,7 +52,7 @@ export function useGetCustomEquipmentQuery({
   equipmentId?: string;
   withStockHistory?: boolean;
 }) {
-  const [data, setData] = useState<EquipmentWithStockHistory | undefined>();
+  const [data, setData] = useState<EquipmentDetail | undefined>();
 
   const { data: equipmentData, ...rest } = useGetEquipmentQuery(
     { equipmentId: equipmentId ?? "" },
@@ -91,7 +91,7 @@ export function useGetCustomEquipmentQuery({
   }, [equipmentData, dentalLabData, stockData]);
 
   return {
-    data: (data || equipmentData) as EquipmentWithStockHistory | undefined,
+    data: (data || equipmentData) as EquipmentDetail | undefined,
     ...rest,
   };
 }

@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -13,6 +12,7 @@ import {
   getDentalStatusPriority,
   getDentalStatusText,
 } from "../../constant/dentalLab";
+import useFilter from "../../hooks/useFilter";
 import { useGetDentaLabsPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import { DentalDisplayType, DentalLabDetail } from "../../types/dentalLab";
 import style from "../Management.module.css";
@@ -26,23 +26,11 @@ function DentalManagement() {
     isFetching,
     error,
   } = useGetDentaLabsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const [filter, setFilter] = useState<DentalDisplayType>("ALL");
-  const filterHistory = useRef<Map<any, DentalLabDetail[]>>();
+  const { filter, setFilter, getFilteredData } = useFilter<
+    DentalDisplayType,
+    DentalLabDetail
+  >({ data: data?.result, filterBy: (value) => value.status });
   const navigate = useNavigate();
-
-  const getFilteredData = (_filter: DentalDisplayType) => {
-    if (!data) return [];
-
-    if (filterHistory.current?.has(_filter))
-      return filterHistory.current.get(_filter)!;
-
-    let results: DentalLabDetail[] = [];
-    if (_filter === "ALL") results = data.result;
-    else results = data.result.filter((e) => e.status === _filter);
-
-    filterHistory.current?.set(_filter, results);
-    return results;
-  };
 
   return (
     <div className={style.management}>

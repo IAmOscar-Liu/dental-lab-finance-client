@@ -12,19 +12,23 @@ function EquipmentUpdateFormSummary() {
       <div className={style.detail}>
         <h2>設備資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(updateEquipmentkeyNameTable).map(([key, value]) => (
-            <p
-              key={key}
-              style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
-            >
-              <span>{value.text}</span>
-              <span>
-                {value.formatter
-                  ? value.formatter(updateData[key as keyof typeof updateData])
-                  : updateData[key as keyof typeof updateData]}
-              </span>
-            </p>
-          ))}
+          {Object.entries(updateEquipmentkeyNameTable)
+            .filter(([_, value]) => !value.hideInFormSummary)
+            .map(([key, value]) => (
+              <p
+                key={key}
+                style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
+              >
+                <span>{value.text}</span>
+                <span>
+                  {value.formatter
+                    ? value.formatter(
+                        updateData[key as keyof typeof updateData]
+                      )
+                    : updateData[key as keyof typeof updateData]}
+                </span>
+              </p>
+            ))}
         </div>
       </div>
     </div>

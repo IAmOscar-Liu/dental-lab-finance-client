@@ -1,11 +1,6 @@
 import { TextWithFormatter } from "../types";
+import { StockInOutDetail, StockType } from "../types/stock";
 import { formatISOTimeString } from "../utils/formatString";
-import {
-  StockType,
-  CreateStockType,
-  UpdateStockType,
-  StockInOutDetail,
-} from "../types/stock";
 import { getContractTypeText } from "./contract";
 
 export const STOCK_TYPE_SELECTIONS = ["IN", "OUT"] as const;
@@ -28,10 +23,11 @@ export const getStockTypePriority = (text: string) => {
   return stockTypeAndText.findIndex((el) => el[1] === text);
 };
 
-export const createStockKeyNameTable: Record<
-  Exclude<keyof CreateStockType, "equipments">,
+export const stockDetailkeyNameTable: Record<
+  Exclude<keyof StockInOutDetail, "equipments">,
   TextWithFormatter
 > = {
+  id: { text: "入/出庫ID" },
   inOutType: { text: "入/出庫", formatter: getStockTypeText },
   inOutTime: {
     text: "入/出庫時間",
@@ -41,23 +37,12 @@ export const createStockKeyNameTable: Record<
   contractId: { text: "合約ID" },
   contractNo: { text: "合約編號" },
   contractName: { text: "合約名稱" },
-  contractType: { text: "合約種類", formatter: getContractTypeText },
+  contractType: {
+    text: "合約種類",
+    formatter: getContractTypeText,
+    hideInFormSummary: true,
+  },
   remark: { text: "備註" },
-};
-
-export const updateStockKeyNameTable: Record<
-  Exclude<keyof UpdateStockType, "equipments">,
-  TextWithFormatter
-> = {
-  id: { text: "庫存ID" },
-  ...createStockKeyNameTable,
-};
-
-export const stockDetailkeyNameTable: Record<
-  Exclude<keyof StockInOutDetail, "equipments">,
-  TextWithFormatter
-> = {
-  ...updateStockKeyNameTable,
   createdTime: {
     text: "Created Time",
     formatter: formatISOTimeString,
@@ -67,3 +52,16 @@ export const stockDetailkeyNameTable: Record<
     formatter: formatISOTimeString,
   },
 };
+
+export const UPDATE_STOCK_OMIT_FIELDS = [
+  "createdTime",
+  "modifiedTime",
+  "equipments",
+  "contractType",
+] as const;
+
+const { id, createdTime, modifiedTime, contractType, ...rest } =
+  stockDetailkeyNameTable;
+
+export const createStockKeyNameTable = rest;
+export const updateStockKeyNameTable = { id, ...rest };

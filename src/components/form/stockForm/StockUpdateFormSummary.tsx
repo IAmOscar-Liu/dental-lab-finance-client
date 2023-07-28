@@ -12,19 +12,23 @@ function StockUpdateFormSummary() {
       <div className={style.detail}>
         <h2>庫存資料</h2>
         <div className={style["detail-body"]}>
-          {Object.entries(updateStockKeyNameTable).map(([key, value]) => (
-            <p
-              key={key}
-              style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
-            >
-              <span>{value.text}</span>
-              <span>
-                {value.formatter
-                  ? value.formatter(updateData[key as keyof typeof updateData])
-                  : updateData[key as keyof typeof updateData]}
-              </span>
-            </p>
-          ))}
+          {Object.entries(updateStockKeyNameTable)
+            .filter(([_, value]) => !value.hideInFormSummary)
+            .map(([key, value]) => (
+              <p
+                key={key}
+                style={value.text === "備註" ? { gridColumn: "1/-1" } : {}}
+              >
+                <span>{value.text}</span>
+                <span>
+                  {value.formatter
+                    ? value.formatter(
+                        updateData[key as keyof typeof updateData]
+                      )
+                    : updateData[key as keyof typeof updateData]}
+                </span>
+              </p>
+            ))}
         </div>
       </div>
 

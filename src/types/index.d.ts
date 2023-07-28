@@ -32,6 +32,7 @@ export type TableGroupData = {
 export type TextWithFormatter = {
   text: string;
   formatter?: (value: any) => any;
+  hideInFormSummary?: boolean;
 };
 
 export type PageSize = (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number];

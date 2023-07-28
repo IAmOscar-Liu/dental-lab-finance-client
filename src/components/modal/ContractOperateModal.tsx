@@ -6,13 +6,13 @@ import {
   setOperateContract,
 } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import LoadingSpinner from "../LoadingSpinner";
 import {
   CustomInputText,
   CustomInputTextArea,
   CustomInputTextByValue,
   CustomRadioField,
 } from "../custom/CustomFormField";
+import CustomLoadingButton from "../custom/CustomLoadingButton";
 import style from "./ContractModal.module.css";
 
 const ContractOperateModal = forwardRef<
@@ -117,14 +117,12 @@ const ContractOperateModal = forwardRef<
             />
           </div>
           <footer className={style.footer}>
-            <button type="submit" disabled={isOperating}>
-              <span style={{ opacity: isOperating ? 0 : 1 }}>送出審核結果</span>
-              {isOperating && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            <CustomLoadingButton
+              text="送出審核結果"
+              type="submit"
+              isLoading={isOperating}
+              disabled={isOperating}
+            />
             <button type="button" onClick={closeModal}>
               取消
             </button>

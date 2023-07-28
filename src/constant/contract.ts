@@ -1,15 +1,13 @@
 import { TextWithFormatter } from "../types";
 import {
+  ContractDetail,
+  ContractStatus,
+  ContractType,
+} from "../types/contract";
+import {
   formatISODateString,
   formatISOTimeString,
 } from "../utils/formatString";
-import {
-  ContractStatus,
-  ContractType,
-  CreateContractType,
-  UpdateContractType,
-  ContractDetail,
-} from "../types/contract";
 
 export const CONTRACT_TYPE_SELECTIONS = ["SERVICE", "LEASE", "SELL"] as const;
 
@@ -77,13 +75,11 @@ export const getContractTypePriority = (text: string) => {
   return contractTypeAndText.findIndex((el) => el[1] === text);
 };
 
-export const createContractKeyNameTable: Record<
-  keyof Omit<
-    CreateContractType,
-    "serviceContractDetail" | "leaseContractDetail" | "sellContractDetail"
-  >,
+export const contractDetailKeyNameTable: Record<
+  keyof ContractDetail,
   TextWithFormatter
 > = {
+  id: { text: "合約ID" },
   contractNo: { text: "合約編號" },
   name: { text: "合約名稱" },
   type: {
@@ -101,29 +97,6 @@ export const createContractKeyNameTable: Record<
     text: "合約簽約日",
     formatter: formatISODateString,
   },
-  remark: { text: "備註" },
-};
-
-export const updateContractKeyNameTable: Record<
-  keyof Omit<
-    UpdateContractType,
-    "serviceContractDetail" | "leaseContractDetail" | "sellContractDetail"
-  >,
-  TextWithFormatter
-> = {
-  id: { text: "合約ID" },
-  ...createContractKeyNameTable,
-};
-
-export const contractDetailKeyNameTable: Record<
-  keyof ContractDetail,
-  TextWithFormatter
-> = {
-  ...updateContractKeyNameTable,
-  signingDate: {
-    text: "合約簽約日",
-    formatter: formatISODateString,
-  },
   chargeDate: {
     text: "合約收費日",
     formatter: formatISODateString,
@@ -136,4 +109,17 @@ export const contractDetailKeyNameTable: Record<
     text: "Modified Time",
     formatter: formatISOTimeString,
   },
+  remark: { text: "備註" },
 };
+
+export const UPDATE_CONTRACT_OMIT_FIELDS = [
+  "createdTime",
+  "modifiedTime",
+  "chargeDate",
+] as const;
+
+const { id, createdTime, modifiedTime, chargeDate, ...rest } =
+  contractDetailKeyNameTable;
+
+export const createContractKeyNameTable = rest;
+export const updateContractKeyNameTable = { id, ...rest };

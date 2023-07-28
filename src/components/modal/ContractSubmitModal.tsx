@@ -5,11 +5,11 @@ import {
   setSubmitContract,
 } from "../../redux/contractSlice";
 import { store, useAppDispatch } from "../../redux/store";
-import LoadingSpinner from "../LoadingSpinner";
 import {
   CustomInputText,
   CustomInputTextByValue,
 } from "../custom/CustomFormField";
+import CustomLoadingButton from "../custom/CustomLoadingButton";
 import style from "./ContractModal.module.css";
 
 const ContractSubmitModal = forwardRef<
@@ -93,16 +93,12 @@ const ContractSubmitModal = forwardRef<
             />
           </div>
           <footer className={style.footer}>
-            <button type="submit" disabled={isSubmitting}>
-              <span style={{ opacity: isSubmitting ? 0 : 1 }}>
-                送出審核資料
-              </span>
-              {isSubmitting && (
-                <div className={style["spinner-wrapper"]}>
-                  <LoadingSpinner />
-                </div>
-              )}
-            </button>
+            <CustomLoadingButton
+              text="送出審核資料"
+              type="submit"
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+            />
             <button type="button" onClick={closeModal}>
               取消
             </button>

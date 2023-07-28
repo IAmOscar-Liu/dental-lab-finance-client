@@ -1,11 +1,6 @@
 import { TextWithFormatter } from "../types";
+import { DentalLabDetail, DentalStatus } from "../types/dentalLab";
 import { formatISOTimeString } from "../utils/formatString";
-import {
-  DentalStatus,
-  CreateDentalLabType,
-  UpdateDentalLabType,
-  DentalLabDetail,
-} from "../types/dentalLab";
 
 export const DENTAL_STATUS_SELECTIONS = [
   "CONTACT",
@@ -35,10 +30,15 @@ export const getDentalStatusText = (status?: DentalStatus | null) => {
   return dentalStatusAndText.find((el) => el[0] === status)?.[1] || "";
 };
 
-export const createDentalLabkeyNameTable: Record<
-  keyof CreateDentalLabType,
+export const getDentalStatusPriority = (text: string) => {
+  return dentalStatusAndText.findIndex((el) => el[1] === text);
+};
+
+export const dentalDetailLabkeyNameTable: Record<
+  keyof DentalLabDetail,
   TextWithFormatter
 > = {
+  id: { text: "牙技所ID" },
   name: { text: "牙技所名稱" },
   uniformNo: { text: "牙技所統一編號" },
   status: {
@@ -55,21 +55,6 @@ export const createDentalLabkeyNameTable: Record<
   contactPerson: { text: "牙技所聯絡人" },
   email: { text: "牙技所email" },
   remark: { text: "備註" },
-};
-
-export const updateDentalLabkeyNameTable: Record<
-  keyof UpdateDentalLabType,
-  TextWithFormatter
-> = {
-  id: { text: "牙技所ID" },
-  ...createDentalLabkeyNameTable,
-};
-
-export const dentalDetailLabkeyNameTable: Record<
-  keyof DentalLabDetail,
-  TextWithFormatter
-> = {
-  ...updateDentalLabkeyNameTable,
   createdTime: {
     text: "Created Time",
     formatter: formatISOTimeString,
@@ -80,6 +65,12 @@ export const dentalDetailLabkeyNameTable: Record<
   },
 };
 
-export const getDentalStatusPriority = (text: string) => {
-  return dentalStatusAndText.findIndex((el) => el[1] === text);
-};
+export const UPDATE_DENTAL_LAB_OMIT_FIELDS = [
+  "createdTime",
+  "modifiedTime",
+] as const;
+
+const { id, createdTime, modifiedTime, ...rest } = dentalDetailLabkeyNameTable;
+
+export const createDentalLabkeyNameTable = rest;
+export const updateDentalLabkeyNameTable = { id, ...rest };

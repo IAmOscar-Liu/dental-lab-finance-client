@@ -16,24 +16,28 @@ function CustomQueryController({
 }) {
   const pageInputRef = useRef<HTMLInputElement>(null);
 
-  const buttonPage = useMemo(() => {
-    const getResult = () => {
+  const buttonPageGroups = useMemo(() => {
+    const getResult = (): (number | string)[] => {
       const result = Array(totalPage)
         .fill(null)
         .map((_, idx) => idx + 1);
+
       if (totalPage <= 5) return result;
       if (pageNo <= 3)
         return result.map((r) => (r > 4 && r < totalPage ? "truncate" : r));
       if (totalPage - pageNo <= 2)
         return result.map((r) => (r > 1 && r < totalPage - 3 ? "truncate" : r));
+
       return result.map((r) =>
-        (r > 1 && r < pageNo - 1) || (r > pageNo + 2 && r < totalPage)
-          ? "truncate"
+        r > 1 && r < pageNo - 1
+          ? "left truncate"
+          : r > pageNo + 2 && r < totalPage
+          ? "right truncate"
           : r
       );
     };
 
-    return getResult().reduce((acc: (number | "truncate")[], cur) => {
+    return getResult().reduce((acc: (number | string)[], cur) => {
       if (cur === acc.at(-1)) return acc;
       acc.push(cur);
       return acc;
@@ -100,17 +104,17 @@ function CustomQueryController({
         >
           <GrPrevious />
         </button>
-        {buttonPage.map((idx) =>
-          typeof idx === "number" ? (
+        {buttonPageGroups.map((buttonValue) =>
+          typeof buttonValue === "number" ? (
             <button
-              key={idx}
-              onClick={() => updatePaginationValue({ pageNo: idx })}
-              className={idx === pageNo ? style.active : ""}
+              key={buttonValue}
+              onClick={() => updatePaginationValue({ pageNo: buttonValue })}
+              className={buttonValue === pageNo ? style.active : ""}
             >
-              {idx}
+              {buttonValue}
             </button>
           ) : (
-            <FiMoreHorizontal key={idx} className={style.moreIcon} />
+            <FiMoreHorizontal key={buttonValue} className={style.moreIcon} />
           )
         )}
         <button

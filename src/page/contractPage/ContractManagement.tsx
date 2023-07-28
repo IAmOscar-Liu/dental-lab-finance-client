@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -15,6 +14,7 @@ import {
   getContractTypePriority,
   getContractTypeText,
 } from "../../constant/contract";
+import useFilter from "../../hooks/useFilter";
 import { useGetContractsPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import { ContractDetail, ContractDisplayType } from "../../types/contract";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
@@ -29,23 +29,11 @@ function ContractManagement() {
     isFetching,
     error,
   } = useGetContractsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const [filter, setFilter] = useState<ContractDisplayType>("ALL");
-  const filterHistory = useRef<Map<any, ContractDetail[]>>();
+  const { filter, setFilter, getFilteredData } = useFilter<
+    ContractDisplayType,
+    ContractDetail
+  >({ data: data?.result, filterBy: (value) => value.type });
   const navigate = useNavigate();
-
-  const getFilteredData = (_filter: ContractDisplayType) => {
-    if (!data) return [];
-
-    if (filterHistory.current?.has(_filter))
-      return filterHistory.current.get(_filter)!;
-
-    let results: ContractDetail[] = [];
-    if (_filter === "ALL") results = data.result;
-    else results = results = data.result.filter((e) => e.type === _filter);
-
-    filterHistory.current?.set(_filter, results);
-    return results;
-  };
 
   return (
     <div className={style.management}>

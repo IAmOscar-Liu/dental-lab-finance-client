@@ -1,10 +1,16 @@
-export async function handleDownloadPDF(url: string, filename?: string) {
+export async function handleDownloadPDF({
+  url,
+  filename,
+}: {
+  url: string;
+  filename?: string;
+}) {
   let link: HTMLAnchorElement | undefined;
 
   try {
     const response = await fetch(url);
-
     const file = await response.blob();
+
     link = document.createElement("a");
     link.href = URL.createObjectURL(file);
     link.download = filename ?? new Date().getTime() + "";

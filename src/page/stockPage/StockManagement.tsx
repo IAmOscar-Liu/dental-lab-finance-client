@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -7,16 +6,17 @@ import CustomPageTitle from "../../components/custom/CustomPageTitle";
 import CustomQueryController from "../../components/custom/CustomQueryController";
 import CustomSearchInputText from "../../components/custom/CustomSearchInputText";
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
-import { useGetStocksPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
-import { getLocalISOStringFromUTC } from "../../utils/formatString";
-import style from "../Management.module.css";
 import {
   STOCK_DISPLAY_TYPE_SELECTIONS,
-  getStockTypeText,
   getStockTypePriority,
+  getStockTypeText,
 } from "../../constant/stock";
+import useFilter from "../../hooks/useFilter";
+import { useGetStocksPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import { StockDisplayType, StockInOutDetail } from "../../types/stock";
+import { getLocalISOStringFromUTC } from "../../utils/formatString";
+import style from "../Management.module.css";
 
 function StockManagement() {
   const {
@@ -27,23 +27,11 @@ function StockManagement() {
     isFetching,
     error,
   } = useGetStocksPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const [filter, setFilter] = useState<StockDisplayType>("ALL");
-  const filterHistory = useRef<Map<any, StockInOutDetail[]>>();
+  const { filter, setFilter, getFilteredData } = useFilter<
+    StockDisplayType,
+    StockInOutDetail
+  >({ data: data?.result, filterBy: (value) => value.inOutType });
   const navigate = useNavigate();
-
-  const getFilteredData = (_filter: StockDisplayType) => {
-    if (!data) return [];
-
-    if (filterHistory.current?.has(_filter))
-      return filterHistory.current.get(_filter)!;
-
-    let results: StockInOutDetail[] = [];
-    if (_filter === "ALL") results = data.result;
-    else results = data.result.filter((e) => e.inOutType === _filter);
-
-    filterHistory.current?.set(_filter, results);
-    return results;
-  };
 
   return (
     <div className={style.management}>

@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { MdOutlineAdd, MdOutlineStickyNote2 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -15,6 +14,7 @@ import {
   getEquipmentTypePriority,
   getEquipmentTypeText,
 } from "../../constant/equipment";
+import useFilter from "../../hooks/useFilter";
 import { useGetEquipmentsPaginationQuery } from "../../hooks/useGetPaginationQuery";
 import { EquipmentDetail, EquipmentDisplayType } from "../../types/equipment";
 import {
@@ -32,23 +32,11 @@ function EquipmentManagement() {
     isFetching,
     error,
   } = useGetEquipmentsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const [filter, setFilter] = useState<EquipmentDisplayType>("ALL");
-  const filterHistory = useRef<Map<any, EquipmentDetail[]>>();
+  const { filter, setFilter, getFilteredData } = useFilter<
+    EquipmentDisplayType,
+    EquipmentDetail
+  >({ data: data?.result, filterBy: (value) => value.equipmentStatus });
   const navigate = useNavigate();
-
-  const getFilteredData = (_filter: EquipmentDisplayType) => {
-    if (!data) return [];
-
-    if (filterHistory.current?.has(_filter))
-      return filterHistory.current.get(_filter)!;
-
-    let results: EquipmentDetail[] = [];
-    if (_filter === "ALL") results = data.result;
-    else results = data.result.filter((e) => e.equipmentStatus === _filter);
-
-    filterHistory.current?.set(_filter, results);
-    return results;
-  };
 
   return (
     <div className={style.management}>

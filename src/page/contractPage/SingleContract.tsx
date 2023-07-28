@@ -213,10 +213,10 @@ function SingleContract() {
                   <button
                     onClick={() =>
                       data.billing?.id &&
-                      handleDownloadPDF(
-                        `${process.env.REACT_APP_SERVER_URL}/api/billings/download/${data.billing.id}`,
-                        `contract billing ${data.contractNo}`
-                      )
+                      handleDownloadPDF({
+                        url: `${process.env.REACT_APP_SERVER_URL}/api/billings/download/${data.billing.id}`,
+                        filename: `contract billing ${data.contractNo}`,
+                      })
                     }
                   >
                     <AiOutlineDownload />
