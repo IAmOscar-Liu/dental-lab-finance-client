@@ -1,6 +1,5 @@
 import { NonNullableFields, NullableFields } from ".";
 import {
-  EQUIPMENT_DISPLAY_TYPE_SELECTIONS,
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
   EQUIPMENT_TYPE_SELECTIONS,
@@ -29,9 +28,6 @@ type EquipmentResultFromAPI = {
 export type EquipmentType = (typeof EQUIPMENT_TYPE_SELECTIONS)[number];
 
 export type EquipmentStatus = (typeof EQUIPMENT_STATUS_SELECTIONS)[number];
-
-export type EquipmentDisplayType =
-  (typeof EQUIPMENT_DISPLAY_TYPE_SELECTIONS)[number];
 
 export type EquipmentOwnerType =
   (typeof EQUIPMENT_OWNER_TYPE_SELECTIONS)[number];

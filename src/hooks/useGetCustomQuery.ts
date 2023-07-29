@@ -9,9 +9,9 @@ import {
   useGetStockQuery,
   useGetStocksByEquipmentIdQuery,
 } from "../redux/stockApi";
-import { StockInOutDetail } from "../types/stock";
-import { DentalLabWithContracts } from "../types/dentalLab";
+import { DentalLabDetail } from "../types/dentalLab";
 import { EquipmentDetail } from "../types/equipment";
+import { StockInOutDetail } from "../types/stock";
 
 export function useGetCustomStockQuery({ stockId }: { stockId?: string }) {
   const [data, setData] = useState<StockInOutDetail | undefined>();
@@ -101,7 +101,7 @@ export function useGetCustomDentalLabQuery({
 }: {
   dentalLabId?: string;
 }) {
-  const [data, setData] = useState<DentalLabWithContracts | undefined>();
+  const [data, setData] = useState<DentalLabDetail | undefined>();
 
   const { data: dentalLabData, ...rest } = useGetDentalLabQuery(
     { dentalLabId: dentalLabId ?? "" },
@@ -125,7 +125,7 @@ export function useGetCustomDentalLabQuery({
   }, [dentalLabData, contractData]);
 
   return {
-    data: (data || dentalLabData) as DentalLabWithContracts | undefined,
+    data: (data || dentalLabData) as DentalLabDetail | undefined,
     ...rest,
   };
 }

@@ -8,11 +8,6 @@ export const DENTAL_STATUS_SELECTIONS = [
   "TERMINATED",
 ] as const;
 
-export const DENTAL_DISPLAY_TYPE_SELECTIONS = [
-  "ALL",
-  ...DENTAL_STATUS_SELECTIONS,
-] as const;
-
 export const DENTAL_REGION_SELECTIONS = [
   "EastAsia",
   "WestUS",
@@ -35,7 +30,7 @@ export const getDentalStatusPriority = (text: string) => {
 };
 
 export const dentalDetailLabkeyNameTable: Record<
-  keyof DentalLabDetail,
+  keyof Omit<DentalLabDetail, "contracts">,
   TextWithFormatter
 > = {
   id: { text: "牙技所ID" },
@@ -68,6 +63,7 @@ export const dentalDetailLabkeyNameTable: Record<
 export const UPDATE_DENTAL_LAB_OMIT_FIELDS = [
   "createdTime",
   "modifiedTime",
+  "contracts",
 ] as const;
 
 const { id, createdTime, modifiedTime, ...rest } = dentalDetailLabkeyNameTable;

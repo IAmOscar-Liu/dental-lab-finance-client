@@ -2,7 +2,6 @@ import { NonNullableFields, NullableFields } from ".";
 import {
   BILLING_PERIOD_UNIT_SELECTIONS,
   BILLING_UNIT,
-  CONTRACT_DISPLAY_TYPE_SELECTIONS,
   CONTRACT_OPERATE_DECISION_SELECTIONS,
   CONTRACT_STATUS_SELECTIONS,
   CONTRACT_TYPE_SELECTIONS,
@@ -26,9 +25,6 @@ type ContractResultFromAPI = { id: string } & NullableFields<{
 }>;
 
 export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
-
-export type ContractDisplayType =
-  (typeof CONTRACT_DISPLAY_TYPE_SELECTIONS)[number];
 
 export type ContractStatus = (typeof CONTRACT_STATUS_SELECTIONS)[number];
 

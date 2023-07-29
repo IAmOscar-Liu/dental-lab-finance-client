@@ -8,13 +8,13 @@ import CustomSearchInputText from "../../components/custom/CustomSearchInputText
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
-  DENTAL_DISPLAY_TYPE_SELECTIONS,
+  DENTAL_STATUS_SELECTIONS,
   getDentalStatusPriority,
   getDentalStatusText,
 } from "../../constant/dentalLab";
-import useFilter from "../../hooks/useFilter";
 import { useGetDentaLabsPaginationQuery } from "../../hooks/useGetPaginationQuery";
-import { DentalDisplayType, DentalLabDetail } from "../../types/dentalLab";
+import useManagementFilter from "../../hooks/useManagementFilter";
+import { DentalLabDetail, DentalStatus } from "../../types/dentalLab";
 import style from "../Management.module.css";
 
 function DentalManagement() {
@@ -26,8 +26,8 @@ function DentalManagement() {
     isFetching,
     error,
   } = useGetDentaLabsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const { filter, setFilter, getFilteredData } = useFilter<
-    DentalDisplayType,
+  const { filter, setFilter, getFilteredData } = useManagementFilter<
+    DentalStatus,
     DentalLabDetail
   >({ data: data?.result, filterBy: (value) => value.status });
   const navigate = useNavigate();
@@ -48,18 +48,20 @@ function DentalManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {DENTAL_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
-              <button
-                key={displayType}
-                disabled={displayType === filter}
-                onClick={() => setFilter(displayType)}
-              >
-                {displayType === "ALL"
-                  ? "全部"
-                  : getDentalStatusText(displayType)}{" "}
-                ({getFilteredData(displayType).length})
-              </button>
-            ))}
+            {(["ALL", ...DENTAL_STATUS_SELECTIONS] as const).map(
+              (displayType) => (
+                <button
+                  key={displayType}
+                  disabled={displayType === filter}
+                  onClick={() => setFilter(displayType)}
+                >
+                  {displayType === "ALL"
+                    ? "全部"
+                    : getDentalStatusText(displayType)}{" "}
+                  ({getFilteredData(displayType).length})
+                </button>
+              )
+            )}
             <button onClick={() => navigate("/dental-lab-management/new")}>
               <MdOutlineAdd />
               新增牙技所

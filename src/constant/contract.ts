@@ -11,11 +11,6 @@ import {
 
 export const CONTRACT_TYPE_SELECTIONS = ["SERVICE", "LEASE", "SELL"] as const;
 
-export const CONTRACT_DISPLAY_TYPE_SELECTIONS = [
-  "ALL",
-  ...CONTRACT_TYPE_SELECTIONS,
-] as const;
-
 export const CONTRACT_STATUS_SELECTIONS = [
   "CONFIRMING",
   "SUBMIT_FOR_REVIEW",

@@ -18,11 +18,6 @@ export const EQUIPMENT_STATUS_SELECTIONS = [
   "UnAvailable",
 ] as const;
 
-export const EQUIPMENT_DISPLAY_TYPE_SELECTIONS = [
-  "ALL",
-  ...EQUIPMENT_STATUS_SELECTIONS,
-] as const;
-
 export const EQUIPMENT_TYPE_SELECTIONS = ["Unknown", "ART"] as const;
 
 export const EQUIPMENT_OWNER_TYPE_SELECTIONS = ["Agent", "DentalLab"] as const;

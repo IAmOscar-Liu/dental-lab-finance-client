@@ -8,13 +8,13 @@ import CustomSearchInputText from "../../components/custom/CustomSearchInputText
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
-  STOCK_DISPLAY_TYPE_SELECTIONS,
+  STOCK_TYPE_SELECTIONS,
   getStockTypePriority,
   getStockTypeText,
 } from "../../constant/stock";
-import useFilter from "../../hooks/useFilter";
 import { useGetStocksPaginationQuery } from "../../hooks/useGetPaginationQuery";
-import { StockDisplayType, StockInOutDetail } from "../../types/stock";
+import useManagementFilter from "../../hooks/useManagementFilter";
+import { StockInOutDetail, StockType } from "../../types/stock";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
@@ -27,8 +27,8 @@ function StockManagement() {
     isFetching,
     error,
   } = useGetStocksPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const { filter, setFilter, getFilteredData } = useFilter<
-    StockDisplayType,
+  const { filter, setFilter, getFilteredData } = useManagementFilter<
+    StockType,
     StockInOutDetail
   >({ data: data?.result, filterBy: (value) => value.inOutType });
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function StockManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {STOCK_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
+            {(["ALL", ...STOCK_TYPE_SELECTIONS] as const).map((displayType) => (
               <button
                 key={displayType}
                 disabled={displayType === filter}

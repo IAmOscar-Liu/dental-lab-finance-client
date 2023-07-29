@@ -5,11 +5,6 @@ import { getContractTypeText } from "./contract";
 
 export const STOCK_TYPE_SELECTIONS = ["IN", "OUT"] as const;
 
-export const STOCK_DISPLAY_TYPE_SELECTIONS = [
-  "ALL",
-  ...STOCK_TYPE_SELECTIONS,
-] as const;
-
 const stockTypeAndText = STOCK_TYPE_SELECTIONS.map((type) => {
   if (type === "IN") return [type, "入庫"];
   return [type, "出庫"];

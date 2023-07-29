@@ -8,15 +8,15 @@ import CustomSearchInputText from "../../components/custom/CustomSearchInputText
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
-  EQUIPMENT_DISPLAY_TYPE_SELECTIONS,
+  EQUIPMENT_STATUS_SELECTIONS,
   getEquipmentStatusPriority,
   getEquipmentStatusText,
   getEquipmentTypePriority,
   getEquipmentTypeText,
 } from "../../constant/equipment";
-import useFilter from "../../hooks/useFilter";
 import { useGetEquipmentsPaginationQuery } from "../../hooks/useGetPaginationQuery";
-import { EquipmentDetail, EquipmentDisplayType } from "../../types/equipment";
+import useManagementFilter from "../../hooks/useManagementFilter";
+import { EquipmentDetail, EquipmentStatus } from "../../types/equipment";
 import {
   formatDollarString,
   getLocalISOStringFromUTC,
@@ -32,8 +32,8 @@ function EquipmentManagement() {
     isFetching,
     error,
   } = useGetEquipmentsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const { filter, setFilter, getFilteredData } = useFilter<
-    EquipmentDisplayType,
+  const { filter, setFilter, getFilteredData } = useManagementFilter<
+    EquipmentStatus,
     EquipmentDetail
   >({ data: data?.result, filterBy: (value) => value.equipmentStatus });
   const navigate = useNavigate();
@@ -54,18 +54,20 @@ function EquipmentManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {EQUIPMENT_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
-              <button
-                key={displayType}
-                disabled={displayType === filter}
-                onClick={() => setFilter(displayType)}
-              >
-                {displayType === "ALL"
-                  ? "全部"
-                  : getEquipmentStatusText(displayType)}{" "}
-                ({getFilteredData(displayType).length})
-              </button>
-            ))}
+            {(["ALL", ...EQUIPMENT_STATUS_SELECTIONS] as const).map(
+              (displayType) => (
+                <button
+                  key={displayType}
+                  disabled={displayType === filter}
+                  onClick={() => setFilter(displayType)}
+                >
+                  {displayType === "ALL"
+                    ? "全部"
+                    : getEquipmentStatusText(displayType)}{" "}
+                  ({getFilteredData(displayType).length})
+                </button>
+              )
+            )}
             <button onClick={() => navigate("/equipment-management/new")}>
               <MdOutlineAdd />
               新增設備

@@ -1,6 +1,5 @@
 import { NonNullableFields, NullableFields } from ".";
 import {
-  STOCK_DISPLAY_TYPE_SELECTIONS,
   STOCK_TYPE_SELECTIONS,
   UPDATE_STOCK_OMIT_FIELDS,
 } from "../constant/stock";
@@ -21,8 +20,6 @@ type StockInOutResultFromAPI = {
 }>;
 
 export type StockType = (typeof STOCK_TYPE_SELECTIONS)[number];
-
-export type StockDisplayType = (typeof STOCK_DISPLAY_TYPE_SELECTIONS)[number];
 
 export type StockQueryResult = {
   totalCount: number;

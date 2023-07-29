@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-function useFilter<FilterType, DataType>({
+function useManagementFilter<FilterType, DataType>({
   data,
   filterBy,
 }: {
@@ -27,4 +27,4 @@ function useFilter<FilterType, DataType>({
   return { filter, setFilter, getFilteredData };
 }
 
-export default useFilter;
+export default useManagementFilter;

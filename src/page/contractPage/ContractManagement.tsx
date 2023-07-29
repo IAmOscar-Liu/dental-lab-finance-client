@@ -8,15 +8,15 @@ import CustomSearchInputText from "../../components/custom/CustomSearchInputText
 import CustomTableGroup from "../../components/custom/CustomTableGroup";
 import { MIN_ITEMS_TO_SHOW_BOTTOM_PAGE_CONTROLLER } from "../../constant";
 import {
-  CONTRACT_DISPLAY_TYPE_SELECTIONS,
+  CONTRACT_TYPE_SELECTIONS,
   getContractStatusPriority,
   getContractStatusText,
   getContractTypePriority,
   getContractTypeText,
 } from "../../constant/contract";
-import useFilter from "../../hooks/useFilter";
 import { useGetContractsPaginationQuery } from "../../hooks/useGetPaginationQuery";
-import { ContractDetail, ContractDisplayType } from "../../types/contract";
+import useManagementFilter from "../../hooks/useManagementFilter";
+import { ContractDetail, ContractType } from "../../types/contract";
 import { getLocalISOStringFromUTC } from "../../utils/formatString";
 import style from "../Management.module.css";
 
@@ -29,8 +29,8 @@ function ContractManagement() {
     isFetching,
     error,
   } = useGetContractsPaginationQuery({ pageNo: 1, pageSize: 10 });
-  const { filter, setFilter, getFilteredData } = useFilter<
-    ContractDisplayType,
+  const { filter, setFilter, getFilteredData } = useManagementFilter<
+    ContractType,
     ContractDetail
   >({ data: data?.result, filterBy: (value) => value.type });
   const navigate = useNavigate();
@@ -51,18 +51,20 @@ function ContractManagement() {
       ) : (
         <>
           <div className={style["filter-btns"]}>
-            {CONTRACT_DISPLAY_TYPE_SELECTIONS.map((displayType) => (
-              <button
-                key={displayType}
-                disabled={displayType === filter}
-                onClick={() => setFilter(displayType)}
-              >
-                {displayType === "ALL"
-                  ? "全部"
-                  : getContractTypeText(displayType).slice(0, -2)}{" "}
-                ({getFilteredData(displayType).length})
-              </button>
-            ))}
+            {(["ALL", ...CONTRACT_TYPE_SELECTIONS] as const).map(
+              (displayType) => (
+                <button
+                  key={displayType}
+                  disabled={displayType === filter}
+                  onClick={() => setFilter(displayType)}
+                >
+                  {displayType === "ALL"
+                    ? "全部"
+                    : getContractTypeText(displayType).slice(0, -2)}{" "}
+                  ({getFilteredData(displayType).length})
+                </button>
+              )
+            )}
             <button onClick={() => navigate("/contract-management/new")}>
               <MdOutlineAdd />
               新增合約
