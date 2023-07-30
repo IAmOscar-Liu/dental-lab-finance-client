@@ -30,7 +30,7 @@ header.header {
   border-bottom: 1px solid #555;
 }
 
-header.header > *:has(input[type="text"]) {
+header.header > *:has(input) {
   margin-top: 18px;
   border-width: 1px;
 }

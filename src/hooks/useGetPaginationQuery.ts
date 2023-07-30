@@ -6,11 +6,11 @@ import { useGetStocksQuery } from "../redux/stockApi";
 import { PaginationValueType } from "../types";
 
 export function useGetEquipmentsPaginationQuery(
-  inputValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
+  initialValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
 ) {
   const [value, setValue] = useState<Partial<PaginationValueType>>({
-    pageNo: inputValue.pageNo || 1,
-    pageSize: inputValue.pageSize || 10,
+    pageNo: initialValue.pageNo || 1,
+    pageSize: initialValue.pageSize || 10,
   });
 
   const updateValue = (
@@ -47,11 +47,11 @@ export function useGetEquipmentsPaginationQuery(
 }
 
 export function useGetStocksPaginationQuery(
-  inputValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
+  initialValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
 ) {
   const [value, setValue] = useState<Partial<PaginationValueType>>({
-    pageNo: inputValue.pageNo || 1,
-    pageSize: inputValue.pageSize || 10,
+    pageNo: initialValue.pageNo || 1,
+    pageSize: initialValue.pageSize || 10,
   });
 
   const updateValue = (
@@ -88,11 +88,11 @@ export function useGetStocksPaginationQuery(
 }
 
 export function useGetDentaLabsPaginationQuery(
-  inputValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
+  initialValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
 ) {
   const [value, setValue] = useState<Partial<PaginationValueType>>({
-    pageNo: inputValue.pageNo || 1,
-    pageSize: inputValue.pageSize || 10,
+    pageNo: initialValue.pageNo || 1,
+    pageSize: initialValue.pageSize || 10,
   });
 
   const updateValue = (
@@ -129,11 +129,11 @@ export function useGetDentaLabsPaginationQuery(
 }
 
 export function useGetContractsPaginationQuery(
-  inputValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
+  initialValue: Partial<Pick<PaginationValueType, "pageNo" | "pageSize">>
 ) {
   const [value, setValue] = useState<Partial<PaginationValueType>>({
-    pageNo: inputValue.pageNo || 1,
-    pageSize: inputValue.pageSize || 10,
+    pageNo: initialValue.pageNo || 1,
+    pageSize: initialValue.pageSize || 10,
   });
 
   const updateValue = (

@@ -98,12 +98,16 @@ function StockManagement() {
                     { text: "查看細節" },
                   ],
                   data: getFilteredData(filter).map((stock) => [
-                    getStockTypeText(stock.inOutType) ?? "",
+                    <span style={{ marginLeft: "1ch" }}>
+                      {getStockTypeText(stock.inOutType) ?? ""}
+                    </span>,
                     (getLocalISOStringFromUTC(stock.inOutTime) ?? "").slice(
                       0,
                       10
                     ),
-                    (stock.equipments || []).length + " 台",
+                    <span style={{ marginLeft: "2ch" }}>
+                      {(stock.equipments || []).length + " 台"}
+                    </span>,
                     stock.operator ?? "",
                     <Link to={`/stock-management/overview/${stock.id}`}>
                       查看細節

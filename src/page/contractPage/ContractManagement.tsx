@@ -113,7 +113,9 @@ function ContractManagement() {
                     contract.contractNo ?? "",
                     contract.name ?? "",
                     getContractTypeText(contract.type).slice(0, -2),
-                    getContractStatusText(contract.status),
+                    <span style={{ marginLeft: "1ch" }}>
+                      {getContractStatusText(contract.status)}
+                    </span>,
                     (
                       getLocalISOStringFromUTC(contract.signingDate) ?? ""
                     ).slice(0, 10),

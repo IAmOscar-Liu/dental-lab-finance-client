@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { TableGroupData } from "../../types";
+import { getContentFromJSXElement } from "../../utils/getContentFromJSXElement";
 import style from "./CustomTableGroup.module.css";
 
 function CustomTableGroup({
@@ -51,14 +52,17 @@ function CustomTableGroup({
                       key={thIdx}
                       className={sortFn ? style["with-sort"] : ""}
                       onClick={() => {
-                        if (
-                          !sortFn ||
-                          typeof sortedData[0]?.[thIdx] !== "string"
-                        )
-                          return;
+                        if (!sortFn) return;
                         setSortedData(() => {
                           const result = [...sortedData].sort((a, b) =>
-                            sortFn(a[thIdx] as string, b[thIdx] as string)
+                            sortFn(
+                              typeof a[thIdx] === "string"
+                                ? a[thIdx] + ""
+                                : getContentFromJSXElement(a[thIdx]),
+                              typeof b[thIdx] === "string"
+                                ? b[thIdx] + ""
+                                : getContentFromJSXElement(b[thIdx])
+                            )
                           );
 
                           if (sortDirections[thIdx] === "asc") return result;
