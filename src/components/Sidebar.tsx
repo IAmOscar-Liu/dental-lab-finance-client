@@ -118,6 +118,12 @@ const LINKS: AppLink[] = [
     hasChildren: false,
   },
   {
+    icon: <MdOutlineStickyNote2 />,
+    title: "財務管理",
+    pathname: "/account-receivable-management",
+    hasChildren: true,
+  },
+  {
     icon: <FaFileContract />,
     title: "財務報表",
     pathname: "/finance",

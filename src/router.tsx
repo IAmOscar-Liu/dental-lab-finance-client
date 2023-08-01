@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
+import AccountReceivableManagement from "./page/AccountReceivablePage/AccountReceivableManagement";
 import Favorites from "./page/Favorites";
 import Finance from "./page/Finance";
 import Home from "./page/Home";
@@ -9,7 +10,7 @@ import CreateContract from "./page/contractPage/CreateContract";
 import SingleContract from "./page/contractPage/SingleContract";
 import UpdateContract from "./page/contractPage/UpdateContract";
 import CreateDentalLab from "./page/dentalLabPage/CreateDentalLab";
-import DentalManagement from "./page/dentalLabPage/DentalManagement";
+import DentalLabManagement from "./page/dentalLabPage/DentalLabManagement";
 import SingleDentalLab from "./page/dentalLabPage/SingleDentalLab";
 import UpdateDentalLab from "./page/dentalLabPage/UpdateDentalLab";
 import CreateEquipment from "./page/equipmentPage/CreateEquipment";
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dental-lab-management",
-        element: <DentalManagement />,
+        element: <DentalLabManagement />,
       },
       {
         path: "dental-lab-management/new",
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
       {
         path: "contract-management/update/:contractType/:contractId",
         element: <UpdateContract />,
+      },
+      {
+        path: "account-receivable-management",
+        element: <AccountReceivableManagement />,
       },
       {
         path: "finance",

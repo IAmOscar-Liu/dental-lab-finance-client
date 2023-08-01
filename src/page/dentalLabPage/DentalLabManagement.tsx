@@ -17,7 +17,7 @@ import useManagementFilter from "../../hooks/useManagementFilter";
 import { DentalLabDetail, DentalStatus } from "../../types/dentalLab";
 import style from "../Management.module.css";
 
-function DentalManagement() {
+function DentalLabManagement() {
   const {
     paginationValue,
     updatePaginationValue,
@@ -137,4 +137,4 @@ function DentalManagement() {
   );
 }
 
-export default DentalManagement;
+export default DentalLabManagement;

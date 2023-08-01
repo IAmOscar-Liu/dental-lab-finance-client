@@ -30,6 +30,9 @@ export function getContentFromJSXElement(element: any) {
         }
       }
     }
+
+    // console.log(content);
+
     return content;
   } catch {
     return "";

@@ -8,6 +8,7 @@ import { equipmentApi } from "./equipmentApi";
 import equipmentReducer from "./equipmentSlice";
 import { stockApi } from "./stockApi";
 import stockReducer from "./stockSlice";
+import { AccountReceivableApi } from "./AccountReceivableApi";
 
 export const store = configureStore({
   reducer: {
@@ -19,13 +20,15 @@ export const store = configureStore({
     [contractApi.reducerPath]: contractApi.reducer,
     [equipmentApi.reducerPath]: equipmentApi.reducer,
     [stockApi.reducerPath]: stockApi.reducer,
+    [AccountReceivableApi.reducerPath]: AccountReceivableApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       dentalLabApi.middleware,
       contractApi.middleware,
       equipmentApi.middleware,
-      stockApi.middleware
+      stockApi.middleware,
+      AccountReceivableApi.middleware
     ),
   devTools: process.env.NODE_ENV !== "production",
 });
