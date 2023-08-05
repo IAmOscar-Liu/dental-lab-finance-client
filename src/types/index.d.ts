@@ -37,6 +37,13 @@ export type TextWithFormatter = {
 
 export type PageSize = (typeof SEARCH_QUERY_PAGE_SIZE_SELECTIONS)[number];
 
+export interface ApiBaseQueryResult {
+  totalCount: number;
+  totalPage: number;
+  pageNo: number;
+  pageSize: number;
+}
+
 export type SearchQueryType =
   | Partial<{
       pageNo: number;

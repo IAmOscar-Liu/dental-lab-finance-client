@@ -93,11 +93,12 @@ function AccountReceivableManagement() {
                 tableMinWidth={840}
                 columnWidths={[
                   "auto",
-                  "20ch",
+                  "12ch",
                   "max(10ch, 10%)",
                   "9ch",
-                  "max(15ch, 15%)",
+                  "12ch",
                   "max(12ch, 12%)",
+                  "12ch",
                   "9ch",
                   "10ch",
                 ]}
@@ -108,7 +109,7 @@ function AccountReceivableManagement() {
                       sortFn: (a, b) => a.localeCompare(b),
                     },
                     {
-                      text: "Account Subject",
+                      text: "Subject",
                       sortFn: (a, b) =>
                         getAccountReceivableSubjectPriority(a) -
                         getAccountReceivableSubjectPriority(b),
@@ -120,6 +121,10 @@ function AccountReceivableManagement() {
                     },
                     {
                       text: "幣別",
+                      sortFn: (a, b) => a.localeCompare(b),
+                    },
+                    {
+                      text: "收費期限",
                       sortFn: (a, b) => a.localeCompare(b),
                     },
                     {
@@ -139,13 +144,16 @@ function AccountReceivableManagement() {
                   data: getFilteredData(filter).map((accountReceivable) => {
                     return [
                       accountReceivable.customerName ?? "",
-                      <span style={{ marginLeft: "2ch" }}>
-                        {getAccountReceivableSubjectText(
-                          accountReceivable.accountSubject
-                        )}
-                      </span>,
+                      getAccountReceivableSubjectText(
+                        accountReceivable.accountSubject
+                      ),
                       formatDollarString(accountReceivable.amount),
                       <span>{accountReceivable.currency ?? ""}</span>,
+                      (
+                        getLocalISOStringFromUTC(
+                          accountReceivable.accountDate
+                        ) ?? ""
+                      ).slice(0, 10),
                       accountReceivable.invoiceNo,
                       (
                         getLocalISOStringFromUTC(

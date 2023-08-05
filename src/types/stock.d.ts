@@ -1,4 +1,4 @@
-import { NonNullableFields, NullableFields } from ".";
+import { ApiBaseQueryResult, NonNullableFields, NullableFields } from ".";
 import {
   STOCK_TYPE_SELECTIONS,
   UPDATE_STOCK_OMIT_FIELDS,
@@ -21,13 +21,9 @@ type StockInOutResultFromAPI = {
 
 export type StockType = (typeof STOCK_TYPE_SELECTIONS)[number];
 
-export type StockQueryResult = {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
+export interface StockQueryResult extends ApiBaseQueryResult {
   result: StockInOutDetail[];
-};
+}
 
 export type StockInOutDetail = StockInOutResultFromAPI &
   NullableFields<{

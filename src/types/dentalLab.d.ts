@@ -1,4 +1,4 @@
-import { NonNullableFields, NullableFields } from ".";
+import { ApiBaseQueryResult, NonNullableFields, NullableFields } from ".";
 import {
   DENTAL_REGION_SELECTIONS,
   DENTAL_STATUS_SELECTIONS,
@@ -28,11 +28,7 @@ export type DentalStatus = (typeof DENTAL_STATUS_SELECTIONS)[number];
 
 export type DentalRegion = (typeof DENTAL_REGION_SELECTIONS)[number];
 
-export interface DentalLabQueryResult {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
+export interface DentalLabQueryResult extends ApiBaseQueryResult {
   result: DentalLabDetail[];
 }
 

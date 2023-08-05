@@ -1,4 +1,4 @@
-import { NullableFields } from ".";
+import { ApiBaseQueryResult, NullableFields } from ".";
 import { ACCOUNT_SUBJECT_SELECTIONS } from "../constant/AccountReceivable";
 
 type AccountReceivableFromAPI = { id: string } & NullableFields<{
@@ -20,11 +20,7 @@ type AccountReceivableFromAPI = { id: string } & NullableFields<{
 export type AccountAvailableSubject =
   (typeof ACCOUNT_SUBJECT_SELECTIONS)[number];
 
-export interface AccountReceivableQueryResult {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
+export interface AccountReceivableQueryResult extends ApiBaseQueryResult {
   result: AccountReceivableDetail[];
 }
 

@@ -1,4 +1,4 @@
-import { NonNullableFields, NullableFields } from ".";
+import { ApiBaseQueryResult, NonNullableFields, NullableFields } from ".";
 import {
   EQUIPMENT_OWNER_TYPE_SELECTIONS,
   EQUIPMENT_STATUS_SELECTIONS,
@@ -32,13 +32,9 @@ export type EquipmentStatus = (typeof EQUIPMENT_STATUS_SELECTIONS)[number];
 export type EquipmentOwnerType =
   (typeof EQUIPMENT_OWNER_TYPE_SELECTIONS)[number];
 
-export type EquipmentQueryResult = {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
+export interface EquipmentQueryResult extends ApiBaseQueryResult {
   result: EquipmentDetail[];
-};
+}
 
 export type EquipmentDetail = EquipmentResultFromAPI &
   NullableFields<{

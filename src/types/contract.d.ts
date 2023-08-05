@@ -1,4 +1,4 @@
-import { NonNullableFields, NullableFields } from ".";
+import { ApiBaseQueryResult, NonNullableFields, NullableFields } from ".";
 import {
   BILLING_PERIOD_UNIT_SELECTIONS,
   BILLING_UNIT,
@@ -28,11 +28,7 @@ export type ContractType = (typeof CONTRACT_TYPE_SELECTIONS)[number];
 
 export type ContractStatus = (typeof CONTRACT_STATUS_SELECTIONS)[number];
 
-export interface ContractQueryResult {
-  totalCount: number;
-  totalPage: number;
-  pageNo: number;
-  pageSize: number;
+export interface ContractQueryResult extends ApiBaseQueryResult {
   result: ContractDetail[];
 }
 
